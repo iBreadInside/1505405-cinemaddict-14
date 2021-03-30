@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Владимир Фадеев](https://up.htmlacademy.ru/ecmascript/14/user/1505405).
-* Наставник: `Неизвестно`.
+* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/bekobou).
 
 ---
 
