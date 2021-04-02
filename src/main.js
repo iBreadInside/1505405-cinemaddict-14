@@ -7,10 +7,12 @@ import { createFooterStats } from './view/footer-stats.js';
 import { createFilmCard } from './view/film-card.js';
 import { createFilmsSection } from './view/films-section.js';
 import { createShowMoreButton } from './view/show-more-button.js';
+import { createFilmDetails } from './view/film-details.js';
 
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
 
+const siteBodyElement = document.body;
 const headerElement = document.querySelector('.header__logo');
 const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
@@ -52,3 +54,6 @@ for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
   render(topRatedFilmsContainer, createFilmCard(), 'beforeend');
   render(mostCommentedFilmsContainer, createFilmCard(), 'beforeend');
 }
+
+// Render film details popup
+render(siteBodyElement, createFilmDetails(), 'beforeend');
