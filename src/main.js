@@ -1,4 +1,6 @@
-import {createFilmsSection, createFilmCard} from './view/film-card.js';
+import { createFilmCard } from './view/film-card.js';
+import { createFilmsSection } from './view/films-section.js';
+import { createShowMoreButton } from './view/show-more-button.js';
 
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
@@ -21,6 +23,8 @@ const mostCommentedFilmsContainer = filmsSection.querySelector('.films-list__con
 for (let i = 0; i < FILMS_IN_LINE; i++) {
   render(filmsListContainer, createFilmCard(), 'beforeend');
 }
+
+render(filmsListContainer, createShowMoreButton(), 'beforeend');
 
 for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
   render(topRatedFilmsContainer, createFilmCard(), 'beforeend');
