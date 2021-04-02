@@ -1,3 +1,5 @@
+import { createMainNavigation } from './view/main-navigation.js';
+import { createStatisticRank } from './view/statistic-rank.js';
 import { createFilmCard } from './view/film-card.js';
 import { createFilmsSection } from './view/films-section.js';
 import { createShowMoreButton } from './view/show-more-button.js';
@@ -11,6 +13,12 @@ const mainElement = document.querySelector('.main');
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
 };
+
+// Render main navigation
+render(mainElement, createMainNavigation(), 'beforeend');
+
+// Render statistic section
+render(mainElement, createStatisticRank(), 'beforeend');
 
 // Render films section
 render(mainElement, createFilmsSection(), 'beforeend');
