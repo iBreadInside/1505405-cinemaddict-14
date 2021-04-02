@@ -1,3 +1,4 @@
+import { createProfileInfo } from './view/profile.js';
 import { createMainNavigation } from './view/main-navigation.js';
 import { createStatisticRank } from './view/statistic-rank.js';
 import { createStatisticFilter } from './view/statistic-filter.js';
@@ -10,13 +11,16 @@ import { createShowMoreButton } from './view/show-more-button.js';
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
 
-// const siteHeaderLogoElement = document.querySelector('.header__logo');
+const headerElement = document.querySelector('.header__logo');
 const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
 };
+
+// Render profile info
+render(headerElement, createProfileInfo(), 'beforeend');
 
 // Render main navigation
 render(mainElement, createMainNavigation(), 'beforeend');
