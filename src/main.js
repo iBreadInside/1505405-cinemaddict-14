@@ -8,7 +8,9 @@ import { createFilmCard } from './view/film-card.js';
 import { createFilmsSection } from './view/films-section.js';
 import { createShowMoreButton } from './view/show-more-button.js';
 import { createFilmDetails } from './view/film-details.js';
+import { generateFilmCard } from './mock/film-info.js';
 
+const FILMS_NUMBER = 12;
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
 
@@ -16,6 +18,8 @@ const siteBodyElement = document.body;
 const headerElement = document.querySelector('.header__logo');
 const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
+
+const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
@@ -45,14 +49,14 @@ const topRatedFilmsContainer = filmsSection.querySelector('.films-list__containe
 const mostCommentedFilmsContainer = filmsSection.querySelector('.films-list__container--most-commented');
 
 for (let i = 0; i < FILMS_IN_LINE; i++) {
-  render(filmsListContainer, createFilmCard(), 'beforeend');
+  render(filmsListContainer, createFilmCard(filmCards[i]), 'beforeend');
 }
 
 render(filmsListContainer, createShowMoreButton(), 'beforeend');
 
 for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
-  render(topRatedFilmsContainer, createFilmCard(), 'beforeend');
-  render(mostCommentedFilmsContainer, createFilmCard(), 'beforeend');
+  render(topRatedFilmsContainer, createFilmCard(filmCards[i]), 'beforeend');
+  render(mostCommentedFilmsContainer, createFilmCard(filmCards[i]), 'beforeend');
 }
 
 // Render film details popup

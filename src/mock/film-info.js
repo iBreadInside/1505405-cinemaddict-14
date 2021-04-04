@@ -1,3 +1,5 @@
+// import { dayjs } from 'dayjs';
+
 const TITLES = [
   'Made For Each Other',
   'Popeye Meets Sinbad',
@@ -5,51 +7,122 @@ const TITLES = [
   'The Dance Of Life',
 ];
 
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+const POSTERS = [
+  'made-for-each-other.png',
+  'popeye-meets-sinbad.png',
+  'sagebrush-trail.jpg',
+  'the-dance-of-life.jpg',
+];
 
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
+const DESCRIPTION_SENTENCES = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
+  'Aliquam id orci ut lectus varius viverra.',
+  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
+  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
+  'Sed sed nisi sed augue convallis suscipit in sed felis.',
+  'Aliquam erat volutpat.',
+  'Nunc fermentum tortor ac porta dapibus.',
+  'In rutrum ac purus sit amet tempus.',
+];
+
+const GENRES = [
+  'Comedy',
+  'Horror',
+  'Action',
+  'Drama',
+  'Documental',
+];
+
+const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
+  const fractionMultiplier = Math.pow(10, fractionDigits);
+  min = Math.abs(min);
+  max = Math.abs(max); // Условия для поиска среди положительных значений
+  if (min > max) { [min, max] = [max, min]; }
+  return Math.round(
+    (Math.random() * (max - min) + min) * fractionMultiplier,
+  ) / fractionMultiplier;
 };
 
-const getRandomTitle = () => {
-  return TITLES[getRandomInteger(0, TITLES.length - 1)];
+
+// Random sorting
+export const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+const getRandomFromArray = (arrayName) => {
+  return arrayName[getRandomNumber(0, arrayName.length - 1)];
+};
+
+// Get description
+const getRandomDescription = () => {
+  return shuffle(DESCRIPTION_SENTENCES).slice(0, getRandomNumber(1, 4)).join(' ');
+};
+
+// Get genres
+const getRandomGenres = () => {
+  return shuffle(GENRES).slice(0, GENRES.length - 1);
+};
+
+// Generate date
+// const generateRandomDate = () => {
+//   dayjs().date(getRandomInteger(1, 28)).month(getRandomInteger(0, 11)).year(getRandomInteger(1945, dayjs().year()));
+//   return dayjs();
+// };
+
+// const releaseDate = generateRandomDate();
+
+// Set state of watchlist, watched and favorite
+const generateRandomBoolean = () => {
+  return Boolean(getRandomNumber(0, 1));
+};
+
+const isWatched = () => {
+  const watchedState = generateRandomBoolean();
+  if (watchedState) {
+    // watching_date function
+    return watchedState;
+  } else {
+    return watchedState;
+  }
 };
 
 export const generateFilmCard = () => {
   return {
-    'id': '0',
-    // 'comments': [
+    id: 0,
+    // comments: [
     //   $Comment.id$, $Comment.id$
     // ],
-    'film_info': {
-      'title': getRandomTitle(),
-      'alternative_title': 'Laziness Who Sold Themselves',
-      'total_rating': 5.3,
-      'poster': 'images/posters/blue-blazes.jpg',
-      'age_rating': 0,
-      'director': 'Tom Ford',
-      'writers': [
+    film_info: {
+      title: getRandomFromArray(TITLES),
+      alternative_title: 'Laziness Who Sold Themselves',
+      total_rating: getRandomNumber(0, 10, 1),
+      poster: `images/posters/${getRandomFromArray(POSTERS)}`,
+      age_rating: 0,
+      director: 'Tom Ford',
+      writers: [
         'Takeshi Kitano',
       ],
-      'actors': [
+      actors: [
         'Morgan Freeman',
       ],
-      'release': {
-        'date': '2019-05-11T00:00:00.000Z',
-        'release_country': 'Finland',
+      release: {
+        date: '2019-05-11T00:00:00.000Z',
+        release_country: 'Finland',
       },
-      'runtime': 77,
-      'genre': [
-        'Comedy',
-      ],
-      'description': 'Oscar-winning film, a war drama about two young people, from the creators of timeless classic \'Nu, Pogodi!\' and \'Alice in Wonderland\', with the best fight scenes since Bruce Lee.',
+      runtime: 77,
+      genre: getRandomGenres(),
+      description: getRandomDescription(),
     },
-    'user_details': {
-      'watchlist': false,
-      'already_watched': true,
-      'watching_date': '2019-04-12T16:12:32.554Z',
-      'favorite': false,
+    user_details: {
+      watchlist: generateRandomBoolean(),
+      already_watched: isWatched(),
+      watching_date: '2019-04-12T16:12:32.554Z',
+      favorite: generateRandomBoolean(),
     },
   };
 };
