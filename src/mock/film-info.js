@@ -1,5 +1,3 @@
-// import { dayjs } from 'dayjs';
-
 const TITLES = [
   'Made For Each Other',
   'Popeye Meets Sinbad',
@@ -34,6 +32,9 @@ const GENRES = [
   'Documental',
 ];
 
+const DATE = '2019-05-11T00:00:00.000Z';
+const RUNTIME = 77;
+
 const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
   const fractionMultiplier = Math.pow(10, fractionDigits);
   min = Math.abs(min);
@@ -67,14 +68,6 @@ const getRandomDescription = () => {
 const getRandomGenres = () => {
   return shuffle(GENRES).slice(0, GENRES.length - 1);
 };
-
-// Generate date
-// const generateRandomDate = () => {
-//   dayjs().date(getRandomInteger(1, 28)).month(getRandomInteger(0, 11)).year(getRandomInteger(1945, dayjs().year()));
-//   return dayjs();
-// };
-
-// const releaseDate = generateRandomDate();
 
 // Set state of watchlist, watched and favorite
 const generateRandomBoolean = () => {
@@ -111,17 +104,17 @@ export const generateFilmCard = () => {
         'Morgan Freeman',
       ],
       release: {
-        date: '2019-05-11T00:00:00.000Z',
+        date: DATE,
         release_country: 'Finland',
       },
-      runtime: 77,
+      runtime: RUNTIME,
       genre: getRandomGenres(),
       description: getRandomDescription(),
     },
     user_details: {
       watchlist: generateRandomBoolean(),
       already_watched: isWatched(),
-      watching_date: '2019-04-12T16:12:32.554Z',
+      watching_date: DATE,
       favorite: generateRandomBoolean(),
     },
   };
