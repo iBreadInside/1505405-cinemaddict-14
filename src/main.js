@@ -20,7 +20,6 @@ const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
-console.log(filmCards);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
