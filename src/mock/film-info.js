@@ -32,8 +32,39 @@ const GENRES = [
   'Documental',
 ];
 
+const WRITERS = [
+  'Takeshi Kitano',
+  'J.J. Abrams',
+  'Mister X',
+  'Stephen King',
+];
+
+const ACTORS = [
+  'Morgan Freeman',
+  'Danila Kozlovsky',
+  'Daniel Redcliff',
+  'John Travolta',
+];
+
+const AGE_RATINGS = [
+  0,
+  6,
+  16,
+  18,
+];
+
+const RELEASE_COUNTRIES = [
+  'Finland',
+  'Russian Federation',
+  'USA',
+  'Canada',
+  'India',
+];
+
+const DIRECTOR = 'Christofer Nolan';
 const DATE = '2019-05-11T00:00:00.000Z';
 const RUNTIME = 77;
+const ALTERNATIVE_TITLE = 'Laziness Who Sold Themselves';
 
 const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
   const fractionMultiplier = Math.pow(10, fractionDigits);
@@ -59,14 +90,8 @@ const getRandomFromArray = (arrayName) => {
   return arrayName[getRandomNumber(0, arrayName.length - 1)];
 };
 
-// Get description
-const getRandomDescription = () => {
-  return shuffle(DESCRIPTION_SENTENCES).slice(0, getRandomNumber(1, 4)).join(' ');
-};
-
-// Get genres
-const getRandomGenres = () => {
-  return shuffle(GENRES).slice(0, GENRES.length - 1);
+const modificateArray = (arrayName, arrayLength = arrayName.length - 1) => {
+  return shuffle(arrayName).slice(0, getRandomNumber(1, arrayLength));
 };
 
 // Set state of watchlist, watched and favorite
@@ -92,24 +117,20 @@ export const generateFilmCard = () => {
     // ],
     film_info: {
       title: getRandomFromArray(TITLES),
-      alternative_title: 'Laziness Who Sold Themselves',
+      alternative_title: ALTERNATIVE_TITLE,
       total_rating: getRandomNumber(0, 10, 1),
       poster: `images/posters/${getRandomFromArray(POSTERS)}`,
-      age_rating: 0,
-      director: 'Tom Ford',
-      writers: [
-        'Takeshi Kitano',
-      ],
-      actors: [
-        'Morgan Freeman',
-      ],
+      age_rating: getRandomFromArray(AGE_RATINGS),
+      director: DIRECTOR,
+      writers: modificateArray(WRITERS),
+      actors: modificateArray(ACTORS),
       release: {
         date: DATE,
-        release_country: 'Finland',
+        release_country: getRandomFromArray(RELEASE_COUNTRIES),
       },
       runtime: RUNTIME,
-      genre: getRandomGenres(),
-      description: getRandomDescription(),
+      genre: modificateArray(GENRES),
+      description: modificateArray(DESCRIPTION_SENTENCES, 4).join(' '),
     },
     user_details: {
       watchlist: generateRandomBoolean(),

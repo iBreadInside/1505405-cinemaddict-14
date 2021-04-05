@@ -10,7 +10,7 @@ import { createShowMoreButton } from './view/show-more-button.js';
 import { createFilmDetails } from './view/film-details.js';
 import { generateFilmCard } from './mock/film-info.js';
 
-const FILMS_NUMBER = 12;
+const FILMS_NUMBER = 17;
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
 
@@ -20,6 +20,7 @@ const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
+console.log(filmCards);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
