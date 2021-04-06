@@ -60,4 +60,4 @@ for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
 }
 
 // Render film details popup
-render(siteBodyElement, createFilmDetails(), 'beforeend');
+render(siteBodyElement, createFilmDetails(filmCards[0]), 'beforeend');

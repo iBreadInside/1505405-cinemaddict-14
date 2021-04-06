@@ -39,3 +39,39 @@ export const isWatched = () => {
     return watchedState;
   }
 };
+
+export const filmCardControlsClassName = (controlType) => {
+  if (controlType) {
+    return 'film-card__controls-item--active';
+  } else {
+    return '';
+  }
+};
+
+export const filmDetailControlsChecked = (controlType) => {
+  if (controlType) {
+    return 'checked';
+  } else {
+    return '';
+  }
+};
+
+export const generateCellSpans = (checkedValue, term) => {
+  const spans = [];
+  for (let i = 0; i < checkedValue.length; i++) {
+    spans.push(`<span class="film-details__${term}">${checkedValue[i]}</span>`);
+  }
+  return spans.join('');
+};
+
+export const formatingRuntime = (element) => {
+  if (element.runtime >= 60) {
+    return `${Math.trunc(element.runtime / 60)}h ${element.runtime % 60}m`;
+  } else {
+    return `${element.runtime}m`;
+  }
+};
+
+export const checkPlural = (noun, enumeration) => {
+  return (enumeration.length > 1) ? `${noun}s` : noun;
+};

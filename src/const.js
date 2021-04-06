@@ -1,3 +1,7 @@
+// film-card
+export const CARD_DESCRIPTION_LENGTH = 140;
+
+// film-info
 export const TITLES = [
   'Made For Each Other',
   'Popeye Meets Sinbad',
@@ -47,10 +51,10 @@ export const ACTORS = [
 ];
 
 export const AGE_RATINGS = [
-  0,
-  6,
-  16,
-  18,
+  '0+',
+  '6+',
+  '16+',
+  '18+',
 ];
 
 export const RELEASE_COUNTRIES = [
@@ -61,7 +65,22 @@ export const RELEASE_COUNTRIES = [
   'India',
 ];
 
+export const RUNTIMES = [
+  77,
+  54,
+  60,
+  82,
+];
+
+
 export const DIRECTOR = 'Christofer Nolan';
 export const DATE = '2019-05-11T00:00:00.000Z';
-export const RUNTIME = 77;
 export const ALTERNATIVE_TITLE = 'Laziness Who Sold Themselves';
+
+// comments
+export const EMOTIONS = [
+  'smile',
+  'sleeping',
+  'puke',
+  'angry',
+];

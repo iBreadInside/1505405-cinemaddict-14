@@ -1,17 +1,9 @@
 import dayjs from 'dayjs';
-
-const CARD_DESCRIPTION_LENGTH = 140;
+import { CARD_DESCRIPTION_LENGTH } from '../const';
+import { filmCardControlsClassName, formatingRuntime } from '../utils';
 
 export const createFilmCard = (filmCard) => {
   const {film_info, user_details} = filmCard;
-
-  const filmCardControlsClassName = (controlType) => {
-    if (controlType) {
-      return 'film-card__controls-item--active';
-    } else {
-      return '';
-    }
-  };
 
   const descriptionReduction = () => {
     if (film_info.description.length > CARD_DESCRIPTION_LENGTH) {
@@ -21,20 +13,12 @@ export const createFilmCard = (filmCard) => {
     }
   };
 
-  const formatingRuntime = () => {
-    if (film_info.runtime >= 60) {
-      return `${Math.trunc(film_info.runtime / 60)}h ${film_info.runtime % 60}m`;
-    } else {
-      return `${film_info.runtime}m`;
-    }
-  };
-
   return `<article class="film-card">
     <h3 class="film-card__title">${film_info.title}</h3>
     <p class="film-card__rating">${film_info.total_rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${dayjs(film_info.release.date).year()}</span>
-      <span class="film-card__duration">${formatingRuntime()}</span>
+      <span class="film-card__duration">${formatingRuntime(film_info)}</span>
       <span class="film-card__genre">${film_info.genre[0]}</span>
     </p>
     <img src="${film_info.poster}" alt="${film_info.title} poster" class="film-card__poster">

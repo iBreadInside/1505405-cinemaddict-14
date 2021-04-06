@@ -8,7 +8,7 @@ import {
   GENRES,
   POSTERS,
   RELEASE_COUNTRIES,
-  RUNTIME,
+  RUNTIMES,
   TITLES,
   WRITERS
 } from '../const';
@@ -40,7 +40,7 @@ export const generateFilmCard = () => {
         date: DATE,
         release_country: getRandomFromArray(RELEASE_COUNTRIES),
       },
-      runtime: RUNTIME,
+      runtime: getRandomFromArray(RUNTIMES),
       genre: modificateArray(GENRES),
       description: modificateArray(DESCRIPTION_SENTENCES, 4).join(' '),
     },
