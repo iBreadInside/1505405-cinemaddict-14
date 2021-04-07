@@ -48,14 +48,6 @@ export const editAttribute = (addition, controlType) => {
   }
 };
 
-export const generateCellSpans = (checkedValue, term) => {
-  const spans = [];
-  for (let i = 0; i < checkedValue.length; i++) {
-    spans.push(`<span class="film-details__${term}">${checkedValue[i]}</span>`);
-  }
-  return spans.join('');
-};
-
 export const formatingRuntime = (element) => {
   if (element.runtime >= 60) {
     return `${Math.trunc(element.runtime / 60)}h ${element.runtime % 60}m`;

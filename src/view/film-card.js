@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { CARD_DESCRIPTION_LENGTH } from '../const';
-import { editAttribute, formatingRuntime } from '../utils';
+import { checkPlural, editAttribute, formatingRuntime } from '../utils';
 
 export const createFilmCard = (filmCard) => {
-  const {film_info, user_details} = filmCard;
+  const {comments, film_info, user_details} = filmCard;
 
   const descriptionReduction = () => {
     if (film_info.description.length > CARD_DESCRIPTION_LENGTH) {
@@ -23,7 +23,7 @@ export const createFilmCard = (filmCard) => {
     </p>
     <img src="${film_info.poster}" alt="${film_info.title} poster" class="film-card__poster">
     <p class="film-card__description">${descriptionReduction()}</p>
-    <a class="film-card__comments">5 comments</a>
+    <a class="film-card__comments">${comments.length} ${checkPlural('comment', comments)}</a>
     <div class="film-card__controls">
       <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${editAttribute('film-card__controls-item--active', user_details.watchlist)}" type="button">Add to watchlist</button>
       <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${editAttribute('film-card__controls-item--active', user_details.already_watched)}" type="button">Mark as watched</button>

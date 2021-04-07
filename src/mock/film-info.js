@@ -24,9 +24,9 @@ import {
 export const generateFilmCard = () => {
   return {
     id: 0,
-    // comments: [
-    //   $Comment.id$, $Comment.id$
-    // ],
+    comments: [
+      0,
+    ],
     film_info: {
       title: getRandomFromArray(TITLES),
       alternative_title: ALTERNATIVE_TITLE,

@@ -1,12 +1,12 @@
-import { DATE, EMOTIONS } from '../const';
+import { COMMENT_AUTHORS, COMMENT_TEXTS, DATE, EMOTIONS} from '../const';
 import { getRandomFromArray } from '../utils';
 
 export const generateComments = () => {
   return {
     id: 0,
-    author: 'Ilya O Reilly',
-    comment: 'a film that changed my life, a true masterpiece, post-credit scene was just amazing omg.',
+    author: getRandomFromArray(COMMENT_AUTHORS),
+    comment: getRandomFromArray(COMMENT_TEXTS),
     date: DATE,
-    emotion: getRandomFromArray(EMOTIONS),
+    emotion: `./images/emoji/${getRandomFromArray(EMOTIONS)}.png`,
   };
 };

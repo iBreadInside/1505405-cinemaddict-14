@@ -9,11 +9,13 @@ import { createFilmsSection } from './view/films-section.js';
 import { createShowMoreButton } from './view/show-more-button.js';
 import { createFilmDetails } from './view/film-details.js';
 import { generateFilmCard } from './mock/film-info.js';
+import { generateComments } from './mock/comments.js';
+import { createComments } from './view/comment.js';
 
 const FILMS_NUMBER = 17;
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
-// const COMMENTS_NUMBER = 5;
+const COMMENTS_NUMBER = 5;
 
 const siteBodyElement = document.body;
 const headerElement = document.querySelector('.header__logo');
@@ -21,7 +23,7 @@ const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
-// const comments = new Array(COMMENTS_NUMBER).fill().map();
+const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
@@ -67,6 +69,9 @@ const onFilmCardClick = () => {
 
   const filmDetailsElement = document.querySelector('.film-details');
   const detailsClose = filmDetailsElement.querySelector('.film-details__close-btn');
+  const commentsList = filmDetailsElement.querySelector('.film-details__comments-list');
+
+  render(commentsList, createComments(comments[0]), 'beforeend');
 
   const onCloseBtnClick = () => {
     filmDetailsElement.remove();

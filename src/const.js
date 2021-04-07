@@ -72,7 +72,6 @@ export const RUNTIMES = [
   82,
 ];
 
-
 export const DIRECTOR = 'Christofer Nolan';
 export const DATE = '2019-05-11T00:00:00.000Z';
 export const ALTERNATIVE_TITLE = 'Laziness Who Sold Themselves';
@@ -86,3 +85,17 @@ export const EMOTIONS = [
 ];
 
 export const IDS = [0, 1, 2, 3, 4, 5];
+
+export const COMMENT_AUTHORS = [
+  'Ilya O Reilly',
+  'Grzegorz Brzęczyszczykiewicz',
+  'Bruce Wayne',
+  'July Cesar',
+];
+
+export const COMMENT_TEXTS = [
+  'a film that changed my life, a true masterpiece, post-credit scene was just amazing omg.',
+  'Interesting setting and a good cast',
+  'Booooooooooring',
+  'Very very old. Meh',
+];
