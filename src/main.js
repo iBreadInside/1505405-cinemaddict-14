@@ -13,6 +13,7 @@ import { generateFilmCard } from './mock/film-info.js';
 const FILMS_NUMBER = 17;
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
+// const COMMENTS_NUMBER = 5;
 
 const siteBodyElement = document.body;
 const headerElement = document.querySelector('.header__logo');
@@ -20,6 +21,7 @@ const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
+// const comments = new Array(COMMENTS_NUMBER).fill().map();
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place,template);
@@ -60,4 +62,25 @@ for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
 }
 
 // Render film details popup
-render(siteBodyElement, createFilmDetails(filmCards[0]), 'beforeend');
+const onFilmCardClick = () => {
+  render(siteBodyElement, createFilmDetails(filmCards[0]), 'beforeend');
+
+  const filmDetailsElement = document.querySelector('.film-details');
+  const detailsClose = filmDetailsElement.querySelector('.film-details__close-btn');
+
+  const onCloseBtnClick = () => {
+    filmDetailsElement.remove();
+  };
+
+  detailsClose.addEventListener('click', onCloseBtnClick);
+};
+
+const filmCardElements = document.querySelectorAll('.film-card');
+for (const card of filmCardElements) {
+  const filmCardPoster = card.querySelector('.film-card__poster');
+  const filmCardTitle = card.querySelector('.film-card__title');
+  const filmCardComment = card.querySelector('.film-card__comments');
+  filmCardPoster.addEventListener('click', onFilmCardClick);
+  filmCardTitle.addEventListener('click', onFilmCardClick);
+  filmCardComment.addEventListener('click', onFilmCardClick);
+}

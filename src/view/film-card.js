@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { CARD_DESCRIPTION_LENGTH } from '../const';
-import { filmCardControlsClassName, formatingRuntime } from '../utils';
+import { editAttribute, formatingRuntime } from '../utils';
 
 export const createFilmCard = (filmCard) => {
   const {film_info, user_details} = filmCard;
@@ -25,9 +25,9 @@ export const createFilmCard = (filmCard) => {
     <p class="film-card__description">${descriptionReduction()}</p>
     <a class="film-card__comments">5 comments</a>
     <div class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${filmCardControlsClassName(user_details.watchlist)}" type="button">Add to watchlist</button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${filmCardControlsClassName(user_details.already_watched)}" type="button">Mark as watched</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite ${filmCardControlsClassName(user_details.favorite)}" type="button">Mark as favorite</button>
+      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${editAttribute('film-card__controls-item--active', user_details.watchlist)}" type="button">Add to watchlist</button>
+      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${editAttribute('film-card__controls-item--active', user_details.already_watched)}" type="button">Mark as watched</button>
+      <button class="film-card__controls-item button film-card__controls-item--favorite ${editAttribute('film-card__controls-item--active', user_details.favorite)}" type="button">Mark as favorite</button>
     </div>
   </article>`;
 };

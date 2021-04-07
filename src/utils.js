@@ -40,17 +40,9 @@ export const isWatched = () => {
   }
 };
 
-export const filmCardControlsClassName = (controlType) => {
+export const editAttribute = (addition, controlType) => {
   if (controlType) {
-    return 'film-card__controls-item--active';
-  } else {
-    return '';
-  }
-};
-
-export const filmDetailControlsChecked = (controlType) => {
-  if (controlType) {
-    return 'checked';
+    return addition;
   } else {
     return '';
   }
