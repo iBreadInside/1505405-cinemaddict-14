@@ -57,9 +57,27 @@ for (let i = 0; i < Math.min(FILMS_IN_LINE, filmCards.length); i++) {
   render(filmsListContainer, createFilmCard(filmCards[i]), 'beforeend');
 }
 
+// Extras
+const compareRating = (firstCard, secondCard) => {
+  const firstRating = firstCard.film_info.total_rating;
+  const secondRating = secondCard.film_info.total_rating;
+
+  return secondRating - firstRating;
+};
+
+const compareCommentsNumber = (firstCard, secondCard) => {
+  const firstComments = firstCard.comments;
+  const secondComments = secondCard.comments;
+
+  return secondComments - firstComments;
+};
+
+const topRated = filmCards.slice().sort(compareRating).slice(0, 2);
+const mostCommented = filmCards.slice().sort(compareCommentsNumber).slice(0, 2);
+
 for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
-  render(topRatedFilmsContainer, createFilmCard(filmCards[i]), 'beforeend');
-  render(mostCommentedFilmsContainer, createFilmCard(filmCards[i]), 'beforeend');
+  render(topRatedFilmsContainer, createFilmCard(topRated[i]), 'beforeend');
+  render(mostCommentedFilmsContainer, createFilmCard(mostCommented[i]), 'beforeend');
 }
 
 // Render film details popup
