@@ -73,7 +73,7 @@ export const RUNTIMES = [
 ];
 
 export const DIRECTOR = 'Christofer Nolan';
-export const DATE = '2019-05-11T00:00:00.000Z';
+export const DATE = '2021-04-08T19:58:00.000';
 export const ALTERNATIVE_TITLE = 'Laziness Who Sold Themselves';
 
 // comments
