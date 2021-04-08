@@ -84,7 +84,7 @@ export const EMOTIONS = [
   'angry',
 ];
 
-export const IDS = [0, 1, 2, 3, 4, 5];
+export const ID_COMMENTS = [0, 1, 2, 3, 4, 5];
 
 export const COMMENT_AUTHORS = [
   'Ilya O Reilly',

@@ -6,6 +6,7 @@ import {
   DESCRIPTION_SENTENCES,
   DIRECTOR,
   GENRES,
+  ID_COMMENTS,
   POSTERS,
   RELEASE_COUNTRIES,
   RUNTIMES,
@@ -24,9 +25,7 @@ import {
 export const generateFilmCard = () => {
   return {
     id: 0,
-    comments: [
-      0,
-    ],
+    comments: modificateArray(ID_COMMENTS),
     film_info: {
       title: getRandomFromArray(TITLES),
       alternative_title: ALTERNATIVE_TITLE,

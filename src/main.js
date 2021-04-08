@@ -33,7 +33,21 @@ const render = (container, template, place) => {
 render(headerElement, createProfileInfo(), 'beforeend');
 
 // Render main navigation
-render(mainElement, createMainNavigation(), 'beforeend');
+const countFilters = () => {
+  const counter = {
+    watchlist: 0,
+    history: 0,
+    favorites: 0,
+  };
+  for (const card of filmCards) {
+    if (card.user_details.watchlist) counter.watchlist++;
+    if (card.user_details.already_watched) counter.history++;
+    if (card.user_details.favorite) counter.favorites++;
+  }
+  return counter;
+};
+
+render(mainElement, createMainNavigation(countFilters()), 'beforeend');
 
 // Render statistic
 render(mainElement, createStatisticRank(), 'beforeend');
@@ -42,7 +56,7 @@ const statisticSection = mainElement.querySelector('.statistic');
 
 render(statisticSection, createStatisticFilter(), 'beforeend');
 render(statisticSection, createStatisticText(), 'beforeend');
-render(footerStatisticsElement, createFooterStats(), 'beforeend');
+render(footerStatisticsElement, createFooterStats(FILMS_NUMBER), 'beforeend');
 
 // Render films section
 render(mainElement, createFilmsSection(), 'beforeend');
@@ -66,14 +80,14 @@ const compareRating = (firstCard, secondCard) => {
 };
 
 const compareCommentsNumber = (firstCard, secondCard) => {
-  const firstComments = firstCard.comments;
-  const secondComments = secondCard.comments;
+  const firstComments = firstCard.comments.length;
+  const secondComments = secondCard.comments.length;
 
   return secondComments - firstComments;
 };
 
-const topRated = filmCards.slice().sort(compareRating).slice(0, 2);
-const mostCommented = filmCards.slice().sort(compareCommentsNumber).slice(0, 2);
+const topRated = filmCards.slice().sort(compareRating).slice(0, FILMS_IN_EXTRAS);
+const mostCommented = filmCards.slice().sort(compareCommentsNumber).slice(0, FILMS_IN_EXTRAS);
 
 for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
   render(topRatedFilmsContainer, createFilmCard(topRated[i]), 'beforeend');
