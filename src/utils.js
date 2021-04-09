@@ -48,12 +48,19 @@ export const editAttribute = (addition, controlType) => {
   }
 };
 
-export const formatingRuntime = (element) => {
-  if (element.runtime >= 60) {
-    return `${Math.trunc(element.runtime / 60)}h ${element.runtime % 60}m`;
+export const formatingRuntime = (element, unitOne, unitTwo) => {
+  const runtime = {
+    hours: '',
+    minutes: '',
+  };
+
+  if (element >= 60) {
+    runtime.hours = `${Math.trunc(element / 60)}${unitOne} `;
+    runtime.minutes = `${element % 60}${unitTwo}`;
   } else {
-    return `${element.runtime}m`;
+    runtime.minutes = `${element}${unitTwo}`;
   }
+  return runtime;
 };
 
 export const checkPlural = (noun, enumeration) => {

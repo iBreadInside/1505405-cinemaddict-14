@@ -6,7 +6,7 @@ export const generateComments = () => {
     id: 0,
     author: getRandomFromArray(COMMENT_AUTHORS),
     comment: getRandomFromArray(COMMENT_TEXTS),
-    date: DATE,
+    date: getRandomFromArray(DATE),
     emotion: `./images/emoji/${getRandomFromArray(EMOTIONS)}.png`,
   };
 };

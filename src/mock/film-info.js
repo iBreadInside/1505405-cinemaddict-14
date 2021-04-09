@@ -36,7 +36,7 @@ export const generateFilmCard = () => {
       writers: modificateArray(WRITERS),
       actors: modificateArray(ACTORS),
       release: {
-        date: DATE,
+        date: getRandomFromArray(DATE),
         release_country: getRandomFromArray(RELEASE_COUNTRIES),
       },
       runtime: getRandomFromArray(RUNTIMES),
@@ -46,7 +46,7 @@ export const generateFilmCard = () => {
     user_details: {
       watchlist: generateRandomBoolean(),
       already_watched: isWatched(),
-      watching_date: DATE,
+      watching_date: getRandomFromArray(DATE),
       favorite: generateRandomBoolean(),
     },
   };

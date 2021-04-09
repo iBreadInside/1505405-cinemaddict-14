@@ -18,7 +18,7 @@ export const createFilmCard = (filmCard) => {
     <p class="film-card__rating">${film_info.total_rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${dayjs(film_info.release.date).year()}</span>
-      <span class="film-card__duration">${formatingRuntime(film_info)}</span>
+      <span class="film-card__duration">${formatingRuntime(film_info.runtime,'h','m').hours}${formatingRuntime(film_info.runtime,'h','m').minutes}</span>
       <span class="film-card__genre">${film_info.genre[0]}</span>
     </p>
     <img src="${film_info.poster}" alt="${film_info.title} poster" class="film-card__poster">

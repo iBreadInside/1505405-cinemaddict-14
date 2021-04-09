@@ -66,6 +66,8 @@ export const RELEASE_COUNTRIES = [
 ];
 
 export const RUNTIMES = [
+  36,
+  22,
   77,
   54,
   60,
@@ -73,7 +75,14 @@ export const RUNTIMES = [
 ];
 
 export const DIRECTOR = 'Christofer Nolan';
-export const DATE = '2021-04-08T19:58:00.000';
+export const DATE = [
+  '2021-04-08T19:58:00.000',
+  '2021-03-30T19:58:00.000',
+  '2021-04-06T19:58:00.000',
+  '2020-12-22T19:58:00.000',
+  '2019-04-08T19:58:00.000',
+  '2021-04-09T19:58:00.000',
+];
 export const ALTERNATIVE_TITLE = 'Laziness Who Sold Themselves';
 
 // comments

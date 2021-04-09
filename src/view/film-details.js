@@ -60,7 +60,7 @@ export const createFilmDetails = (filmCard) => {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${formatingRuntime(film_info)}</td>
+                <td class="film-details__cell">${formatingRuntime(film_info.runtime,'h','m').hours}${formatingRuntime(film_info.runtime,'h','m').minutes}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>

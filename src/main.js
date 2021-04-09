@@ -55,7 +55,38 @@ render(mainElement, createStatisticRank(), 'beforeend');
 const statisticSection = mainElement.querySelector('.statistic');
 
 render(statisticSection, createStatisticFilter(), 'beforeend');
-render(statisticSection, createStatisticText(), 'beforeend');
+
+// statistic counter
+const countStatistic = () => {
+  const counter = {
+    watched: 0,
+    total_runtime: 0,
+    genre: {},
+    top_genre: '',
+  };
+  for (const card of filmCards) {
+    if (card.user_details.already_watched) {
+      counter.watched++;
+      counter.total_runtime += card.film_info.runtime;
+      for (const genreName of card.film_info.genre) {
+        if (Object.keys(counter.genre).includes(genreName)) {
+          counter.genre[genreName]++;
+        } else {
+          Object.assign(counter.genre, counter.genre[genreName] = 1);
+        }
+      }
+    }
+  }
+  // Find top genre
+  const maxValue = Math.max.apply(null, Object.values(counter.genre));
+  const isMostWatchedGenre = (genreName) => {
+    if (counter.genre[genreName] === maxValue) return genreName;
+  };
+  counter.top_genre = Object.keys(counter.genre).find(isMostWatchedGenre);
+  return counter;
+};
+
+render(statisticSection, createStatisticText(countStatistic()), 'beforeend');
 render(footerStatisticsElement, createFooterStats(FILMS_NUMBER), 'beforeend');
 
 // Render films section
