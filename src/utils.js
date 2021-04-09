@@ -30,16 +30,6 @@ export const generateRandomBoolean = () => {
   return Boolean(getRandomNumber(0, 1));
 };
 
-export const isWatched = () => {
-  const watchedState = generateRandomBoolean();
-  if (watchedState) {
-    // watching_date function
-    return watchedState;
-  } else {
-    return watchedState;
-  }
-};
-
 export const editAttribute = (addition, controlType) => {
   if (controlType) {
     return addition;

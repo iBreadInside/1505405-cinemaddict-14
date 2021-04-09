@@ -2,7 +2,7 @@ import {
   ACTORS,
   AGE_RATINGS,
   ALTERNATIVE_TITLE,
-  DATE,
+  DATES,
   DESCRIPTION_SENTENCES,
   DIRECTOR,
   GENRES,
@@ -18,7 +18,6 @@ import {
   generateRandomBoolean,
   getRandomFromArray,
   getRandomNumber,
-  isWatched,
   modificateArray
 } from '../utils';
 
@@ -36,7 +35,7 @@ export const generateFilmCard = () => {
       writers: modificateArray(WRITERS),
       actors: modificateArray(ACTORS),
       release: {
-        date: getRandomFromArray(DATE),
+        date: getRandomFromArray(DATES),
         release_country: getRandomFromArray(RELEASE_COUNTRIES),
       },
       runtime: getRandomFromArray(RUNTIMES),
@@ -45,8 +44,8 @@ export const generateFilmCard = () => {
     },
     user_details: {
       watchlist: generateRandomBoolean(),
-      already_watched: isWatched(),
-      watching_date: getRandomFromArray(DATE),
+      already_watched: generateRandomBoolean(),
+      watching_date: getRandomFromArray(DATES),
       favorite: generateRandomBoolean(),
     },
   };

@@ -54,9 +54,10 @@ render(mainElement, createStatisticRank(), 'beforeend');
 
 const statisticSection = mainElement.querySelector('.statistic');
 
+// Statistic filter
 render(statisticSection, createStatisticFilter(), 'beforeend');
 
-// statistic counter
+// Statistic counter
 const countStatistic = () => {
   const counter = {
     watched: 0,

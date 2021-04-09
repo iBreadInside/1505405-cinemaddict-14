@@ -75,7 +75,7 @@ export const RUNTIMES = [
 ];
 
 export const DIRECTOR = 'Christofer Nolan';
-export const DATE = [
+export const DATES = [
   '2021-04-08T19:58:00.000',
   '2021-03-30T19:58:00.000',
   '2021-04-06T19:58:00.000',
