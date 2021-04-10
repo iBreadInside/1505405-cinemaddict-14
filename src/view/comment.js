@@ -11,8 +11,7 @@ export const createComments = (filmComment) => {
   const commentDate = dayjs(date);
   const difference = dayjs.duration(today.diff(commentDate));
 
-  // const biggestUnit = [];
-  const getBiggestUnits = (obj) => {
+  const getBiggestUnit = (obj) => {
     for (const key in obj) {
       if (obj[key] !== 0) {
         return {
@@ -21,6 +20,11 @@ export const createComments = (filmComment) => {
         };
       }
     }
+  };
+  const unitvalue = getBiggestUnit(difference.$d).value;
+  const biggestUnit = getBiggestUnit(difference.$d).unit;
+  const humanizeTime = (value, unit) => {
+    return dayjs.duration(value, `${unit}`).humanize(true);
   };
 
   return `<li class="film-details__comment">
@@ -31,7 +35,7 @@ export const createComments = (filmComment) => {
       <p class="film-details__comment-text">${comment}</p>
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${author}</span>
-        <span class="film-details__comment-day">${dayjs.duration(getBiggestUnits(difference.$d).value, `${getBiggestUnits(difference.$d).unit}`).humanize(true)}</span>
+        <span class="film-details__comment-day">${humanizeTime(unitvalue, biggestUnit)}</span>
         <button class="film-details__comment-delete">Delete</button>
       </p>
     </div>
