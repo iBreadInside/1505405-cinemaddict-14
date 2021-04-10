@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
-import { CARD_DESCRIPTION_LENGTH } from '../const';
-import { checkPlural, editAttribute, formatingRuntime } from '../utils';
+import { checkPlural, formatingRuntime } from '../utils';
+
+const CARD_DESCRIPTION_LENGTH = 140;
 
 export const createFilmCard = (filmCard) => {
   const {comments, film_info, user_details} = filmCard;
@@ -25,9 +26,9 @@ export const createFilmCard = (filmCard) => {
     <p class="film-card__description">${descriptionReduction()}</p>
     <a class="film-card__comments">${comments.length} ${checkPlural('comment', comments)}</a>
     <div class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${editAttribute('film-card__controls-item--active', user_details.watchlist)}" type="button">Add to watchlist</button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${editAttribute('film-card__controls-item--active', user_details.already_watched)}" type="button">Mark as watched</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite ${editAttribute('film-card__controls-item--active', user_details.favorite)}" type="button">Mark as favorite</button>
+      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${user_details.watchlist ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>
+      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${user_details.already_watched ? 'film-card__controls-item--active' : ''}" type="button">Mark as watched</button>
+      <button class="film-card__controls-item button film-card__controls-item--favorite ${user_details.favorite ? 'film-card__controls-item--active' : ''}" type="button">Mark as favorite</button>
     </div>
   </article>`;
 };

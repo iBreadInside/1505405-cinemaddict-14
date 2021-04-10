@@ -1,9 +1,5 @@
 import dayjs from 'dayjs';
-import { GENRES } from '../const';
-import { checkPlural,
-  editAttribute,
-  formatingRuntime
-} from '../utils';
+import { checkPlural, formatingRuntime } from '../utils';
 
 const createCellSpans = (checkedValue, term) => {
   const spans = [];
@@ -67,7 +63,7 @@ export const createFilmDetails = (filmCard) => {
                 <td class="film-details__cell">${film_info.release.release_country}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term film-details__term--genres">${checkPlural('Genre', GENRES)}</td>
+                <td class="film-details__term film-details__term--genres">${checkPlural('Genre', film_info.genre)}</td>
                 <td class="film-details__cell">${createCellSpans(film_info.genre, 'genre')}</td>
               </tr>
             </table>
@@ -79,13 +75,13 @@ export const createFilmDetails = (filmCard) => {
         </div>
 
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${editAttribute('checked', user_details.watchlist)}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${user_details.watchlist ? 'checked' : ''}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${editAttribute('checked', user_details.already_watched)}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${user_details.already_watched ? 'checked' : ''}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${editAttribute('checked', user_details.favorite)}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${user_details.favorite ? 'checked' : ''}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>

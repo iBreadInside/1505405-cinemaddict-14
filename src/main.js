@@ -70,20 +70,24 @@ const countStatistic = () => {
       counter.watched++;
       counter.total_runtime += card.film_info.runtime;
       for (const genreName of card.film_info.genre) {
-        if (Object.keys(counter.genre).includes(genreName)) {
+        if (genreName in counter.genre) {
           counter.genre[genreName]++;
         } else {
-          Object.assign(counter.genre, counter.genre[genreName] = 1);
+          counter.genre[genreName] = 1;
         }
       }
     }
   }
   // Find top genre
-  const maxValue = Math.max.apply(null, Object.values(counter.genre));
-  const isMostWatchedGenre = (genreName) => {
-    if (counter.genre[genreName] === maxValue) return genreName;
-  };
-  counter.top_genre = Object.keys(counter.genre).find(isMostWatchedGenre);
+  let greatestValue = Object.values(counter.genre)[0];
+  let mostOftenGenre = Object.keys(counter.genre)[0];
+  for (const [key, value] of Object.entries(counter.genre)) {
+    if (value > greatestValue) {
+      greatestValue = value;
+      mostOftenGenre = key;
+    }
+    counter.top_genre = mostOftenGenre;
+  }
   return counter;
 };
 

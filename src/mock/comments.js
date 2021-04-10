@@ -1,5 +1,26 @@
-import { COMMENT_AUTHORS, COMMENT_TEXTS, DATES, EMOTIONS} from '../const';
+import { DATES} from '../const';
 import { getRandomFromArray } from '../utils';
+
+const EMOTIONS = [
+  'smile',
+  'sleeping',
+  'puke',
+  'angry',
+];
+
+const COMMENT_AUTHORS = [
+  'Ilya O Reilly',
+  'Grzegorz Brzęczyszczykiewicz',
+  'Bruce Wayne',
+  'July Cesar',
+];
+
+const COMMENT_TEXTS = [
+  'a film that changed my life, a true masterpiece, post-credit scene was just amazing omg.',
+  'Interesting setting and a good cast',
+  'Booooooooooring',
+  'Very very old. Meh',
+];
 
 export const generateComments = () => {
   return {

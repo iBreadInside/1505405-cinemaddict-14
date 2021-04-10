@@ -1,4 +1,3 @@
-// import dayjs from 'dayjs';
 import { formatingRuntime } from '../utils';
 
 export const createStatisticText = (counter) => {
