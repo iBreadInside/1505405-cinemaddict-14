@@ -78,15 +78,14 @@ const countStatistic = () => {
       }
     }
   }
-  // Find top genre
-  let greatestValue = Object.values(counter.genre)[0];
-  let mostOftenGenre = Object.keys(counter.genre)[0];
-  for (const [key, value] of Object.entries(counter.genre)) {
-    if (value > greatestValue) {
-      greatestValue = value;
-      mostOftenGenre = key;
+  let maxValue = 0;
+  let maxKey = 0;
+  for (const genreName of Object.keys(counter.genre)) {
+    if (counter.genre[genreName] > maxValue) {
+      maxValue = counter.genre[genreName];
+      maxKey = genreName;
     }
-    counter.top_genre = mostOftenGenre;
+    counter.top_genre = maxKey;
   }
   return counter;
 };
