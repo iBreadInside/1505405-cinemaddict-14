@@ -34,17 +34,17 @@ render(headerElement, new ProfileInfo().getElement(), RenderPosition.BEFOREEND);
 
 // Render main navigation
 const countFilters = () => {
-  const counter = {
+  const Сounter = {
     watchlist: 0,
     history: 0,
     favorites: 0,
   };
   for (const card of filmCards) {
-    if (card.user_details.watchlist) counter.watchlist++;
-    if (card.user_details.already_watched) counter.history++;
-    if (card.user_details.favorite) counter.favorites++;
+    if (card.user_details.watchlist) Сounter.watchlist++;
+    if (card.user_details.already_watched) Сounter.history++;
+    if (card.user_details.favorite) Сounter.favorites++;
   }
-  return counter;
+  return Сounter;
 };
 
 render(mainElement, new MainNavigation(countFilters()).getElement(), RenderPosition.BEFOREEND);
@@ -135,7 +135,7 @@ render(statisticSection.getElement(), new StatisticFilter().getElement(), Render
 
 // Statistic counter
 const countStatistic = () => {
-  const counter = {
+  const Сounter = {
     watched: 0,
     total_runtime: 0,
     genre: {},
@@ -143,27 +143,27 @@ const countStatistic = () => {
   };
   for (const card of filmCards) {
     if (card.user_details.already_watched) {
-      counter.watched++;
-      counter.total_runtime += card.film_info.runtime;
+      Сounter.watched++;
+      Сounter.total_runtime += card.film_info.runtime;
       for (const genreName of card.film_info.genre) {
-        if (genreName in counter.genre) {
-          counter.genre[genreName]++;
+        if (genreName in Сounter.genre) {
+          Сounter.genre[genreName]++;
         } else {
-          counter.genre[genreName] = 1;
+          Сounter.genre[genreName] = 1;
         }
       }
     }
   }
   let maxValue = 0;
   let maxKey = 0;
-  for (const genreName of Object.keys(counter.genre)) {
-    if (counter.genre[genreName] > maxValue) {
-      maxValue = counter.genre[genreName];
+  for (const genreName of Object.keys(Сounter.genre)) {
+    if (Сounter.genre[genreName] > maxValue) {
+      maxValue = Сounter.genre[genreName];
       maxKey = genreName;
     }
-    counter.top_genre = maxKey;
+    Сounter.top_genre = maxKey;
   }
-  return counter;
+  return Сounter;
 };
 
 render(statisticSection.getElement(), new StatisticText(countStatistic()).getElement(), RenderPosition.BEFOREEND);
