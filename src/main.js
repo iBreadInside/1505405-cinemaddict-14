@@ -1,22 +1,23 @@
 import ProfileInfo from './view/profile.js';
 import MainNavigation from './view/main-navigation.js';
-import { createStatisticRank } from './view/statistic-rank.js';
-import { createStatisticFilter } from './view/statistic-filter.js';
-import { createStatisticText } from './view/statistic-text.js';
-import { createFooterStats } from './view/footer-stats.js';
+import StatisticRank from './view/statistic-rank.js';
+import StatisticFilter from './view/statistic-filter.js';
+import StatisticText from './view/statistic-text.js';
+import FooterStats from './view/footer-stats.js';
 import FilmsSection from './view/films-section';
 import FilmCard from './view/film-card.js';
-// import { createShowMoreButton } from './view/show-more-button.js';
+import ShowMoreButton from './view/show-more-button.js';
 import FilmDetails from './view/film-details.js';
 import { generateFilmCard } from './mock/film-info.js';
-// import { generateComments } from './mock/comments.js';
-// import { createComments } from './view/comment.js';
+import { generateComments } from './mock/comments.js';
+import Comments from './view/comment.js';
 import { renderElement, RenderPosition, renderTemplate } from './utils.js';
+import StatisticSection from './view/statistic-section.js';
 
 const FILMS_NUMBER = 17;
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
-// const COMMENTS_NUMBER = 5;
+const COMMENTS_NUMBER = 5;
 
 const siteBodyElement = document.body;
 const headerElement = document.querySelector('.header__logo');
@@ -24,10 +25,12 @@ const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
-// const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
+const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
+
+const filmsSectionComponent = new FilmsSection();
 
 // Render profile info
-renderElement(headerElement, new ProfileInfo().getElement(), 'beforeend');
+renderElement(headerElement, new ProfileInfo().getElement(), RenderPosition.BEFOREEND);
 
 // Render main navigation
 const countFilters = () => {
@@ -47,12 +50,10 @@ const countFilters = () => {
 renderElement(mainElement, new MainNavigation(countFilters()).getElement(), RenderPosition.BEFOREEND);
 
 // Render statistic
-renderTemplate(mainElement, createStatisticRank(), 'beforeend');
-
-const statisticSection = mainElement.querySelector('.statistic');
-
-// Statistic filter
-renderTemplate(statisticSection, createStatisticFilter(), 'beforeend');
+const statisticSection = new StatisticSection();
+renderElement(mainElement, statisticSection.getElement(), RenderPosition.BEFOREEND);
+renderElement(statisticSection.getElement(), new StatisticRank().getElement(), RenderPosition.BEFOREEND);
+renderElement(statisticSection.getElement(), new StatisticFilter().getElement(), RenderPosition.BEFOREEND);
 
 // Statistic counter
 const countStatistic = () => {
@@ -87,21 +88,15 @@ const countStatistic = () => {
   return counter;
 };
 
-renderTemplate(statisticSection, createStatisticText(countStatistic()), 'beforeend');
-renderTemplate(footerStatisticsElement, createFooterStats(FILMS_NUMBER), 'beforeend');
+renderElement(statisticSection.getElement(), new StatisticText(countStatistic()).getElement(), RenderPosition.BEFOREEND);
+renderElement(footerStatisticsElement, new FooterStats(FILMS_NUMBER).getElement(), RenderPosition.BEFOREEND);
 
 // Render films section
-const filmsSectionComponent = new FilmsSection();
 renderElement(mainElement, filmsSectionComponent.getElement(), RenderPosition.BEFOREEND);
-
-// const filmsSection = mainElement.querySelector('.films');
-// const filmsListSection = filmsSection.querySelector('.films-list');
-// const filmsListContainer = filmsSection.querySelector('.films-list__container');
-// const topRatedFilmsContainer = filmsSection.querySelector('.films-list__container--top-rated');
-// const mostCommentedFilmsContainer = filmsSection.querySelector('.films-list__container--most-commented');
+const filmsListContainer = filmsSectionComponent.getElement().querySelector('.films-list__container');
 
 for (let i = 0; i < Math.min(FILMS_IN_LINE, filmCards.length); i++) {
-  renderElement(filmsSectionComponent.getElement().querySelector('.films-list__container'), new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
+  renderElement(filmsListContainer, new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
 }
 
 // Extras
@@ -158,26 +153,27 @@ for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
 // };
 
 // Show more
-// if (filmCards.length > FILMS_IN_LINE) {
-//   let renderedCardCount = FILMS_IN_LINE;
+if (filmCards.length > FILMS_IN_LINE) {
+  const filmsList = filmsSectionComponent.getElement().querySelector('.films-list');
+  let renderedCardCount = FILMS_IN_LINE;
 
-//   renderTemplate(filmsListSection, createShowMoreButton(), 'beforeend');
-//   addCardsListeners();
+  renderElement(filmsList, new ShowMoreButton().getElement(), RenderPosition.BEFOREEND);
+  // addCardsListeners();
 
-//   const showMoreBtn = filmsSection.querySelector('.films-list__show-more');
+  const showMoreBtn = filmsSectionComponent.getElement().querySelector('.films-list__show-more');
 
-//   showMoreBtn.addEventListener('click', () => {
-//     filmCards
-//       .slice(renderedCardCount, renderedCardCount + FILMS_IN_LINE)
-//       .forEach((filmCard) => renderTemplate(filmsListContainer, createFilmCard(filmCard), 'beforeend'));
+  showMoreBtn.addEventListener('click', () => {
+    filmCards
+      .slice(renderedCardCount, renderedCardCount + FILMS_IN_LINE)
+      .forEach((filmCard) => renderElement(filmsListContainer, new FilmCard(filmCard).getElement(), RenderPosition.BEFOREEND));
 
-//     addCardsListeners();
+    // addCardsListeners();
 
-//     renderedCardCount += FILMS_IN_LINE;
+    renderedCardCount += FILMS_IN_LINE;
 
-//     if (renderedCardCount >= filmCards.length) {
-//       showMoreBtn.remove();
-//     }
-//   });
-// }
+    if (renderedCardCount >= filmCards.length) {
+      showMoreBtn.remove();
+    }
+  });
+}
 

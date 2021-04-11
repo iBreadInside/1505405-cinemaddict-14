@@ -1,4 +1,6 @@
-export const createStatisticFilter = () => {
+import { createElement } from '../utils';
+
+const createStatisticFilter = () => {
   return `<form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
     <p class="statistic__filters-description">Show stats:</p>
 
@@ -18,3 +20,25 @@ export const createStatisticFilter = () => {
     <label for="statistic-year" class="statistic__filters-label">Year</label>
   </form>`;
 };
+
+export default class StatisticFilter {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createStatisticFilter();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
