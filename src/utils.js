@@ -79,3 +79,11 @@ export const formatingRuntime = (element, unitOne, unitTwo) => {
 export const checkPlural = (noun, enumeration) => {
   return (enumeration.length > 1) ? `${noun}s` : noun;
 };
+
+export const toggleClass = (element, className) => {
+  if (element.classList.contains(className)) {
+    element.classList.remove(className);
+  } else {
+    element.classList.add(className);
+  }
+};

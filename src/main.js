@@ -11,7 +11,7 @@ import FilmDetails from './view/film-details.js';
 import { generateFilmCard } from './mock/film-info.js';
 import { generateComments } from './mock/comments.js';
 import Comments from './view/comment.js';
-import { render, RenderPosition } from './utils.js';
+import { render, RenderPosition, toggleClass } from './utils.js';
 import StatisticSection from './view/statistic-section.js';
 
 const FILMS_NUMBER = 17;
@@ -60,16 +60,19 @@ const renderFilmCard = (filmList, card) => {
   // Render film details popup
   const onFilmCardClick = () => {
     siteBodyElement.appendChild(filmPopup.getElement());
+    toggleClass(siteBodyElement, 'hide-overflow');
 
     render(filmPopup.getElement().querySelector('.film-details__comments-list'), new Comments(comments[0]).getElement(), RenderPosition.BEFOREEND);
 
     const onCloseBtnClick = () => {
       siteBodyElement.removeChild(filmPopup.getElement());
+      toggleClass(siteBodyElement, 'hide-overflow');
     };
 
     filmPopup.getElement().querySelector('.film-details__close-btn').addEventListener('click', onCloseBtnClick);
   };
 
+  // Render filmcard with listeners
   render(filmList, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
   filmCardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', onFilmCardClick);
   filmCardComponent.getElement().querySelector('.film-card__title').addEventListener('click', onFilmCardClick);
