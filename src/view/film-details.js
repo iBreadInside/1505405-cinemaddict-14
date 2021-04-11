@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { checkPlural, formatingRuntime } from '../utils';
+import { checkPlural, createElement, formatingRuntime } from '../utils';
 
 const createCellSpans = (checkedValue, term) => {
   const spans = [];
@@ -9,7 +9,7 @@ const createCellSpans = (checkedValue, term) => {
   return spans.join('');
 };
 
-export const createFilmDetails = (filmCard) => {
+const createFilmDetails = (filmCard) => {
   const {comments, film_info, user_details} = filmCard;
 
   return `<section class="film-details">
@@ -126,3 +126,26 @@ export const createFilmDetails = (filmCard) => {
     </form>
   </section>`;
 };
+
+export default class FilmDetais {
+  constructor(filmCard) {
+    this._filmCard = filmCard;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetails(this._filmCard);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

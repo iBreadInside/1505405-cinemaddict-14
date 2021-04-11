@@ -1,5 +1,5 @@
-import { createProfileInfo } from './view/profile.js';
-import { createMainNavigation } from './view/main-navigation.js';
+import ProfileInfo from './view/profile.js';
+import MainNavigation from './view/main-navigation.js';
 import { createStatisticRank } from './view/statistic-rank.js';
 import { createStatisticFilter } from './view/statistic-filter.js';
 import { createStatisticText } from './view/statistic-text.js';
@@ -7,7 +7,7 @@ import { createFooterStats } from './view/footer-stats.js';
 import FilmsSection from './view/films-section';
 import FilmCard from './view/film-card.js';
 // import { createShowMoreButton } from './view/show-more-button.js';
-// import { createFilmDetails } from './view/film-details.js';
+import FilmDetails from './view/film-details.js';
 import { generateFilmCard } from './mock/film-info.js';
 // import { generateComments } from './mock/comments.js';
 // import { createComments } from './view/comment.js';
@@ -18,7 +18,7 @@ const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
 // const COMMENTS_NUMBER = 5;
 
-// const siteBodyElement = document.body;
+const siteBodyElement = document.body;
 const headerElement = document.querySelector('.header__logo');
 const mainElement = document.querySelector('.main');
 const footerStatisticsElement = document.querySelector('.footer__statistics');
@@ -27,7 +27,7 @@ const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
 // const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
 
 // Render profile info
-renderTemplate(headerElement, createProfileInfo(), 'beforeend');
+renderElement(headerElement, new ProfileInfo().getElement(), 'beforeend');
 
 // Render main navigation
 const countFilters = () => {
@@ -44,7 +44,7 @@ const countFilters = () => {
   return counter;
 };
 
-renderTemplate(mainElement, createMainNavigation(countFilters()), 'beforeend');
+renderElement(mainElement, new MainNavigation(countFilters()).getElement(), RenderPosition.BEFOREEND);
 
 // Render statistic
 renderTemplate(mainElement, createStatisticRank(), 'beforeend');
@@ -129,7 +129,8 @@ for (let i = 0; i < FILMS_IN_EXTRAS; i++) {
 
 // Render film details popup
 // const onFilmCardClick = () => {
-//   renderTemplate(siteBodyElement, createFilmDetails(filmCards[0]), 'beforeend');
+//   const filmPopup = new FilmDetails(filmCards[0]);
+//   renderElement(siteBodyElement, filmPopup.getElement(), RenderPosition.BEFOREEND);
 
 //   const filmDetailsElement = document.querySelector('.film-details');
 //   const detailsClose = filmDetailsElement.querySelector('.film-details__close-btn');
