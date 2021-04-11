@@ -1,8 +1,8 @@
 import { createProfileInfo } from './view/profile.js';
 import { createMainNavigation } from './view/main-navigation.js';
-import { createStatisticRank } from './view/statistic-rank.js';
-import { createStatisticFilter } from './view/statistic-filter.js';
-import { createStatisticText } from './view/statistic-text.js';
+// import { createStatisticRank } from './view/statistic-rank.js';
+// import { createStatisticFilter } from './view/statistic-filter.js';
+// import { createStatisticText } from './view/statistic-text.js';
 import { createFooterStats } from './view/footer-stats.js';
 import { createFilmCard } from './view/film-card.js';
 import { createFilmsSection } from './view/films-section.js';
@@ -50,47 +50,47 @@ const countFilters = () => {
 render(mainElement, createMainNavigation(countFilters()), 'beforeend');
 
 // Render statistic
-render(mainElement, createStatisticRank(), 'beforeend');
+// render(mainElement, createStatisticRank(), 'beforeend');
 
-const statisticSection = mainElement.querySelector('.statistic');
+// const statisticSection = mainElement.querySelector('.statistic');
 
-// Statistic filter
-render(statisticSection, createStatisticFilter(), 'beforeend');
+// // Statistic filter
+// render(statisticSection, createStatisticFilter(), 'beforeend');
 
-// Statistic counter
-const countStatistic = () => {
-  const counter = {
-    watched: 0,
-    total_runtime: 0,
-    genre: {},
-    top_genre: '',
-  };
-  for (const card of filmCards) {
-    if (card.user_details.already_watched) {
-      counter.watched++;
-      counter.total_runtime += card.film_info.runtime;
-      for (const genreName of card.film_info.genre) {
-        if (genreName in counter.genre) {
-          counter.genre[genreName]++;
-        } else {
-          counter.genre[genreName] = 1;
-        }
-      }
-    }
-  }
-  let maxValue = 0;
-  let maxKey = 0;
-  for (const genreName of Object.keys(counter.genre)) {
-    if (counter.genre[genreName] > maxValue) {
-      maxValue = counter.genre[genreName];
-      maxKey = genreName;
-    }
-    counter.top_genre = maxKey;
-  }
-  return counter;
-};
+// // Statistic counter
+// const countStatistic = () => {
+//   const counter = {
+//     watched: 0,
+//     total_runtime: 0,
+//     genre: {},
+//     top_genre: '',
+//   };
+//   for (const card of filmCards) {
+//     if (card.user_details.already_watched) {
+//       counter.watched++;
+//       counter.total_runtime += card.film_info.runtime;
+//       for (const genreName of card.film_info.genre) {
+//         if (genreName in counter.genre) {
+//           counter.genre[genreName]++;
+//         } else {
+//           counter.genre[genreName] = 1;
+//         }
+//       }
+//     }
+//   }
+//   let maxValue = 0;
+//   let maxKey = 0;
+//   for (const genreName of Object.keys(counter.genre)) {
+//     if (counter.genre[genreName] > maxValue) {
+//       maxValue = counter.genre[genreName];
+//       maxKey = genreName;
+//     }
+//     counter.top_genre = maxKey;
+//   }
+//   return counter;
+// };
 
-render(statisticSection, createStatisticText(countStatistic()), 'beforeend');
+// render(statisticSection, createStatisticText(countStatistic()), 'beforeend');
 render(footerStatisticsElement, createFooterStats(FILMS_NUMBER), 'beforeend');
 
 // Render films section
