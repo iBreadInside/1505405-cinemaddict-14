@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
-import { checkPlural, formatingRuntime } from '../utils';
+import { checkPlural, createElement, formatingRuntime } from '../utils';
 
 const CARD_DESCRIPTION_LENGTH = 140;
 
-export const createFilmCard = (filmCard) => {
+const createFilmCard = (filmCard) => {
   const {comments, film_info, user_details} = filmCard;
 
   const descriptionReduction = () => {
     if (film_info.description.length > CARD_DESCRIPTION_LENGTH) {
-      return `${film_info.description.slice(0, CARD_DESCRIPTION_LENGTH)}...`;
+      return `${film_info.description.slice(0, CARD_DESCRIPTION_LENGTH - 1)}...`;
     } else {
       return film_info.description;
     }
@@ -32,3 +32,26 @@ export const createFilmCard = (filmCard) => {
     </div>
   </article>`;
 };
+
+export default class FilmCard {
+  constructor(filmCard) {
+    this._filmCard = filmCard;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCard(this._filmCard);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
