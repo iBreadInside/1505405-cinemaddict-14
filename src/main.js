@@ -71,19 +71,20 @@ if (filmCards.length === 0) {
       const onCloseBtnClick = () => {
         siteBodyElement.removeChild(filmPopup.getElement());
         siteBodyElement.classList.toggle('hide-overflow');
+        document.removeEventListener('keydown', onEscKeyDown);
       };
 
       const onEscKeyDown = (evt) => {
         if (evt.key === 'Escape' || evt.key === 'Esc') {
           evt.preventDefault();
           siteBodyElement.removeChild(filmPopup.getElement());
+          siteBodyElement.classList.toggle('hide-overflow');
           document.removeEventListener('keydown', onEscKeyDown);
         }
       };
 
-      document.addEventListener('keydown', onEscKeyDown);
-
       filmPopup.getElement().querySelector('.film-details__close-btn').addEventListener('click', onCloseBtnClick);
+      document.addEventListener('keydown', onEscKeyDown);
     };
 
     // Render filmcard with listeners
