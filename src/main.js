@@ -69,6 +69,16 @@ const renderFilmCard = (filmList, card) => {
       siteBodyElement.classList.toggle('hide-overflow');
     };
 
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        siteBodyElement.removeChild(filmPopup.getElement());
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    };
+
+    document.addEventListener('keydown', onEscKeyDown);
+
     filmPopup.getElement().querySelector('.film-details__close-btn').addEventListener('click', onCloseBtnClick);
   };
 
