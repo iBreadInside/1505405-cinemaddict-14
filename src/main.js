@@ -66,6 +66,8 @@ if (filmCards.length === 0) {
       siteBodyElement.appendChild(filmPopup.getElement());
       siteBodyElement.classList.toggle('hide-overflow');
 
+      const closeBtn = filmPopup.getElement().querySelector('.film-details__close-btn');
+
       render(filmPopup.getElement().querySelector('.film-details__comments-list'), new Comments(comments[0]).getElement(), RenderPosition.BEFOREEND);
 
       const onCloseBtnClick = () => {
@@ -79,12 +81,12 @@ if (filmCards.length === 0) {
           evt.preventDefault();
           siteBodyElement.removeChild(filmPopup.getElement());
           siteBodyElement.classList.toggle('hide-overflow');
-          document.removeEventListener('keydown', onEscKeyDown);
+          closeBtn.removeEventListener('click', onCloseBtnClick);
         }
       };
 
-      filmPopup.getElement().querySelector('.film-details__close-btn').addEventListener('click', onCloseBtnClick);
-      document.addEventListener('keydown', onEscKeyDown);
+      document.addEventListener('keydown', onEscKeyDown, {once: true});
+      closeBtn.addEventListener('click', onCloseBtnClick, {once: true});
     };
 
     // Render filmcard with listeners
