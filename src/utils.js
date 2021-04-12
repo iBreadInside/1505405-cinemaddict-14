@@ -1,3 +1,26 @@
+// Render
+export const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
 export const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
   const fractionMultiplier = Math.pow(10, fractionDigits);
   min = Math.abs(min);
@@ -55,4 +78,12 @@ export const formatingRuntime = (element, unitOne, unitTwo) => {
 
 export const checkPlural = (noun, enumeration) => {
   return (enumeration.length > 1) ? `${noun}s` : noun;
+};
+
+export const toggleClass = (element, className) => {
+  if (element.classList.contains(className)) {
+    element.classList.remove(className);
+  } else {
+    element.classList.add(className);
+  }
 };

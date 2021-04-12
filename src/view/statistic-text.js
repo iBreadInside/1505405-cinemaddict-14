@@ -1,6 +1,6 @@
-import { formatingRuntime } from '../utils';
+import { createElement, formatingRuntime } from '../utils';
 
-export const createStatisticText = (counter) => {
+const createStatisticText = (counter) => {
   return `<ul class="statistic__text-list">
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">You watched</h4>
@@ -20,3 +20,26 @@ export const createStatisticText = (counter) => {
     <canvas class="statistic__chart" width="1000"></canvas>
   </div>`;
 };
+
+export default class StatisticText {
+  constructor(counter) {
+    this._counter = counter;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createStatisticText(this._counter);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

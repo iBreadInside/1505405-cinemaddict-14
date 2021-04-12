@@ -1,4 +1,4 @@
-import { DATES} from '../const';
+import { DATES } from '../const';
 import { getRandomFromArray } from '../utils';
 
 const EMOTIONS = [
