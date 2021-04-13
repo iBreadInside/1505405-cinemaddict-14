@@ -69,6 +69,7 @@ if (filmCards.length === 0) {
 
   // Render film details popup
   const filmPopup = new FilmDetails(filmCards[0]);
+  const closeBtn = filmPopup.getElement().querySelector('.film-details__close-btn');
 
   const onCloseBtnClick = () => {
     siteBodyElement.removeChild(filmPopup.getElement());
@@ -87,7 +88,6 @@ if (filmCards.length === 0) {
     }
   };
 
-  const closeBtn = filmPopup.getElement().querySelector('.film-details__close-btn');
 
   const onFilmCardClick = () => {
     siteBodyElement.appendChild(filmPopup.getElement());
