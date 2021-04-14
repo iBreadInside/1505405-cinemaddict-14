@@ -75,7 +75,7 @@ if (filmCards.length === 0) {
     siteBodyElement.removeChild(filmPopup.getElement());
     siteBodyElement.classList.toggle('hide-overflow');
     closeBtn.removeEventListener('click', onCloseBtnClick);
-    closeBtn.addEventListener('click', onCloseBtnClick);
+    document.removeEventListener('keydown', onEscKeyDown);
   };
 
   const onEscKeyDown = (evt) => {
