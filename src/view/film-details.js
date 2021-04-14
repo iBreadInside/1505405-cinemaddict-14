@@ -22,7 +22,7 @@ const createFilmDetails = (filmCard) => {
           <div class="film-details__poster">
             <img class="film-details__poster-img" src="${film_info.poster}" alt="${film_info.title} poster">
 
-            <p class="film-details__age">${film_info.total_rating}</p>
+            <p class="film-details__age">${film_info.age_rating}</p>
           </div>
 
           <div class="film-details__info">
