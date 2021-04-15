@@ -1,11 +1,5 @@
 import { DATES } from '../const';
-
-import {
-  generateRandomBoolean,
-  getRandomFromArray,
-  getRandomNumber,
-  modificateArray
-} from '../utils';
+import { generateRandomBoolean, getRandomFromArray, getRandomNumber, modificateArray } from '../utils/common';
 
 const ACTORS = [
   'Morgan Freeman',

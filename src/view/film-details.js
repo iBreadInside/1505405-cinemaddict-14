@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { checkPlural, formatingRuntime } from '../utils';
+import { checkPlural, formatingRuntime } from '../utils/common';
 import AbstractView from './abstract';
 
 const createCellSpans = (checkedValue, term) => {

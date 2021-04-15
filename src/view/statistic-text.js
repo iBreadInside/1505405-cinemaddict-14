@@ -1,4 +1,4 @@
-import { formatingRuntime } from '../utils';
+import { formatingRuntime } from '../utils/common';
 import AbstractView from './abstract';
 
 const createStatisticText = (counter) => {
