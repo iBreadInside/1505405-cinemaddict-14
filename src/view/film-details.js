@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { checkPlural, createElement, formatingRuntime } from '../utils';
+import { checkPlural, formatingRuntime } from '../utils';
+import AbstractView from './abstract';
 
 const createCellSpans = (checkedValue, term) => {
   const spans = [];
@@ -127,25 +128,13 @@ const createFilmDetails = (filmCard) => {
   </section>`;
 };
 
-export default class FilmDetais {
+export default class FilmDetais extends AbstractView {
   constructor(filmCard) {
+    super();
     this._filmCard = filmCard;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmDetails(this._filmCard);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

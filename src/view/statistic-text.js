@@ -1,4 +1,5 @@
-import { createElement, formatingRuntime } from '../utils';
+import { formatingRuntime } from '../utils';
+import AbstractView from './abstract';
 
 const createStatisticText = (counter) => {
   return `<ul class="statistic__text-list">
@@ -21,25 +22,13 @@ const createStatisticText = (counter) => {
   </div>`;
 };
 
-export default class StatisticText {
+export default class StatisticText extends AbstractView {
   constructor(counter) {
+    super();
     this._counter = counter;
-    this._element = null;
   }
 
   getTemplate() {
     return createStatisticText(this._counter);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

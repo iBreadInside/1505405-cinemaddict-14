@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { checkPlural, createElement, formatingRuntime } from '../utils';
+import { checkPlural, formatingRuntime } from '../utils';
+import AbstractView from './abstract';
 
 const CARD_DESCRIPTION_LENGTH = 140;
 
@@ -33,25 +34,13 @@ const createFilmCard = (filmCard) => {
   </article>`;
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractView{
   constructor(filmCard) {
+    super();
     this._filmCard = filmCard;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmCard(this._filmCard);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
