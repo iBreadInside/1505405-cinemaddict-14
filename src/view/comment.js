@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
 import * as relativeTime from 'dayjs/plugin/relativeTime';
-import { createElement } from '../utils';
+import AbstractView from './abstract';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -44,25 +44,13 @@ const createComments = (filmComment) => {
   </li>`;
 };
 
-export default class Comment {
+export default class Comment extends AbstractView {
   constructor(comment) {
+    super();
     this._comment = comment;
-    this._element = null;
   }
 
   getTemplate() {
     return createComments(this._comment);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

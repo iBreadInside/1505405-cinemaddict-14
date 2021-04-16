@@ -1,4 +1,4 @@
-import { createElement } from '../utils';
+import AbstractView from './abstract';
 
 const createMainNavigation = (counter) => {
   return `<nav class="main-navigation">
@@ -12,25 +12,13 @@ const createMainNavigation = (counter) => {
   </nav>`;
 };
 
-export default class MainNavigation {
+export default class MainNavigation extends AbstractView {
   constructor(counter) {
+    super();
     this._counter = counter;
-    this._element = null;
   }
 
   getTemplate() {
     return createMainNavigation(this._counter);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

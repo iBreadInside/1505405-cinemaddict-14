@@ -11,9 +11,9 @@ import FilmDetails from './view/film-details.js';
 import { generateFilmCard } from './mock/film-info.js';
 import { generateComments } from './mock/comments.js';
 import Comments from './view/comment.js';
-import { render, RenderPosition } from './utils.js';
 import StatisticSection from './view/statistic-section.js';
 import EmptyFilmSection from './view/empty-film-list.js';
+import { remove, render, RenderPosition } from './utils/render.js';
 
 const FILMS_NUMBER = 17;
 const FILMS_IN_LINE = 5;
@@ -31,7 +31,7 @@ const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
 const filmsSectionComponent = new FilmsSection();
 
 // Render profile info
-render(headerElement, new ProfileInfo().getElement(), RenderPosition.BEFOREEND);
+render(headerElement, new ProfileInfo(), RenderPosition.BEFOREEND);
 
 // Render main navigation
 const countFilters = () => {
@@ -48,55 +48,45 @@ const countFilters = () => {
   return counter;
 };
 
-render(mainElement, new MainNavigation(countFilters()).getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new MainNavigation(countFilters()), RenderPosition.BEFOREEND);
 
 // Render films section
 if (filmCards.length === 0) {
-  render(mainElement, new EmptyFilmSection().getElement(), RenderPosition.BEFOREEND);
+  render(mainElement, new EmptyFilmSection(), RenderPosition.BEFOREEND);
 } else {
-  render(mainElement, filmsSectionComponent.getElement(), RenderPosition.BEFOREEND);
+  render(mainElement, filmsSectionComponent, RenderPosition.BEFOREEND);
   const filmsListContainer = filmsSectionComponent.getElement().querySelector('.films-list__container');
 
   const renderFilmCard = (filmList, card) => {
     const filmCardComponent = new FilmCard(card);
 
     // Render filmcard with listeners
-    render(filmList, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
-    filmCardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', onFilmCardClick);
-    filmCardComponent.getElement().querySelector('.film-card__title').addEventListener('click', onFilmCardClick);
-    filmCardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', onFilmCardClick);
+    render(filmList, filmCardComponent, RenderPosition.BEFOREEND);
+    filmCardComponent.setPopupOpenHandler(() => {
+      siteBodyElement.appendChild(filmPopup.getElement());
+      siteBodyElement.classList.toggle('hide-overflow');
+
+      render(filmPopup.getElement().querySelector('.film-details__comments-list'), new Comments(comments[0]).getElement(), RenderPosition.BEFOREEND);
+
+      document.addEventListener('keydown', onEscKeyDown);
+      filmPopup.setCloseBtnClickHandler(() => {
+        siteBodyElement.classList.toggle('hide-overflow');
+        remove(filmPopup);
+        document.removeEventListener('keydown', onEscKeyDown);
+      });
+    });
   };
 
   // Render film details popup
   const filmPopup = new FilmDetails(filmCards[0]);
-  const closeBtn = filmPopup.getElement().querySelector('.film-details__close-btn');
-
-  const onCloseBtnClick = () => {
-    siteBodyElement.removeChild(filmPopup.getElement());
-    siteBodyElement.classList.toggle('hide-overflow');
-    closeBtn.removeEventListener('click', onCloseBtnClick);
-    document.removeEventListener('keydown', onEscKeyDown);
-  };
 
   const onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      siteBodyElement.removeChild(filmPopup.getElement());
+      remove(filmPopup);
       siteBodyElement.classList.toggle('hide-overflow');
-      closeBtn.removeEventListener('click', onCloseBtnClick);
       document.removeEventListener('keydown', onEscKeyDown);
     }
-  };
-
-
-  const onFilmCardClick = () => {
-    siteBodyElement.appendChild(filmPopup.getElement());
-    siteBodyElement.classList.toggle('hide-overflow');
-
-    render(filmPopup.getElement().querySelector('.film-details__comments-list'), new Comments(comments[0]).getElement(), RenderPosition.BEFOREEND);
-
-    document.addEventListener('keydown', onEscKeyDown);
-    closeBtn.addEventListener('click', onCloseBtnClick);
   };
 
   for (let i = 0; i < Math.min(FILMS_IN_LINE, filmCards.length); i++) {
@@ -129,12 +119,11 @@ if (filmCards.length === 0) {
   // Show more
   if (filmCards.length > FILMS_IN_LINE) {
     let renderedCardCount = FILMS_IN_LINE;
+    const showMoreBtn = new ShowMoreButton();
 
-    render(filmsSectionComponent.getElement().querySelector('.films-list'), new ShowMoreButton().getElement(), RenderPosition.BEFOREEND);
+    render(filmsSectionComponent.getElement().querySelector('.films-list'), showMoreBtn, RenderPosition.BEFOREEND);
 
-    const showMoreBtn = filmsSectionComponent.getElement().querySelector('.films-list__show-more');
-
-    showMoreBtn.addEventListener('click', () => {
+    showMoreBtn.setClickHandler(() => {
       filmCards
         .slice(renderedCardCount, renderedCardCount + FILMS_IN_LINE)
         .forEach((filmCard) => renderFilmCard(filmsListContainer, filmCard));
@@ -142,7 +131,7 @@ if (filmCards.length === 0) {
       renderedCardCount += FILMS_IN_LINE;
 
       if (renderedCardCount >= filmCards.length) {
-        showMoreBtn.remove();
+        remove(showMoreBtn);
       }
     });
   }
@@ -150,9 +139,9 @@ if (filmCards.length === 0) {
 
 // Render statistic
 const statisticSection = new StatisticSection();
-render(mainElement, statisticSection.getElement(), RenderPosition.BEFOREEND);
-render(statisticSection.getElement(), new StatisticRank().getElement(), RenderPosition.BEFOREEND);
-render(statisticSection.getElement(), new StatisticFilter().getElement(), RenderPosition.BEFOREEND);
+render(mainElement, statisticSection, RenderPosition.BEFOREEND);
+render(statisticSection, new StatisticRank(), RenderPosition.BEFOREEND);
+render(statisticSection, new StatisticFilter(), RenderPosition.BEFOREEND);
 
 // Statistic counter
 const countStatistic = () => {
@@ -187,5 +176,5 @@ const countStatistic = () => {
   return counter;
 };
 
-render(statisticSection.getElement(), new StatisticText(countStatistic()).getElement(), RenderPosition.BEFOREEND);
-render(footerStatisticsElement, new FooterStats(FILMS_NUMBER).getElement(), RenderPosition.BEFOREEND);
+render(statisticSection, new StatisticText(countStatistic()), RenderPosition.BEFOREEND);
+render(footerStatisticsElement, new FooterStats(FILMS_NUMBER), RenderPosition.BEFOREEND);

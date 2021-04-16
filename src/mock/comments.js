@@ -1,5 +1,5 @@
 import { DATES } from '../const';
-import { getRandomFromArray } from '../utils';
+import { getRandomFromArray } from '../utils/common';
 
 const EMOTIONS = [
   'smile',

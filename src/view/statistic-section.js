@@ -1,27 +1,11 @@
-import { createElement } from '../utils';
+import AbstractView from './abstract';
 
 const createStatisticSection = () => {
   return '<section class="statistic visually-hidden"></section>';
 };
 
-export default class StatisticSection {
-  constructor() {
-    this._element = null;
-  }
-
+export default class StatisticSection extends AbstractView {
   getTemplate() {
     return createStatisticSection();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
