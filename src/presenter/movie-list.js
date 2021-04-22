@@ -13,10 +13,15 @@ const FILMS_IN_EXTRAS = 2;
 export default class MovieListPresenter {
   constructor(listContainer) {
     this._listContainer = listContainer;
+    this._renderedFilmCount = FILMS_IN_LINE;
 
     this._filmSectionComponent = new FilmsSection();
     this._emptyListComponent = new EmptyFilmSection();
+    this._showMoreBtnComponent = new ShowMoreButton();
     this._mainElement = document.querySelector('.main');
+    this._filmListElement = this._filmSectionComponent.getElement().querySelector('.films-list__container');
+
+    this._handleShowMoreBtnClick = this._handleShowMoreBtnClick.bind(this);
   }
 
   init(filmList, commentsList) {
@@ -119,26 +124,19 @@ export default class MovieListPresenter {
     render(this._mainElement, this._emptyListComponent, RenderPosition.BEFOREEND);
   }
 
+  _handleShowMoreBtnClick() {
+    this._renderFilmCards(this._renderedFilmCount, this._renderedFilmCount + FILMS_IN_LINE, this._filmList, this._filmListElement);
+    this._renderedFilmCount += FILMS_IN_LINE;
+
+    if (this._renderedFilmCount >= this._filmList.length) {
+      remove(this._showMoreBtnComponent);
+    }
+  }
+
   _renderShowMoreBtn() {
-    // Отрисовка кнопки Show More
-    const showMoreBtnComponent = new ShowMoreButton();
-
     if (this._filmList.length > FILMS_IN_LINE) {
-      let renderedCardCount = FILMS_IN_LINE;
-
-      render(this._filmSectionComponent.getElement().querySelector('.films-list'), showMoreBtnComponent, RenderPosition.BEFOREEND);
-
-      showMoreBtnComponent.setClickHandler(() => {
-        this._filmList
-          .slice(renderedCardCount, renderedCardCount + FILMS_IN_LINE)
-          .forEach((filmCard) => this._renderFilmCard(filmCard));
-
-        renderedCardCount += FILMS_IN_LINE;
-
-        if (renderedCardCount >= this._filmList.length) {
-          remove(showMoreBtnComponent);
-        }
-      });
+      render(this._filmSectionComponent.getElement().querySelector('.films-list'), this._showMoreBtnComponent, RenderPosition.BEFOREEND);
+      this._showMoreBtnComponent.setClickHandler(this._handleShowMoreBtnClick);
     }
   }
 
@@ -151,8 +149,7 @@ export default class MovieListPresenter {
 
     this._renderNav();
 
-    const filmListElement = this._filmSectionComponent.getElement().querySelector('.films-list__container');
-    this._renderFilmCards(0, Math.min(this._filmList.length, FILMS_IN_LINE), this._filmList, filmListElement);
+    this._renderFilmCards(0, Math.min(this._filmList.length, FILMS_IN_LINE), this._filmList, this._filmListElement);
 
     if (this._filmList.length > FILMS_IN_LINE) {
       this._renderShowMoreBtn();
