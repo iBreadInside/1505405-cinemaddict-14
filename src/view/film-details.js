@@ -128,7 +128,7 @@ const createFilmDetails = (filmCard) => {
   </section>`;
 };
 
-export default class FilmDetais extends AbstractView {
+export default class FilmDetails extends AbstractView {
   constructor(filmCard) {
     super();
     this._filmCard = filmCard;
