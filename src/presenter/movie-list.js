@@ -1,10 +1,10 @@
+import { updateItem } from '../utils/common';
 import { remove, render, RenderPosition } from '../utils/render';
 import EmptyFilmSection from '../view/empty-film-list';
 import FilmsSection from '../view/films-section';
 import MainNavigation from '../view/main-navigation';
 import ShowMoreButton from '../view/show-more-button';
 import MoviePresenter from './movie';
-
 const FILMS_IN_LINE = 5;
 const FILMS_IN_EXTRAS = 2;
 
@@ -12,6 +12,7 @@ export default class MovieListPresenter {
   constructor(listContainer) {
     this._listContainer = listContainer;
     this._renderedFilmCount = FILMS_IN_LINE;
+    this._moviePresenter = {};
 
     this._filmSectionComponent = new FilmsSection();
     this._emptyListComponent = new EmptyFilmSection();
@@ -19,6 +20,7 @@ export default class MovieListPresenter {
     this._mainElement = document.querySelector('.main');
     this._filmListElement = this._filmSectionComponent.getElement().querySelector('.films-list__container');
 
+    this._handleMovieUpdate = this._handleMovieUpdate.bind(this);
     this._handleShowMoreBtnClick = this._handleShowMoreBtnClick.bind(this);
   }
 
@@ -30,6 +32,11 @@ export default class MovieListPresenter {
 
     this._renderFilmList();
     this._renderExtras();
+  }
+
+  _handleMovieUpdate(updatedFilmCard) {
+    this._filmList = updateItem(this._filmList, updatedFilmCard);
+    this._moviePresenter[updatedFilmCard.id].init(updatedFilmCard);
   }
 
   _renderNav() {
@@ -51,14 +58,9 @@ export default class MovieListPresenter {
   }
 
   _renderFilmCard(filmCard, listContainer) {
-    const moviePresenter = new MoviePresenter(listContainer, this._comments);
+    const moviePresenter = new MoviePresenter(listContainer, this._comments, this._handleMovieUpdate);
     moviePresenter.init(filmCard, this._filmList);
-  //   // Отрисовка карточки фильма
-  //   this._filmCardComponent = new FilmCard(filmCard);
-    // render(listContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
-  //   this._filmCardComponent.setPopupOpenHandler(() => {
-  //     this._renderFilmPopup();
-  //   });
+    this._moviePresenter[filmCard.id] = moviePresenter;
   }
 
   _renderFilmCards(from, to, list, listContainer) {
@@ -93,32 +95,6 @@ export default class MovieListPresenter {
     this._renderFilmCards(0, FILMS_IN_EXTRAS, mostCommentedList, mostCommentedContainer);
   }
 
-  // _renderFilmPopup() {
-  //   const filmPopup = new FilmDetails(this._filmList[0]);
-  //   const siteBodyElement = document.body;
-
-  //   const onEscKeyDown = (evt) => {
-  //     if (evt.key === 'Escape' || evt.key === 'Esc') {
-  //       evt.preventDefault();
-  //       remove(filmPopup);
-  //       siteBodyElement.classList.toggle('hide-overflow');
-  //       document.removeEventListener('keydown', onEscKeyDown);
-  //     }
-  //   };
-
-  //   siteBodyElement.appendChild(filmPopup.getElement());
-  //   siteBodyElement.classList.toggle('hide-overflow');
-
-  //   render(filmPopup.getElement().querySelector('.film-details__comments-list'), new Comment(this._comments[0]).getElement(), RenderPosition.BEFOREEND);
-
-  //   document.addEventListener('keydown', onEscKeyDown);
-  //   filmPopup.setCloseBtnClickHandler(() => {
-  //     siteBodyElement.classList.toggle('hide-overflow');
-  //     remove(filmPopup);
-  //     document.removeEventListener('keydown', onEscKeyDown);
-  //   });
-  // }
-
   _renderEmptyList() {
     // Отрисовка пустого списка фильмов
     render(this._mainElement, this._emptyListComponent, RenderPosition.BEFOREEND);
@@ -138,6 +114,15 @@ export default class MovieListPresenter {
       render(this._filmSectionComponent.getElement().querySelector('.films-list'), this._showMoreBtnComponent, RenderPosition.BEFOREEND);
       this._showMoreBtnComponent.setClickHandler(this._handleShowMoreBtnClick);
     }
+  }
+
+  _clearFilmList() {
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
+    this._renderedFilmCount = FILMS_IN_LINE;
+    remove(this._showMoreBtnComponent);
   }
 
   _renderFilmList() {
