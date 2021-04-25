@@ -1,5 +1,5 @@
 import { updateItem } from '../utils/common';
-import { remove, render, RenderPosition } from '../utils/render';
+import { remove, render, RenderPosition, replace } from '../utils/render';
 import EmptyFilmSection from '../view/empty-film-list';
 import FilmsSection from '../view/films-section';
 import MainNavigation from '../view/main-navigation';
@@ -12,7 +12,11 @@ export default class MovieListPresenter {
   constructor(listContainer) {
     this._listContainer = listContainer;
     this._renderedFilmCount = FILMS_IN_LINE;
+
     this._moviePresenter = {};
+    this._topRankPresenter = {};
+    this._mostCommentedPresenter = {};
+    this._filters = null;
 
     this._filmSectionComponent = new FilmsSection();
     this._emptyListComponent = new EmptyFilmSection();
@@ -37,24 +41,46 @@ export default class MovieListPresenter {
   _handleMovieUpdate(updatedFilmCard) {
     this._filmList = updateItem(this._filmList, updatedFilmCard);
     this._moviePresenter[updatedFilmCard.id].init(updatedFilmCard);
+
+    if (this._topRankPresenter[updatedFilmCard.id]) {
+      this._topRankPresenter[updatedFilmCard.id].init(updatedFilmCard, this._comments);
+    }
+    if (this._mostCommentedPresenter[updatedFilmCard.id]) {
+      this._mostCommentedPresenter[updatedFilmCard.id].init(updatedFilmCard, this._comments);
+    }
+
+    this._renderFilters();
   }
 
-  _renderNav() {
+  _renderFilters() {
     // Отрисовка фильтров в mainNavigation
-    const countFilters = () => {
-      const counter = {
-        watchlist: 0,
-        history: 0,
-        favorites: 0,
+    const prevFiltersComponent = this._filters;
+
+    if (prevFiltersComponent === null) {
+      const countFilters = () => {
+        const counter = {
+          watchlist: 0,
+          history: 0,
+          favorites: 0,
+        };
+        for (const card of this._filmList) {
+          if (card.user_details.watchlist) counter.watchlist++;
+          if (card.user_details.already_watched) counter.history++;
+          if (card.user_details.favorite) counter.favorites++;
+        }
+        return counter;
       };
-      for (const card of this._filmList) {
-        if (card.user_details.watchlist) counter.watchlist++;
-        if (card.user_details.already_watched) counter.history++;
-        if (card.user_details.favorite) counter.favorites++;
-      }
-      return counter;
-    };
-    render(this._mainElement, new MainNavigation(countFilters()), RenderPosition.AFTERBEGIN);
+
+      this._filters = new MainNavigation(countFilters());
+      render(this._mainElement, this._filters, RenderPosition.AFTERBEGIN);
+      return;
+    }
+
+    if (this._mainElement.contains(prevFiltersComponent.getElement())) {
+      replace(this._filters, prevFiltersComponent);
+    }
+
+    remove(prevFiltersComponent);
   }
 
   _renderFilmCard(filmCard, listContainer) {
@@ -132,7 +158,7 @@ export default class MovieListPresenter {
       return;
     }
 
-    this._renderNav();
+    this._renderFilters();
 
     this._renderFilmCards(0, Math.min(this._filmList.length, FILMS_IN_LINE), this._filmList, this._filmListElement);
 

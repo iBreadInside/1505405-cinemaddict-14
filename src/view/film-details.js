@@ -147,15 +147,15 @@ export default class FilmDetails extends AbstractView {
   }
 
   _popupWatchlistHandler() {
-    this._callback.popupWatchlistClick(this._filmCard);
+    this._callback.popupWatchlistClick();
   }
 
   _popupWatchedHandler() {
-    this._callback.popupWatchedClick(this._filmCard);
+    this._callback.popupWatchedClick();
   }
 
   _popupFavoriteHandler() {
-    this._callback.popupFavoriteClick(this._filmCard);
+    this._callback.popupFavoriteClick();
   }
 
   setCloseBtnClickHandler(callback) {

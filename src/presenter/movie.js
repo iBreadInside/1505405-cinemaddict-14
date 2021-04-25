@@ -3,6 +3,11 @@ import Comment from '../view/comment';
 import FilmCard from '../view/film-card';
 import FilmDetails from '../view/film-details';
 
+const popupStatus = {
+  CLOSE: 'CLOSE',
+  OPEN: 'OPEN',
+};
+
 export default class MoviePresenter {
   constructor(filmListContainer, commentsList, changeData) {
     this._filmListContainer = filmListContainer;
@@ -10,6 +15,7 @@ export default class MoviePresenter {
     this._changeData = changeData;
 
     this._filmCardComponent = null;
+    this._popupStatus = popupStatus.CLOSE;
 
     this._siteBodyElement = document.body;
 
@@ -25,13 +31,13 @@ export default class MoviePresenter {
     this._filmList = filmList;
 
     const prevFilmCardComponent = this._filmCardComponent;
-    // const prevPopupComponent = this._filmPopup;
+    const prevPopupComponent = this._filmPopup;
 
     this._filmCardComponent = new FilmCard(filmCard);
     this._filmPopup = new FilmDetails(filmCard);
     this._comment = new Comment(this._comments[0]);
 
-    if (prevFilmCardComponent === null) {
+    if (prevFilmCardComponent === null || prevPopupComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
       this._setFilmCardHandlers();
 
@@ -45,11 +51,24 @@ export default class MoviePresenter {
       replace(this._filmCardComponent, prevFilmCardComponent);
     }
 
+    if (this._popupStatus === popupStatus.OPEN) {
+      this._setPopupHandlers();
+      replace(this._filmPopup, prevPopupComponent);
+    }
+
     remove(prevFilmCardComponent);
+    remove(prevPopupComponent);
+  }
+
+  resetView() {
+    if (this._popupStatus !== popupStatus.CLOSE) {
+      this._closePopup();
+    }
   }
 
   destroy() {
     remove(this._filmCardComponent);
+    remove(this._filmPopup);
   }
 
   _setFilmCardHandlers() {
@@ -65,6 +84,7 @@ export default class MoviePresenter {
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this._popupStatus = popupStatus.CLOSE;
       remove(this._filmPopup);
       this._siteBodyElement.classList.toggle('hide-overflow');
       document.removeEventListener('keydown', this._escKeyDownHandler);
@@ -117,6 +137,7 @@ export default class MoviePresenter {
     this._siteBodyElement.classList.toggle('hide-overflow');
     remove(this._filmPopup);
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._popupStatus = popupStatus.CLOSE;
   }
 
   _setPopupHandlers() {
@@ -130,12 +151,9 @@ export default class MoviePresenter {
   _renderFilmPopup() {
     this._siteBodyElement.appendChild(this._filmPopup.getElement());
     this._siteBodyElement.classList.toggle('hide-overflow');
+    this._popupStatus = popupStatus.OPEN;
+    this._setPopupHandlers();
 
     render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
-    this._setPopupHandlers();
-  }
-
-  _hidePopup() {
-    remove(this._filmPopup);
   }
 }

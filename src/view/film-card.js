@@ -49,19 +49,19 @@ export default class FilmCard extends AbstractView{
   }
 
   _popupOpenHandler() {
-    this._callback.click(this._filmCard);
+    this._callback.click();
   }
 
   _controlWatchlistHandler() {
-    this._callback.watchlistClick(this._filmCard);
+    this._callback.watchlistClick();
   }
 
   _controlWatchedHandler() {
-    this._callback.watchedClick(this._filmCard);
+    this._callback.watchedClick();
   }
 
   _controlFavoriteHandler() {
-    this._callback.favoriteClick(this._filmCard);
+    this._callback.favoriteClick();
   }
 
   setPopupOpenHandler(callback) {
