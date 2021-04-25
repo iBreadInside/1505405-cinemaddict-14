@@ -56,22 +56,23 @@ export default class MovieListPresenter {
     // Отрисовка фильтров в mainNavigation
     const prevFiltersComponent = this._filters;
 
-    if (prevFiltersComponent === null) {
-      const countFilters = () => {
-        const counter = {
-          watchlist: 0,
-          history: 0,
-          favorites: 0,
-        };
-        for (const card of this._filmList) {
-          if (card.user_details.watchlist) counter.watchlist++;
-          if (card.user_details.already_watched) counter.history++;
-          if (card.user_details.favorite) counter.favorites++;
-        }
-        return counter;
+    const countFilters = () => {
+      const counter = {
+        watchlist: 0,
+        history: 0,
+        favorites: 0,
       };
+      for (const card of this._filmList) {
+        if (card.user_details.watchlist) counter.watchlist++;
+        if (card.user_details.already_watched) counter.history++;
+        if (card.user_details.favorite) counter.favorites++;
+      }
+      return counter;
+    };
 
-      this._filters = new MainNavigation(countFilters());
+    this._filters = new MainNavigation(countFilters());
+
+    if (prevFiltersComponent === null) {
       render(this._mainElement, this._filters, RenderPosition.AFTERBEGIN);
       return;
     }
