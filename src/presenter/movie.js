@@ -25,24 +25,22 @@ export default class MoviePresenter {
     this._filmList = filmList;
 
     const prevFilmCardComponent = this._filmCardComponent;
+    // const prevPopupComponent = this._filmPopup;
 
     this._filmCardComponent = new FilmCard(filmCard);
     this._filmPopup = new FilmDetails(filmCard);
     this._comment = new Comment(this._comments[0]);
-    // this._controlWatchlistComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist');
-    // this._controlWatchedComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--mark-as-watched');
-    // this._controlFavoriteComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--favorite');
 
     if (prevFilmCardComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
-      this._setHandlers();
+      this._setFilmCardHandlers();
 
       return;
     }
 
     if (this._filmListContainer.contains(prevFilmCardComponent.getElement())) {
       // this._filmCardComponent.removeHandlers();
-      this._setHandlers();
+      this._setFilmCardHandlers();
 
       replace(this._filmCardComponent, prevFilmCardComponent);
     }
@@ -54,7 +52,7 @@ export default class MoviePresenter {
     remove(this._filmCardComponent);
   }
 
-  _setHandlers() {
+  _setFilmCardHandlers() {
     this._filmCardComponent.setPopupOpenHandler(() => {
       this._renderFilmPopup();
     });
@@ -121,13 +119,23 @@ export default class MoviePresenter {
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
+  _setPopupHandlers() {
+    document.addEventListener('keydown', this._escKeyDownHandler);
+    this._filmPopup.setCloseBtnClickHandler(this._closeBtnHandler);
+    this._filmPopup.setPopupWatchlistHandler(this._handleWatchlistClick);
+    this._filmPopup.setPopupWatchedHandler(this._handleWatchedClick);
+    this._filmPopup.setPopupFavoriteHandler(this._handleFavoriteClick);
+  }
+
   _renderFilmPopup() {
     this._siteBodyElement.appendChild(this._filmPopup.getElement());
     this._siteBodyElement.classList.toggle('hide-overflow');
 
     render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
+    this._setPopupHandlers();
+  }
 
-    document.addEventListener('keydown', this._escKeyDownHandler);
-    this._filmPopup.setCloseBtnClickHandler(this._closeBtnHandler);
+  _hidePopup() {
+    remove(this._filmPopup);
   }
 }
