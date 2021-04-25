@@ -29,25 +29,21 @@ export default class MoviePresenter {
     this._filmCardComponent = new FilmCard(filmCard);
     this._filmPopup = new FilmDetails(filmCard);
     this._comment = new Comment(this._comments[0]);
-    this._controlWatchlistComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist');
-    this._controlWatchedComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--mark-as-watched');
-    this._controlFavoriteComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--favorite');
+    // this._controlWatchlistComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist');
+    // this._controlWatchedComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--mark-as-watched');
+    // this._controlFavoriteComponent = this._filmCardComponent.getElement().querySelector('.film-card__controls-item--favorite');
 
     if (prevFilmCardComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
-
-      this._filmCardComponent.setPopupOpenHandler(() => {
-        this._renderFilmPopup();
-      });
-
-      this._filmCardComponent.setControlWatchlistHandler(this._handleWatchlistClick);
-      this._filmCardComponent.setControlWatchedHandler(this._handleWatchedClick);
-      this._filmCardComponent.setControlFavoriteHandler(this._handleFavoriteClick);
+      this._setHandlers();
 
       return;
     }
 
     if (this._filmListContainer.contains(prevFilmCardComponent.getElement())) {
+      // this._filmCardComponent.removeHandlers();
+      this._setHandlers();
+
       replace(this._filmCardComponent, prevFilmCardComponent);
     }
 
@@ -56,6 +52,16 @@ export default class MoviePresenter {
 
   destroy() {
     remove(this._filmCardComponent);
+  }
+
+  _setHandlers() {
+    this._filmCardComponent.setPopupOpenHandler(() => {
+      this._renderFilmPopup();
+    });
+
+    this._filmCardComponent.setControlWatchlistHandler(this._handleWatchlistClick);
+    this._filmCardComponent.setControlWatchedHandler(this._handleWatchedClick);
+    this._filmCardComponent.setControlFavoriteHandler(this._handleFavoriteClick);
   }
 
   _escKeyDownHandler(evt) {
@@ -102,7 +108,7 @@ export default class MoviePresenter {
         this._filmCard,
         {
           user_details: {
-            favorite: !this._filmCard.user_details.already_watched,
+            favorite: !this._filmCard.user_details.favorite,
           },
         },
       ),
