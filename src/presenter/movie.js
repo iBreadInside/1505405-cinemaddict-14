@@ -54,16 +54,11 @@ export default class MoviePresenter {
     if (this._popupStatus === popupStatus.OPEN) {
       this._setPopupHandlers();
       replace(this._filmPopup, prevPopupComponent);
+      this._renderComments();
     }
 
     remove(prevFilmCardComponent);
     remove(prevPopupComponent);
-  }
-
-  resetView() {
-    if (this._popupStatus !== popupStatus.CLOSE) {
-      this._closePopup();
-    }
   }
 
   destroy() {
@@ -99,6 +94,8 @@ export default class MoviePresenter {
         {
           user_details: {
             watchlist: !this._filmCard.user_details.watchlist,
+            already_watched: this._filmCard.user_details.already_watched,
+            favorite: this._filmCard.user_details.favorite,
           },
         },
       ),
@@ -112,7 +109,9 @@ export default class MoviePresenter {
         this._filmCard,
         {
           user_details: {
+            watchlist: this._filmCard.user_details.watchlist,
             already_watched: !this._filmCard.user_details.already_watched,
+            favorite: this._filmCard.user_details.favorite,
           },
         },
       ),
@@ -126,6 +125,8 @@ export default class MoviePresenter {
         this._filmCard,
         {
           user_details: {
+            watchlist: this._filmCard.user_details.watchlist,
+            already_watched: this._filmCard.user_details.already_watched,
             favorite: !this._filmCard.user_details.favorite,
           },
         },
@@ -153,7 +154,10 @@ export default class MoviePresenter {
     this._siteBodyElement.classList.toggle('hide-overflow');
     this._popupStatus = popupStatus.OPEN;
     this._setPopupHandlers();
+    this._renderComments();
+  }
 
+  _renderComments() {
     render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
   }
 }

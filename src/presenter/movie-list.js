@@ -42,12 +42,8 @@ export default class MovieListPresenter {
     this._filmList = updateItem(this._filmList, updatedFilmCard);
     this._moviePresenter[updatedFilmCard.id].init(updatedFilmCard);
 
-    if (this._topRankPresenter[updatedFilmCard.id]) {
-      this._topRankPresenter[updatedFilmCard.id].init(updatedFilmCard, this._comments);
-    }
-    if (this._mostCommentedPresenter[updatedFilmCard.id]) {
-      this._mostCommentedPresenter[updatedFilmCard.id].init(updatedFilmCard, this._comments);
-    }
+    this._topRankPresenter[updatedFilmCard.id].init(updatedFilmCard);
+    this._mostCommentedPresenter[updatedFilmCard.id].init(updatedFilmCard);
 
     this._renderFilters();
   }
@@ -88,6 +84,8 @@ export default class MovieListPresenter {
     const moviePresenter = new MoviePresenter(listContainer, this._comments, this._handleMovieUpdate);
     moviePresenter.init(filmCard, this._filmList);
     this._moviePresenter[filmCard.id] = moviePresenter;
+    this._topRankPresenter[filmCard.id] = moviePresenter;
+    this._mostCommentedPresenter[filmCard.id] = moviePresenter;
   }
 
   _renderFilmCards(from, to, list, listContainer) {
