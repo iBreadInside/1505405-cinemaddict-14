@@ -12,7 +12,7 @@ const FILMS_IN_EXTRAS = 2;
 
 const FilmListType = {
   MAIN: 'MAIN',
-  TOP_RANK: 'TOP_RANK',
+  TOP_RAITING: 'TOP_RAITING',
   MOST_COMMENTED: 'MOST_COMMENTED',
 };
 
@@ -23,7 +23,7 @@ export default class MovieListPresenter {
 
     this._moviePresenter = {
       MAIN: {},
-      TOP_RANK: {},
+      TOP_RAITING: {},
       MOST_COMMENTED: {},
     };
 
@@ -36,6 +36,9 @@ export default class MovieListPresenter {
     this._showMoreBtnComponent = new ShowMoreButton();
     this._mainElement = document.querySelector('.main');
     this._filmListElement = this._filmSectionComponent.getElement().querySelector('.films-list__container');
+    this._byDefaultElement = this._sortMenuComponent.getElement().querySelector('[data-sort-type="default"]');
+    this._byDateElement = this._sortMenuComponent.getElement().querySelector('[data-sort-type="date"]');
+    this._byRatingElement = this._sortMenuComponent.getElement().querySelector('[data-sort-type="rating"]');
 
     this._handleMovieUpdate = this._handleMovieUpdate.bind(this);
     this._handleShowMoreBtnClick = this._handleShowMoreBtnClick.bind(this);
@@ -63,8 +66,8 @@ export default class MovieListPresenter {
       this._moviePresenter.MAIN[updatedFilmCard.id].init(updatedFilmCard);
     }
 
-    if (this._moviePresenter.TOP_RANK[updatedFilmCard.id]) {
-      this._moviePresenter.TOP_RANK[updatedFilmCard.id].init(updatedFilmCard);
+    if (this._moviePresenter.TOP_RAITING[updatedFilmCard.id]) {
+      this._moviePresenter.TOP_RAITING[updatedFilmCard.id].init(updatedFilmCard);
     }
 
     if (this._moviePresenter.MOST_COMMENTED[updatedFilmCard.id]) {
@@ -106,16 +109,28 @@ export default class MovieListPresenter {
     remove(prevFiltersComponent);
   }
 
+  _removeSortStyle() {
+    if (this._byDefaultElement.classList.contains('sort__button--active')) this._byDefaultElement.classList.remove('sort__button--active');
+    if (this._byDateElement.classList.contains('sort__button--active')) this._byDateElement.classList.remove('sort__button--active');
+    if (this._byRatingElement.classList.contains('sort__button--active')) this._byRatingElement.classList.remove('sort__button--active');
+  }
+
   _sortFilmList(sortType) {
     switch (sortType) {
       case SortType.DATE:
         this._filmList.sort(compareFilmDate);
+        this._removeSortStyle();
+        this._byDateElement.classList.add('sort__button--active');
         break;
       case SortType.RATING:
         this._filmList.sort(compareRating);
+        this._removeSortStyle();
+        this._byRatingElement.classList.add('sort__button--active');
         break;
       default:
         this._filmList = this._sourcedFilmList.slice();
+        this._removeSortStyle();
+        this._byDefaultElement.classList.add('sort__button--active');
     }
 
     this._currentSortType = sortType;
@@ -144,7 +159,7 @@ export default class MovieListPresenter {
       case FilmListType.MAIN:
         this._moviePresenter[filmListType][filmCard.id] = moviePresenter;
         break;
-      case FilmListType.TOP_RANK:
+      case FilmListType.TOP_RAITING:
         this._moviePresenter[filmListType][filmCard.id] = moviePresenter;
         break;
       case FilmListType.MOST_COMMENTED:
@@ -166,7 +181,7 @@ export default class MovieListPresenter {
     const mostCommentedList = this._filmList.slice().sort(compareCommentsNumber);
     const mostCommentedContainer = this._filmSectionComponent.getElement().querySelector('.films-list__container--most-commented');
 
-    this._renderFilmCards(0, FILMS_IN_EXTRAS, topRatedList, topRatedContainer, FilmListType.TOP_RANK);
+    this._renderFilmCards(0, FILMS_IN_EXTRAS, topRatedList, topRatedContainer, FilmListType.TOP_RAITING);
     this._renderFilmCards(0, FILMS_IN_EXTRAS, mostCommentedList, mostCommentedContainer, FilmListType.MOST_COMMENTED);
   }
 
