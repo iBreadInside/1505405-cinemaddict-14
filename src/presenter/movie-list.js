@@ -71,9 +71,6 @@ export default class MovieListPresenter {
       this._moviePresenter.MOST_COMMENTED[updatedFilmCard.id].init(updatedFilmCard);
     }
 
-    // this._topRankPresenter[updatedFilmCard.id].init(updatedFilmCard);
-    // this._mostCommentedPresenter[updatedFilmCard.id].init(updatedFilmCard);
-
     this._renderFilters();
   }
 
@@ -132,7 +129,6 @@ export default class MovieListPresenter {
     this._sortFilmList(sortType);
     this._clearFilmList();
     this._renderFilmList();
-    // this._renderExtras();
   }
 
   _renderSortMenu() {
@@ -155,17 +151,13 @@ export default class MovieListPresenter {
         this._moviePresenter[filmListType][filmCard.id] = moviePresenter;
         break;
     }
-    // this._moviePresenter[filmCard.id] = moviePresenter;
-
-    // this._topRankPresenter[filmCard.id] = moviePresenter;
-    // this._mostCommentedPresenter[filmCard.id] = moviePresenter;
   }
 
-  _renderFilmCards(from, to, list, listContainer, listType) {
+  _renderFilmCards(from, to, list, listContainer, filmListType) {
     // Отрисовка нескольких карточек фильмов
     list
       .slice(from, to)
-      .forEach((filmCard) => this._renderFilmCard(filmCard, listContainer, listType));
+      .forEach((filmCard) => this._renderFilmCard(filmCard, listContainer, filmListType));
   }
 
   _renderExtras() {
