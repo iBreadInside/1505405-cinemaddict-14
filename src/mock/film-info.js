@@ -1,4 +1,5 @@
 import { DATES } from '../const';
+import { nanoid } from 'nanoid';
 import { generateRandomBoolean, getRandomFromArray, getRandomNumber, modificateArray } from '../utils/common';
 
 const ACTORS = [
@@ -81,7 +82,7 @@ const WRITERS = [
 
 export const generateFilmCard = () => {
   return {
-    id: 0,
+    id: nanoid(),
     comments: modificateArray(ID_COMMENTS),
     film_info: {
       title: getRandomFromArray(TITLES),
