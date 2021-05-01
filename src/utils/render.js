@@ -1,8 +1,15 @@
+import dayjs from 'dayjs';
 import AbstractView from '../view/abstract';
 
 export const RenderPosition = {
   AFTERBEGIN: 'afterbegin',
   BEFOREEND: 'beforeend',
+};
+
+export const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
 };
 
 export const render = (container, child, place) => {
@@ -56,4 +63,22 @@ export const remove = (component) => {
 
   component.getElement().remove();
   component.removeElement();
+};
+
+export const compareRating = (firstCard, secondCard) => {
+  const firstRating = firstCard.film_info.total_rating;
+  const secondRating = secondCard.film_info.total_rating;
+
+  return secondRating - firstRating;
+};
+
+export const compareCommentsNumber = (firstCard, secondCard) => {
+  const firstComments = firstCard.comments.length;
+  const secondComments = secondCard.comments.length;
+
+  return secondComments - firstComments;
+};
+
+export const compareFilmDate = (firstCard, secondCard) => {
+  return dayjs(secondCard.film_info.release.date).diff(dayjs(firstCard.film_info.release.date));
 };

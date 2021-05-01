@@ -86,12 +86,12 @@ export default class FilmCard extends AbstractView{
     this.getElement().querySelector('.film-card__controls-item--favorite').addEventListener('click', this._controlFavoriteHandler);
   }
 
-  // removeHandlers() {
-  //   this.getElement().querySelector('.film-card__poster').removeEventListener('click', this._popupOpenHandler);
-  //   this.getElement().querySelector('.film-card__title').removeEventListener('click', this._popupOpenHandler);
-  //   this.getElement().querySelector('.film-card__comments').removeEventListener('click', this._popupOpenHandler);
-  //   this.getElement().querySelector('.film-card__controls-item--add-to-watchlist').removeEventListener('click', this._controlWatchlistHandler);
-  //   this.getElement().querySelector('.film-card__controls-item--mark-as-watched').removeEventListener('click', this._controlWatchedHandler);
-  //   this.getElement().querySelector('.film-card__controls-item--favorite').removeEventListener('click', this._controlFavoriteHandler);
-  // }
+  removeHandlers() {
+    this.getElement().querySelector('.film-card__poster').removeEventListener('click', this._popupOpenHandler);
+    this.getElement().querySelector('.film-card__title').removeEventListener('click', this._popupOpenHandler);
+    this.getElement().querySelector('.film-card__comments').removeEventListener('click', this._popupOpenHandler);
+    this.getElement().querySelector('.film-card__controls-item--add-to-watchlist').removeEventListener('click', this._controlWatchlistHandler);
+    this.getElement().querySelector('.film-card__controls-item--mark-as-watched').removeEventListener('click', this._controlWatchedHandler);
+    this.getElement().querySelector('.film-card__controls-item--favorite').removeEventListener('click', this._controlFavoriteHandler);
+  }
 }
