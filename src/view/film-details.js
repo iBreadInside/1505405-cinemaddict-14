@@ -177,11 +177,4 @@ export default class FilmDetails extends AbstractView {
     this._callback.popupFavoriteClick = callback;
     this.getElement().querySelector('#favorite').addEventListener('click', this._popupFavoriteHandler);
   }
-
-  removePopupHandlers() {
-    this.getElement().querySelector('.film-details__close-btn').removeEventListener('click', this._closeBtnClickHandler);
-    this.getElement().querySelector('#watchlist').removeEventListener('click', this._popupWatchlistHandler);
-    this.getElement().querySelector('#watched').removeEventListener('click', this._popupWatchedHandler);
-    this.getElement().querySelector('#favorite').removeEventListener('click', this._popupFavoriteHandler);
-  }
 }
