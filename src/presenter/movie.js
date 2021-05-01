@@ -45,13 +45,14 @@ export default class MoviePresenter {
     }
 
     if (this._filmListContainer.contains(prevFilmCardComponent.getElement())) {
-      // this._filmCardComponent.removeHandlers();
+      this._filmCardComponent.removeHandlers();
       this._setFilmCardHandlers();
 
       replace(this._filmCardComponent, prevFilmCardComponent);
     }
 
     if (this._popupStatus === popupStatus.OPEN) {
+      this._filmPopup.removePopupHandlers();
       this._setPopupHandlers();
       replace(this._filmPopup, prevPopupComponent);
       this._renderComments();
@@ -138,6 +139,7 @@ export default class MoviePresenter {
     this._siteBodyElement.classList.toggle('hide-overflow');
     remove(this._filmPopup);
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._filmPopup.removePopupHandlers();
     this._popupStatus = popupStatus.CLOSE;
   }
 
