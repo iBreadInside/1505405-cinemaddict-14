@@ -1,12 +1,5 @@
-import { DATES } from '../const';
+import { DATES, EMOJI } from '../const';
 import { getRandomFromArray } from '../utils/common';
-
-const EMOJI = [
-  'smile',
-  'sleeping',
-  'puke',
-  'angry',
-];
 
 const COMMENT_AUTHORS = [
   'Ilya O Reilly',

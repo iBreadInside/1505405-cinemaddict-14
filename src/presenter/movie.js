@@ -24,8 +24,6 @@ export default class MoviePresenter {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    // this._ctrlEnterKeyDownHandler = this._ctrlEnterKeyDownHandler.bind(this);
-    // this._handleCommentSubmit = this._handleCommentSubmit.bind(this);
   }
 
   init(filmCard, filmList) {
@@ -77,18 +75,17 @@ export default class MoviePresenter {
     this._filmCardComponent.setControlFavoriteHandler(this._handleFavoriteClick);
   }
 
-  _closePopop() {
+  _closePopup() {
     this._popupStatus = popupStatus.CLOSE;
     remove(this._filmPopup);
     this._siteBodyElement.classList.toggle('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
-    // document.removeEventListener('keydown', this._ctrlEnterKeyDownHandler);
   }
 
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      this._closePopop();
+      this._closePopup();
     }
   }
 
@@ -141,7 +138,7 @@ export default class MoviePresenter {
   }
 
   _closeBtnHandler() {
-    this._closePopop();
+    this._closePopup();
   }
 
   _setPopupHandlers() {
@@ -158,7 +155,6 @@ export default class MoviePresenter {
     this._popupStatus = popupStatus.OPEN;
     this._setPopupHandlers();
     this._renderComments();
-    // document.addEventListener('keydown', this._ctrlEnterKeyDownHandler);
   }
 
   _renderComments() {

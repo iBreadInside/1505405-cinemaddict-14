@@ -3,7 +3,7 @@ import AbstractView from './abstract.js';
 export default class Smart extends AbstractView {
   constructor() {
     super();
-    this._state = {};
+    this._filmState = {};
   }
 
   restoreHandlers() {
@@ -22,14 +22,14 @@ export default class Smart extends AbstractView {
     this.restoreHandlers(); // Добавляет обработчики
   }
 
-  updateState(update, justStateUpdating) {
+  updateState(update, justStateUpdating = false, scrollTopPosition = null) {
     if (!update) {
       return;
     }
 
-    this._state = Object.assign(
+    this._filmState = Object.assign(
       {},
-      this._state,
+      this._filmState,
       update,
     );
 
@@ -38,5 +38,9 @@ export default class Smart extends AbstractView {
     }
 
     this.updateElement();
+
+    if (scrollTopPosition !== null) {
+      this.getElement().scrollTop = scrollTopPosition;
+    }
   }
 }
