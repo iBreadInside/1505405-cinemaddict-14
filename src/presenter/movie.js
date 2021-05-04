@@ -24,18 +24,20 @@ export default class MoviePresenter {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    // this._ctrlEnterKeyDownHandler = this._ctrlEnterKeyDownHandler.bind(this);
+    // this._handleCommentSubmit = this._handleCommentSubmit.bind(this);
   }
 
   init(filmCard, filmList) {
     this._filmCard = filmCard;
     this._filmList = filmList;
+    this._filmComments = this._filmCard.comments;
 
     const prevFilmCardComponent = this._filmCardComponent;
     const prevPopupComponent = this._filmPopup;
 
     this._filmCardComponent = new FilmCard(filmCard);
     this._filmPopup = new FilmDetails(filmCard);
-    this._comment = new Comment(this._comments[0]);
 
     if (prevFilmCardComponent === null || prevPopupComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
@@ -75,13 +77,18 @@ export default class MoviePresenter {
     this._filmCardComponent.setControlFavoriteHandler(this._handleFavoriteClick);
   }
 
+  _closePopop() {
+    this._popupStatus = popupStatus.CLOSE;
+    remove(this._filmPopup);
+    this._siteBodyElement.classList.toggle('hide-overflow');
+    document.removeEventListener('keydown', this._escKeyDownHandler);
+    // document.removeEventListener('keydown', this._ctrlEnterKeyDownHandler);
+  }
+
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      this._popupStatus = popupStatus.CLOSE;
-      remove(this._filmPopup);
-      this._siteBodyElement.classList.toggle('hide-overflow');
-      document.removeEventListener('keydown', this._escKeyDownHandler);
+      this._closePopop();
     }
   }
 
@@ -134,10 +141,7 @@ export default class MoviePresenter {
   }
 
   _closeBtnHandler() {
-    this._siteBodyElement.classList.toggle('hide-overflow');
-    remove(this._filmPopup);
-    document.removeEventListener('keydown', this._escKeyDownHandler);
-    this._popupStatus = popupStatus.CLOSE;
+    this._closePopop();
   }
 
   _setPopupHandlers() {
@@ -154,9 +158,13 @@ export default class MoviePresenter {
     this._popupStatus = popupStatus.OPEN;
     this._setPopupHandlers();
     this._renderComments();
+    // document.addEventListener('keydown', this._ctrlEnterKeyDownHandler);
   }
 
   _renderComments() {
-    render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
+    this._filmComments.forEach((commentID) => {
+      this._comment = new Comment(this._comments[commentID]);
+      render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
+    });
   }
 }

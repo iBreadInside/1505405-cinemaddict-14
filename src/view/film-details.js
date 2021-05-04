@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { checkPlural, formatingRuntime } from '../utils/common';
-import AbstractView from './abstract';
+import Smart from './smart.js';
 
 const createCellSpans = (checkedValue, term) => {
   const spans = [];
@@ -128,7 +128,7 @@ const createFilmDetails = (filmCard) => {
   </section>`;
 };
 
-export default class FilmDetails extends AbstractView {
+export default class FilmDetails extends Smart {
   constructor(filmCard) {
     super();
     this._filmCard = filmCard;

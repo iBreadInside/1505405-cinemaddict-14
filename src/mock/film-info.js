@@ -35,7 +35,7 @@ const GENRES = [
   'Documental',
 ];
 
-const ID_COMMENTS = [0, 1, 2, 3, 4, 5];
+const ID_COMMENTS = [0, 1, 2, 3, 4];
 
 const TITLES = [
   'Made For Each Other',
