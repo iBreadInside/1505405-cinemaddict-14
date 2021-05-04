@@ -133,6 +133,7 @@ export default class FilmDetails extends Smart {
     this._popupFavoriteHandler = this._popupFavoriteHandler.bind(this);
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
+    this._commentInputHandler = this._commentInputHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -154,14 +155,26 @@ export default class FilmDetails extends Smart {
     this.getElement()
       .querySelector('.film-details__emoji-list')
       .addEventListener('click', this._emojiClickHandler, true);
+    this.getElement()
+      .querySelector('.film-details__comment-input')
+      .addEventListener('input', this._commentInputHandler);
   }
 
   _emojiClickHandler(evt) {
     if (evt.target.tagName === 'IMG') {
+      const scrollTopPosition = this.getElement().scrollTop;
+
       this.updateState({
         currentEmoji: evt.target.parentElement.previousElementSibling.value,
-      });
+      }, false, scrollTopPosition);
     }
+  }
+
+  _commentInputHandler(evt) {
+    evt.preventDefault();
+    this.updateState({
+      commentText: evt.target.value,
+    }, true);
   }
 
   _closeBtnClickHandler() {
