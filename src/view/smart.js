@@ -20,7 +20,7 @@ export default class Smart extends AbstractView {
     this.restoreHandlers(); // Добавляет обработчики
   }
 
-  updateState(update, justStateUpdating, scrollTopPosition = null) {
+  updateState(update, justStateUpdating) {
     if (!update) {
       return;
     }
@@ -36,9 +36,5 @@ export default class Smart extends AbstractView {
     }
 
     this.updateElement();
-
-    if (scrollTopPosition !== null) {
-      this.getElement().scrollTop = scrollTopPosition;
-    }
   }
 }

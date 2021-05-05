@@ -160,6 +160,8 @@ export default class FilmDetails extends Smart {
     this.setPopupWatchlistHandler(this._callback.popupWatchlistClick);
     this.setPopupWatchedHandler(this._callback.popupWatchedClick);
     this.setPopupFavoriteHandler(this._callback.popupFavoriteClick);
+
+    this.getElement().scrollTo(0, this._filmState.scrollTop);
   }
 
   _renderComments() {
@@ -184,11 +186,10 @@ export default class FilmDetails extends Smart {
 
   _emojiClickHandler(evt) {
     if (evt.target.tagName === 'IMG') {
-      const scrollTopPosition = this.getElement().scrollTop;
-
       this.updateState({
         currentEmoji: evt.target.parentElement.previousElementSibling.value,
-      }, false, scrollTopPosition);
+        scrollTop: this.getElement().scrollTop,
+      });
 
       this._renderComments();
     }
@@ -251,6 +252,14 @@ export default class FilmDetails extends Smart {
 
   static parseFilmStateToFilm(filmState) {
     filmState = Object.assign({}, filmState);
+
+    if (filmState.currentEmoji !== null) {
+      filmState.currentEmoji = null;
+    }
+
+    if (filmState.commentText !== null) {
+      filmState.commentText = null;
+    }
 
     delete filmState.currentEmoji;
     delete filmState.commentText;
