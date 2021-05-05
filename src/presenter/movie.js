@@ -1,5 +1,5 @@
 import { remove, render, replace, RenderPosition } from '../utils/render';
-import Comment from '../view/comment';
+// import Comment from '../view/comment';
 import FilmCard from '../view/film-card';
 import FilmDetails from '../view/film-details';
 
@@ -29,13 +29,13 @@ export default class MoviePresenter {
   init(filmCard, filmList) {
     this._filmCard = filmCard;
     this._filmList = filmList;
-    this._filmComments = this._filmCard.comments;
+    // this._filmComments = this._filmCard.comments;
 
     const prevFilmCardComponent = this._filmCardComponent;
     const prevPopupComponent = this._filmPopup;
 
     this._filmCardComponent = new FilmCard(filmCard);
-    this._filmPopup = new FilmDetails(filmCard);
+    this._filmPopup = new FilmDetails(filmCard, this._comments);
 
     if (prevFilmCardComponent === null || prevPopupComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
@@ -53,7 +53,7 @@ export default class MoviePresenter {
     if (this._popupStatus === popupStatus.OPEN) {
       this._setPopupHandlers();
       replace(this._filmPopup, prevPopupComponent);
-      this._renderComments();
+      // this._renderComments();
     }
 
     remove(prevFilmCardComponent);
@@ -77,6 +77,7 @@ export default class MoviePresenter {
 
   _closePopup() {
     this._popupStatus = popupStatus.CLOSE;
+    this._filmPopup.reset(this._filmCard);
     remove(this._filmPopup);
     this._siteBodyElement.classList.toggle('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
@@ -154,13 +155,13 @@ export default class MoviePresenter {
     this._siteBodyElement.classList.toggle('hide-overflow');
     this._popupStatus = popupStatus.OPEN;
     this._setPopupHandlers();
-    this._renderComments();
+    // this._renderComments();
   }
 
-  _renderComments() {
-    this._filmComments.forEach((commentID) => {
-      this._comment = new Comment(this._comments[commentID]);
-      render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
-    });
-  }
+  // _renderComments() {
+  //   this._filmComments.forEach((commentID) => {
+  //     this._comment = new Comment(this._comments[commentID]);
+  //     render(this._filmPopup.getElement().querySelector('.film-details__comments-list'), this._comment, RenderPosition.BEFOREEND);
+  //   });
+  // }
 }
