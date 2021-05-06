@@ -61,6 +61,7 @@ export default class MovieListPresenter {
 
   _handleMovieUpdate(updatedFilmCard) {
     this._filmList = updateItem(this._filmList, updatedFilmCard);
+    this._sourcedFilmList = updateItem(this._sourcedFilmList, updatedFilmCard);
 
     if (this._moviePresenter.MAIN[updatedFilmCard.id]) {
       this._moviePresenter.MAIN[updatedFilmCard.id].init(updatedFilmCard);
@@ -153,7 +154,7 @@ export default class MovieListPresenter {
 
   _renderFilmCard(filmCard, listContainer, filmListType) {
     const moviePresenter = new MoviePresenter(listContainer, this._comments, this._handleMovieUpdate);
-    moviePresenter.init(filmCard, this._filmList);
+    moviePresenter.init(filmCard);
 
     switch (filmListType) {
       case FilmListType.MAIN:

@@ -24,8 +24,8 @@ const createEmojiTemplate = () => {
   return emoji.join('');
 };
 
-const createFilmDetails = (filmState) => {
-  const {comments, film_info, user_details, currentEmoji, commentText} = filmState;
+const createFilmDetails = (state) => {
+  const {comments, film_info, user_details, currentEmoji, commentText} = state;
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -127,9 +127,9 @@ const createFilmDetails = (filmState) => {
 export default class FilmDetails extends Smart {
   constructor(filmCard, commentsList) {
     super();
-    this._filmState = FilmDetails.parseFilmToFilmState(filmCard);
+    this._state = FilmDetails.parseFilmToFilmState(filmCard);
     this._comments = commentsList;
-    this._filmComments = filmCard.comments;
+    this._filmCommentsID = filmCard.comments;
 
     this._closeBtnClickHandler = this._closeBtnClickHandler.bind(this);
     this._popupWatchlistHandler = this._popupWatchlistHandler.bind(this);
@@ -150,7 +150,7 @@ export default class FilmDetails extends Smart {
   }
 
   getTemplate() {
-    return createFilmDetails(this._filmState);
+    return createFilmDetails(this._state);
   }
 
   restoreHandlers() {
@@ -160,16 +160,14 @@ export default class FilmDetails extends Smart {
     this.setPopupWatchlistHandler(this._callback.popupWatchlistClick);
     this.setPopupWatchedHandler(this._callback.popupWatchedClick);
     this.setPopupFavoriteHandler(this._callback.popupFavoriteClick);
-
-    this.getElement().scrollTo(0, this._filmState.scrollTop);
   }
 
   _renderComments() {
-    if (this._filmComments.length !== null) {
-      this._filmComments.forEach((commentID) => {
-        this._comment = new Comment(this._comments[commentID]);
+    if (this._filmCommentsID.length !== null) {
+      this._filmCommentsID.forEach((commentID) => {
+        const comment = new Comment(this._comments[commentID]);
         const popupContainer = this.getElement().querySelector('.film-details__comments-list');
-        render(popupContainer, this._comment, RenderPosition.BEFOREEND);
+        render(popupContainer, comment, RenderPosition.BEFOREEND);
       });
     }
   }
@@ -177,7 +175,7 @@ export default class FilmDetails extends Smart {
   _setInnerHandlers() {
     this.getElement()
       .querySelector('.film-details__emoji-list')
-      .addEventListener('click', this._emojiClickHandler, true);
+      .addEventListener('click', this._emojiClickHandler);
 
     this.getElement()
       .querySelector('.film-details__comment-input')
@@ -192,6 +190,7 @@ export default class FilmDetails extends Smart {
       });
 
       this._renderComments();
+      this.getElement().scrollTo(0, this._state.scrollTop);
     }
   }
 
@@ -250,20 +249,20 @@ export default class FilmDetails extends Smart {
     );
   }
 
-  static parseFilmStateToFilm(filmState) {
-    filmState = Object.assign({}, filmState);
+  static parseFilmStateToFilm(state) {
+    state = Object.assign({}, state);
 
-    if (filmState.currentEmoji !== null) {
-      filmState.currentEmoji = null;
+    if (state.currentEmoji !== null) {
+      state.currentEmoji = null;
     }
 
-    if (filmState.commentText !== null) {
-      filmState.commentText = null;
+    if (state.commentText !== null) {
+      state.commentText = null;
     }
 
-    delete filmState.currentEmoji;
-    delete filmState.commentText;
+    delete state.currentEmoji;
+    delete state.commentText;
 
-    return filmState;
+    return state;
   }
 }
