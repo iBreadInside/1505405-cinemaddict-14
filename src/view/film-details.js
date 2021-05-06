@@ -170,12 +170,13 @@ export default class FilmDetails extends Smart {
         render(popupContainer, comment, RenderPosition.BEFOREEND);
       });
     }
+    this.getElement().scrollTo(0, this._state.scrollTop);
   }
 
   _setInnerHandlers() {
     this.getElement()
       .querySelector('.film-details__emoji-list')
-      .addEventListener('click', this._emojiClickHandler);
+      .addEventListener('click', this._emojiClickHandler, true);
 
     this.getElement()
       .querySelector('.film-details__comment-input')
@@ -190,7 +191,6 @@ export default class FilmDetails extends Smart {
       });
 
       this._renderComments();
-      this.getElement().scrollTo(0, this._state.scrollTop);
     }
   }
 

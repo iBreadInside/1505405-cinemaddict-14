@@ -14,8 +14,6 @@ export default class MoviePresenter {
     this._changeData = changeData;
 
     this._filmCardComponent = null;
-    this._filmPopup = null;
-
     this._popupStatus = popupStatus.CLOSE;
 
     this._siteBodyElement = document.body;
@@ -34,6 +32,7 @@ export default class MoviePresenter {
     const prevPopupComponent = this._filmPopup;
 
     this._filmCardComponent = new FilmCard(filmCard);
+    this._filmPopup = new FilmDetails(filmCard, this._comments);
 
     if (prevFilmCardComponent === null || prevPopupComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
@@ -51,7 +50,6 @@ export default class MoviePresenter {
     if (this._popupStatus === popupStatus.OPEN) {
       this._setPopupHandlers();
       replace(this._filmPopup, prevPopupComponent);
-      this._renderFilmPopup();
     }
 
     remove(prevFilmCardComponent);
@@ -77,7 +75,7 @@ export default class MoviePresenter {
     this._popupStatus = popupStatus.CLOSE;
     this._filmPopup.reset(this._filmCard);
     remove(this._filmPopup);
-    this._siteBodyElement.classList.remove('hide-overflow');
+    this._siteBodyElement.classList.toggle('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
@@ -140,20 +138,18 @@ export default class MoviePresenter {
     this._closePopup();
   }
 
-  _renderFilmPopup() {
-    this._filmPopup = new FilmDetails(this._filmCard, this._comments);
-
-    this._siteBodyElement.appendChild(this._filmPopup.getElement());
-    this._siteBodyElement.classList.add('hide-overflow');
-    this._popupStatus = popupStatus.OPEN;
-    this._setPopupHandlers();
-  }
-
   _setPopupHandlers() {
     document.addEventListener('keydown', this._escKeyDownHandler);
     this._filmPopup.setCloseBtnClickHandler(this._closeBtnHandler);
     this._filmPopup.setPopupWatchlistHandler(this._handleWatchlistClick);
     this._filmPopup.setPopupWatchedHandler(this._handleWatchedClick);
     this._filmPopup.setPopupFavoriteHandler(this._handleFavoriteClick);
+  }
+
+  _renderFilmPopup() {
+    this._siteBodyElement.appendChild(this._filmPopup.getElement());
+    this._siteBodyElement.classList.toggle('hide-overflow');
+    this._popupStatus = popupStatus.OPEN;
+    this._setPopupHandlers();
   }
 }
