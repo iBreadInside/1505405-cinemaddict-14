@@ -43,6 +43,8 @@ export default class MovieListPresenter {
     this._handleMovieUpdate = this._handleMovieUpdate.bind(this);
     this._handleShowMoreBtnClick = this._handleShowMoreBtnClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+    this._handlePopupMode = this._handlePopupMode.bind(this);
   }
 
   init(filmList, commentsList) {
@@ -116,6 +118,12 @@ export default class MovieListPresenter {
     if (this._byRatingElement.classList.contains('sort__button--active')) this._byRatingElement.classList.remove('sort__button--active');
   }
 
+  _handlePopupMode() {
+    Object
+      .values(this._moviePresenter.MAIN)
+      .forEach((presenter) => presenter.resetView());
+  }
+
   _sortFilmList(sortType) {
     switch (sortType) {
       case SortType.DATE:
@@ -153,7 +161,7 @@ export default class MovieListPresenter {
   }
 
   _renderFilmCard(filmCard, listContainer, filmListType) {
-    const moviePresenter = new MoviePresenter(listContainer, this._comments, this._handleMovieUpdate);
+    const moviePresenter = new MoviePresenter(listContainer, this._comments, this._handleMovieUpdate, this._handlePopupMode);
     moviePresenter.init(filmCard);
 
     switch (filmListType) {

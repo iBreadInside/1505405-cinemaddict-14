@@ -138,10 +138,7 @@ export default class FilmDetails extends Smart {
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
-  }
-
-  reset() {
-    this._state = FilmDetails.parseFilmStateToFilm(this._state);
+    this._setInnerHandlers();
   }
 
   getTemplate() {
@@ -149,7 +146,6 @@ export default class FilmDetails extends Smart {
   }
 
   restoreHandlers() {
-    this._renderComments();
     this._setInnerHandlers();
 
     this.setCloseBtnClickHandler(this._callback.closeBtnClick);
@@ -177,6 +173,8 @@ export default class FilmDetails extends Smart {
     this.getElement()
       .querySelector('.film-details__comment-input')
       .addEventListener('input', this._commentInputHandler);
+
+    this._renderComments();
   }
 
   _emojiClickHandler(evt) {
