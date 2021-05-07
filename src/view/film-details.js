@@ -138,15 +138,10 @@ export default class FilmDetails extends Smart {
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
-
-    this._renderComments();
-    this._setInnerHandlers();
   }
 
-  reset(filmCard) {
-    this.updateState(
-      FilmDetails.parseFilmStateToFilm(filmCard),
-    );
+  reset() {
+    this._state = FilmDetails.parseFilmStateToFilm(this._state);
   }
 
   getTemplate() {
@@ -154,6 +149,7 @@ export default class FilmDetails extends Smart {
   }
 
   restoreHandlers() {
+    this._renderComments();
     this._setInnerHandlers();
 
     this.setCloseBtnClickHandler(this._callback.closeBtnClick);
@@ -189,8 +185,6 @@ export default class FilmDetails extends Smart {
         currentEmoji: evt.target.parentElement.previousElementSibling.value,
         scrollTop: this.getElement().scrollTop,
       });
-
-      this._renderComments();
     }
   }
 

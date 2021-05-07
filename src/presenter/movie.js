@@ -73,7 +73,7 @@ export default class MoviePresenter {
 
   _closePopup() {
     this._popupStatus = popupStatus.CLOSE;
-    this._filmPopup.reset(this._filmCard);
+    this._filmPopup.reset();
     remove(this._filmPopup);
     this._siteBodyElement.classList.toggle('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
@@ -151,5 +151,6 @@ export default class MoviePresenter {
     this._siteBodyElement.classList.toggle('hide-overflow');
     this._popupStatus = popupStatus.OPEN;
     this._setPopupHandlers();
+    this._filmPopup.restoreHandlers();
   }
 }
