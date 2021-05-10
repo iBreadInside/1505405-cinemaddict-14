@@ -1,12 +1,5 @@
-import { DATES } from '../const';
+import { DATES, EMOJI } from '../const';
 import { getRandomFromArray } from '../utils/common';
-
-const EMOTIONS = [
-  'smile',
-  'sleeping',
-  'puke',
-  'angry',
-];
 
 const COMMENT_AUTHORS = [
   'Ilya O Reilly',
@@ -28,6 +21,6 @@ export const generateComments = () => {
     author: getRandomFromArray(COMMENT_AUTHORS),
     comment: getRandomFromArray(COMMENT_TEXTS),
     date: getRandomFromArray(DATES),
-    emotion: `./images/emoji/${getRandomFromArray(EMOTIONS)}.png`,
+    emotion: `./images/emoji/${getRandomFromArray(EMOJI)}.png`,
   };
 };

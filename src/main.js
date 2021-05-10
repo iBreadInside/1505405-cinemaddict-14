@@ -18,6 +18,7 @@ const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
 const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
+comments.forEach((comment) => comment.id = comments.indexOf(comment));
 
 // Render profile info
 render(headerElement, new ProfileInfo(), RenderPosition.BEFOREEND);
