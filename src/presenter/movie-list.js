@@ -107,13 +107,6 @@ export default class MovieListPresenter {
       case UpdateType.MINOR:
         this._clearFilmsBoard();
         this._renderFilmBoard();
-        if (this._moviePresenter.TOP_RAITING[data.id]) {
-          this._moviePresenter.TOP_RAITING[data.id].init(data);
-        }
-
-        if (this._moviePresenter.MOST_COMMENTED[data.id]) {
-          this._moviePresenter.MOST_COMMENTED[data.id].init(data);
-        }
         break;
       // - обновить всю доску (например, при переключении фильтра)
       case UpdateType.MAJOR:
@@ -150,7 +143,7 @@ export default class MovieListPresenter {
   }
 
   _renderFilmCard(filmCard, listContainer, filmListType) {
-    const moviePresenter = new MoviePresenter(listContainer, this._comments, this._handleViewAction, this._handlePopupMode);
+    const moviePresenter = new MoviePresenter(listContainer, this._filterModel, this._comments, this._handleViewAction, this._handlePopupMode);
     moviePresenter.init(filmCard);
 
     switch (filmListType) {
@@ -250,7 +243,7 @@ export default class MovieListPresenter {
 
     render(this._listContainer, this._filmSectionComponent, RenderPosition.BEFOREEND);
 
-    const films = this._getFilms().slice(0, Math.min(filmCount, FILMS_IN_LINE));
+    const films = this._getFilms().slice(0, Math.min(filmCount, this._renderedFilmCount));
 
     this._renderFilmCards(films, this._filmListElement, FilmListType.MAIN);
 

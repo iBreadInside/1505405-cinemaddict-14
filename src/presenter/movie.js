@@ -9,8 +9,9 @@ const popupStatus = {
 };
 
 export default class MoviePresenter {
-  constructor(filmListContainer, commentsList, changeData, changePopupStatus) {
+  constructor(filmListContainer, filterModel, commentsList, changeData, changePopupStatus) {
     this._filmListContainer = filmListContainer;
+    this._filterModel = filterModel;
     this._comments = commentsList.slice();
     this._changeData = changeData;
     this._changeMode = changePopupStatus;
@@ -68,9 +69,17 @@ export default class MoviePresenter {
     }
   }
 
+  _updTypeByActiveFilter() {
+    if (this._filterModel.getFilter() === 'ALL') {
+      return UpdateType.PATCH;
+    } else {
+      return UpdateType.MINOR;
+    }
+  }
+
   _handleWatchlistClick() {
     this._changeData(
-      UpdateType.MINOR,
+      this._updTypeByActiveFilter(),
       Object.assign(
         {},
         this._filmCard,
@@ -87,7 +96,7 @@ export default class MoviePresenter {
 
   _handleWatchedClick() {
     this._changeData(
-      UpdateType.MINOR,
+      this._updTypeByActiveFilter(),
       Object.assign(
         {},
         this._filmCard,
@@ -104,7 +113,7 @@ export default class MoviePresenter {
 
   _handleFavoriteClick() {
     this._changeData(
-      UpdateType.MINOR,
+      this._updTypeByActiveFilter(),
       Object.assign(
         {},
         this._filmCard,
