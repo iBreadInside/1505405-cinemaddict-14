@@ -8,8 +8,9 @@ import { generateComments } from './mock/comments.js';
 import StatisticSection from './view/statistic-section.js';
 import { render, RenderPosition } from './utils/render.js';
 import MovieListPresenter from './presenter/movie-list.js';
+import MoviesModel from './model/movies.js';
 
-const FILMS_NUMBER = 17;
+const FILMS_NUMBER = 12;
 const COMMENTS_NUMBER = 5;
 
 const headerElement = document.querySelector('.header');
@@ -19,6 +20,10 @@ const footerStatisticsElement = document.querySelector('.footer__statistics');
 const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
 const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
 comments.forEach((comment) => comment.id = comments.indexOf(comment));
+
+// Movies Model
+const filmsModel = new MoviesModel();
+filmsModel.setFilms(filmCards);
 
 // Render profile info
 render(headerElement, new ProfileInfo(), RenderPosition.BEFOREEND);
@@ -65,7 +70,7 @@ const countStatistic = () => {
 
 render(statisticSection, new StatisticText(countStatistic()), RenderPosition.BEFOREEND);
 
-const movieListPresenter = new MovieListPresenter(mainElement);
-movieListPresenter.init(filmCards, comments);
+const movieListPresenter = new MovieListPresenter(mainElement, filmsModel);
+movieListPresenter.init(comments);
 
 render(footerStatisticsElement, new FooterStats(FILMS_NUMBER), RenderPosition.BEFOREEND);

@@ -1,6 +1,7 @@
 import { remove, render, replace, RenderPosition } from '../utils/render';
 import FilmCard from '../view/film-card';
 import FilmDetails from '../view/film-details';
+import { UpdateType } from '../const.js';
 
 const popupStatus = {
   CLOSE: 'CLOSE',
@@ -22,7 +23,7 @@ export default class MoviePresenter {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    this._renderFilmPopup =this._renderFilmPopup.bind(this);
+    this._renderFilmPopup = this._renderFilmPopup.bind(this);
     this._closePopup = this._closePopup.bind(this);
   }
 
@@ -69,6 +70,7 @@ export default class MoviePresenter {
 
   _handleWatchlistClick() {
     this._changeData(
+      UpdateType.PATCH,
       Object.assign(
         {},
         this._filmCard,
@@ -85,6 +87,7 @@ export default class MoviePresenter {
 
   _handleWatchedClick() {
     this._changeData(
+      UpdateType.PATCH,
       Object.assign(
         {},
         this._filmCard,
@@ -101,6 +104,7 @@ export default class MoviePresenter {
 
   _handleFavoriteClick() {
     this._changeData(
+      UpdateType.PATCH,
       Object.assign(
         {},
         this._filmCard,

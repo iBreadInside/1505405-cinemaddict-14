@@ -13,3 +13,22 @@ export const EMOJI = [
   'puke',
   'angry',
 ];
+
+export const ButtonType = {
+  WATCHLIST: 'WATCHLIST',
+  WATCHED: 'WATCHED',
+  FAVORITES: 'FAVORITES',
+};
+
+export const FilterType = {
+  ALL: 'ALL',
+  WATCHLIST: 'WATCHLIST',
+  WATCHED: 'WATCHED',
+  FAVORITES: 'FAVORITES',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
