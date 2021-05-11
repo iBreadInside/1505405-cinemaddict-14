@@ -70,7 +70,7 @@ export default class MoviePresenter {
 
   _handleWatchlistClick() {
     this._changeData(
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._filmCard,
@@ -87,7 +87,7 @@ export default class MoviePresenter {
 
   _handleWatchedClick() {
     this._changeData(
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._filmCard,
@@ -104,7 +104,7 @@ export default class MoviePresenter {
 
   _handleFavoriteClick() {
     this._changeData(
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._filmCard,

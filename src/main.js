@@ -9,6 +9,9 @@ import StatisticSection from './view/statistic-section.js';
 import { render, RenderPosition } from './utils/render.js';
 import MovieListPresenter from './presenter/movie-list.js';
 import MoviesModel from './model/movies.js';
+import FilterModel from './model/filter.js';
+// import FiltersBlockView from './view/main-navigation.js';
+import FilterPresenter from './presenter/filter.js';
 
 const FILMS_NUMBER = 12;
 const COMMENTS_NUMBER = 5;
@@ -21,9 +24,18 @@ const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
 const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
 comments.forEach((comment) => comment.id = comments.indexOf(comment));
 
-// Movies Model
+// const filters = [
+//   {
+//     type: 'all',
+//     name: 'ALL',
+//     count: 0,
+//   },
+// ];
+
 const filmsModel = new MoviesModel();
 filmsModel.setFilms(filmCards);
+
+const filtersModel = new FilterModel();
 
 // Render profile info
 render(headerElement, new ProfileInfo(), RenderPosition.BEFOREEND);
@@ -70,7 +82,10 @@ const countStatistic = () => {
 
 render(statisticSection, new StatisticText(countStatistic()), RenderPosition.BEFOREEND);
 
-const movieListPresenter = new MovieListPresenter(mainElement, filmsModel);
+const movieListPresenter = new MovieListPresenter(mainElement, filmsModel, filtersModel);
+const filterPresenter = new FilterPresenter(mainElement, filtersModel, filmsModel);
+
+filterPresenter.init();
 movieListPresenter.init(comments);
 
 render(footerStatisticsElement, new FooterStats(FILMS_NUMBER), RenderPosition.BEFOREEND);

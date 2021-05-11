@@ -1,3 +1,5 @@
+import { FilterType } from '../const';
+
 export const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
   const fractionMultiplier = Math.pow(10, fractionDigits);
   min = Math.abs(min);
@@ -57,16 +59,9 @@ export const checkPlural = (noun, enumeration) => {
   return (enumeration.length > 1) ? `${noun}s` : noun;
 };
 
-// export const updateItem = (items, update) => {
-//   const index = items.findIndex((item) => item.id === update.id);
-
-//   if (index === -1) {
-//     return items;
-//   }
-
-//   return [
-//     ...items.slice(0, index),
-//     update,
-//     ...items.slice(index + 1),
-//   ];
-// };
+export const filter = {
+  [FilterType.ALL]: (films) => films.slice(),
+  [FilterType.WATCHLIST]: (films) => films.filter(({user_details}) => user_details['watchlist']),
+  [FilterType.WATCHED]: (films) => films.filter(({user_details}) => user_details['already_watched']),
+  [FilterType.FAVORITES]: (films) => films.filter(({user_details}) => user_details['favorite']),
+};
