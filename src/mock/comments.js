@@ -15,12 +15,12 @@ const COMMENT_TEXTS = [
   'Very very old. Meh',
 ];
 
-export const generateComments = () => {
+export const generateComments = (id) => {
   return {
-    id: 0,
+    id,
     author: getRandomFromArray(COMMENT_AUTHORS),
     comment: getRandomFromArray(COMMENT_TEXTS),
     date: getRandomFromArray(DATES),
-    emotion: `./images/emoji/${getRandomFromArray(EMOJI)}.png`,
+    emotion: getRandomFromArray(EMOJI),
   };
 };

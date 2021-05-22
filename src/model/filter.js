@@ -1,18 +1,18 @@
-import { FilterType } from '../const';
+import { MenuItem } from '../const';
 import Observer from '../utils/observer';
 
 export default class Filter extends Observer {
   constructor() {
     super();
-    this._activeFilter = FilterType.ALL;
+    this._activeFilter = MenuItem.ALL_MOVIES;
   }
 
-  setFilter(updateType, filter) {
+  set(updateType, filter) {
     this._activeFilter = filter;
     this._notify(updateType, filter);
   }
 
-  getFilter() {
+  get() {
     return this._activeFilter;
   }
 }

@@ -1,5 +1,4 @@
 import { DATES } from '../const';
-import { nanoid } from 'nanoid';
 import { generateRandomBoolean, getRandomFromArray, getRandomNumber, modificateArray } from '../utils/common';
 
 const ACTORS = [
@@ -80,15 +79,15 @@ const WRITERS = [
   'Stephen King',
 ];
 
-export const generateFilmCard = () => {
+export const generateFilmCard = (id) => {
   return {
-    id: nanoid(),
+    id,
     comments: modificateArray(ID_COMMENTS),
     film_info: {
       title: getRandomFromArray(TITLES),
       alternative_title: ALTERNATIVE_TITLE,
       total_rating: getRandomNumber(0, 10, 1),
-      poster: `images/posters/${getRandomFromArray(POSTERS)}`,
+      poster: getRandomFromArray(POSTERS),
       age_rating: getRandomFromArray(AGE_RATINGS),
       director: DIRECTOR,
       writers: modificateArray(WRITERS),

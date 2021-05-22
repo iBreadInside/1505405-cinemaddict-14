@@ -3,28 +3,28 @@ import Observer from '../utils/observer';
 export default class MoviesModel extends Observer {
   constructor() {
     super();
-    this._filmCards = [];
+    this._movies = [];
   }
 
-  setFilms(filmCards) {
-    this._filmCards = filmCards.slice();
+  set(movie) {
+    this._movies = movie.slice();
   }
 
-  getFilms() {
-    return this._filmCards;
+  get() {
+    return this._movies;
   }
 
-  updateFilm(updateType, update) {
-    const index = this._filmCards.findIndex((film) => film.id === update.id);
+  updateMovie(updateType, update) {
+    const index = this._movies.findIndex((movie) => movie.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting film');
     }
 
-    this._filmCards = [
-      ...this._filmCards.slice(0, index),
+    this._movies = [
+      ...this._movies.slice(0, index),
       update,
-      ...this._filmCards.slice(index + 1),
+      ...this._movies.slice(index + 1),
     ];
 
     this._notify(updateType, update);

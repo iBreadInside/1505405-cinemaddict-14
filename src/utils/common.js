@@ -1,4 +1,4 @@
-import { FilterType } from '../const';
+import { MenuItem, UserRank } from '../const';
 
 export const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
   const fractionMultiplier = Math.pow(10, fractionDigits);
@@ -60,8 +60,25 @@ export const checkPlural = (noun, enumeration) => {
 };
 
 export const filter = {
-  [FilterType.ALL]: (films) => films.slice(),
-  [FilterType.WATCHLIST]: (films) => films.filter(({user_details}) => user_details['watchlist']),
-  [FilterType.WATCHED]: (films) => films.filter(({user_details}) => user_details['already_watched']),
-  [FilterType.FAVORITES]: (films) => films.filter(({user_details}) => user_details['favorite']),
+  [MenuItem.ALL_MOVIES]: (films) => films,
+  [MenuItem.WATCHLIST]: (films) => films.filter((movie) => movie.user_details.watchlist),
+  [MenuItem.HISTORY]: (films) => films.filter((movie) => movie.user_details.already_watched),
+  [MenuItem.FAVORITES]: (films) => films.filter((movie) => movie.user_details.favorite),
+  [MenuItem.STATS]: (films) => films,
+};
+
+export const rank = {
+  [UserRank.NOVICE]: (count) => count <= 10,
+  [UserRank.FAN]: (count) => count <= 20 && count > 10,
+  [UserRank.MOVIE_BUFF]: (count) => count > 20,
+};
+
+export const getRankName = (movies) => {
+  const alreadyWatchedMovies = movies.filter((movie) => movie.user_details.already_watched);
+  const watchedMoviesAmount = alreadyWatchedMovies.length;
+  const [rankName] = Object.entries(rank)
+    .filter(([, rankCount]) => rankCount(watchedMoviesAmount))
+    .flat();
+
+  return rankName;
 };

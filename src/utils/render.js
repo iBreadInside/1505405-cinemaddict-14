@@ -25,7 +25,7 @@ export const render = (container, child, place) => {
     case RenderPosition.AFTERBEGIN:
       container.prepend(child);
       break;
-    case RenderPosition.BEFOREEND:
+    default:
       container.append(child);
       break;
   }

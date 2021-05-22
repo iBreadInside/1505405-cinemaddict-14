@@ -1,91 +1,79 @@
-import ProfileInfo from './view/profile.js';
-import StatisticRank from './view/statistic-rank.js';
-import StatisticFilter from './view/statistic-filter.js';
-import StatisticText from './view/statistic-text.js';
-import FooterStats from './view/footer-stats.js';
+import { MenuItem, UpdateType } from './const.js';
+
 import { generateFilmCard } from './mock/film-info.js';
 import { generateComments } from './mock/comments.js';
-import StatisticSection from './view/statistic-section.js';
-import { render, RenderPosition } from './utils/render.js';
+// import {getRandomNumber} from './utils/common.js';
+
+import StatsView from './view/stats.js';
+
+import ProfilePresenter from './presenter/profile-info.js';
+import SiteMenuPresenter from './presenter/site-menu.js';
 import MovieListPresenter from './presenter/movie-list.js';
+import FooterStatsPresenter from './presenter/footer-stats.js';
+
 import MoviesModel from './model/movies.js';
+import CommentsModel from './model/comments.js';
 import FilterModel from './model/filter.js';
-// import FiltersBlockView from './view/main-navigation.js';
-import FilterPresenter from './presenter/filter.js';
+import { remove, render } from './utils/render.js';
 
 const FILMS_NUMBER = 12;
-const COMMENTS_NUMBER = 5;
+// const COMMENTS_NUMBER = 5;
 
 const headerElement = document.querySelector('.header');
 const mainElement = document.querySelector('.main');
-const footerStatisticsElement = document.querySelector('.footer__statistics');
+const footerStatsElement = document.querySelector('.footer__statistics');
 
-const filmCards = new Array(FILMS_NUMBER).fill().map(generateFilmCard);
-const comments = new Array(COMMENTS_NUMBER).fill().map(generateComments);
-comments.forEach((comment) => comment.id = comments.indexOf(comment));
+// const TOTAL_MOVIE_COUNT = 24;
+// const MIN_FILM_NUMBER = 100000;
+// const MAX_FILM_NUMBER = 150000;
 
-// const filters = [
-//   {
-//     type: 'all',
-//     name: 'ALL',
-//     count: 0,
-//   },
-// ];
+const idArray = Array.from(Array(FILMS_NUMBER).keys());
+const comments = idArray.map((id) => generateComments(id));
+const movies = idArray.map((id) => generateFilmCard(id));
+// const totalMovieCount = getRandomNumber(MIN_FILM_NUMBER, MAX_FILM_NUMBER);
 
-const filmsModel = new MoviesModel();
-filmsModel.setFilms(filmCards);
+const moviesModel = new MoviesModel();
+moviesModel.set(movies);
 
-const filtersModel = new FilterModel();
+const commentsModel = new CommentsModel();
+commentsModel.set(comments);
 
-// Render profile info
-render(headerElement, new ProfileInfo(), RenderPosition.BEFOREEND);
+const filterModel = new FilterModel();
 
-// Render statistic
-const statisticSection = new StatisticSection();
-render(mainElement, statisticSection, RenderPosition.BEFOREEND);
-render(statisticSection, new StatisticRank(), RenderPosition.BEFOREEND);
-render(statisticSection, new StatisticFilter(), RenderPosition.BEFOREEND);
+const profilePresenter = new ProfilePresenter(headerElement, moviesModel);
+const siteMenuPresenter = new SiteMenuPresenter(mainElement, filterModel, moviesModel);
+const movieListPresenter = new MovieListPresenter(mainElement, moviesModel, commentsModel, filterModel);
+const footerStatsPresenter = new FooterStatsPresenter(footerStatsElement, moviesModel, movies.length);
 
-// Statistic counter
-const countStatistic = () => {
-  const counter = {
-    watched: 0,
-    total_runtime: 0,
-    genre: {},
-    top_genre: '',
-  };
-  for (const card of filmCards) {
-    if (card.user_details.already_watched) {
-      counter.watched++;
-      counter.total_runtime += card.film_info.runtime;
-      for (const genreName of card.film_info.genre) {
-        if (genreName in counter.genre) {
-          counter.genre[genreName]++;
-        } else {
-          counter.genre[genreName] = 1;
-        }
-      }
-    }
+profilePresenter.init();
+siteMenuPresenter.init();
+movieListPresenter.init();
+footerStatsPresenter.init();
+
+let statsComponent = null;
+
+const handleMenuItemClick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.STATS:
+      filterModel.set(UpdateType.MAJOR, MenuItem.STATS);
+      siteMenuPresenter.toggleMenuItem(menuItem);
+      statsComponent = new StatsView(moviesModel.get());
+      render(mainElement, statsComponent);
+      movieListPresenter.hide();
+      break;
+
+    default:
+      siteMenuPresenter.toggleMenuItem(menuItem);
+      remove(statsComponent);
+      movieListPresenter.show();
+      break;
   }
-
-  let maxValue = 0;
-  let maxKey = 0;
-  for (const genreName of Object.keys(counter.genre)) {
-    if (counter.genre[genreName] > maxValue) {
-      maxValue = counter.genre[genreName];
-      maxKey = genreName;
-    }
-    counter.top_genre = maxKey;
-  }
-  return counter;
 };
 
-render(statisticSection, new StatisticText(countStatistic()), RenderPosition.BEFOREEND);
+const mainNavigation = document.querySelector('.main-navigation');
 
-const movieListPresenter = new MovieListPresenter(mainElement, filmsModel, filtersModel);
-const filterPresenter = new FilterPresenter(mainElement, filtersModel, filmsModel);
-
-filterPresenter.init();
-movieListPresenter.init(comments);
-
-render(footerStatisticsElement, new FooterStats(FILMS_NUMBER), RenderPosition.BEFOREEND);
+mainNavigation.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  const menuItemType = evt.target.dataset.type;
+  handleMenuItemClick(menuItemType);
+});

@@ -16,7 +16,8 @@ export default class ShowMoreButton extends AbstractView {
     return createShowMoreButton();
   }
 
-  _clickHandler() {
+  _clickHandler(evt) {
+    evt.preventDefault();
     this._callback.click();
   }
 
