@@ -45,7 +45,6 @@ export default class FilmCardView extends AbstractView {
   constructor(movie) {
     super();
     this._movie = movie;
-    // this._comments = comments;
     this._filmCardClickHandler = this._filmCardClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);

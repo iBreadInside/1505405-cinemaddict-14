@@ -271,17 +271,14 @@ export default class FilmDetailsView extends Smart {
   }
 
   _watchlistClickHandler() {
-    // evt.preventDefault();
     this._callback.watchlistClick();
   }
 
   _watchedClickHandler() {
-    // evt.preventDefault();
     this._callback.watchedClick();
   }
 
   _favoriteClickHandler() {
-    // evt.preventDefault();
     this._callback.favoriteClick();
   }
 

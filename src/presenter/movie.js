@@ -30,9 +30,6 @@ export default class MoviePresenter {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    // this._handleAddToWatchlistInPopupClick = this._handleAddToWatchlistInPopupClick.bind(this);
-    // this._handleFavoriteInPopupClick = this._handleFavoriteInPopupClick.bind(this);
-    // this._handleWatchedInPopupClick = this._handleWatchedInPopupClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
@@ -43,10 +40,6 @@ export default class MoviePresenter {
     const prevFilmCardComponent = this._filmCardComponent;
     this._filmCardComponent =  new FilmCardView(this._getMovie(), this._getMovieComments());
     this._filmCardComponent.setPopupOpenHandler(this._handleFilmCardClick);
-
-    // this._filmCardComponent.setFilmCardClickHandler(this._handleFilmCardClick, '.film-card__poster');
-    // this._filmCardComponent.setFilmCardClickHandler(this._handleFilmCardClick, '.film-card__title');
-    // this._filmCardComponent.setFilmCardClickHandler(this._handleFilmCardClick, '.film-card__comments');
     this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._filmCardComponent.setWatchedClickHandler(this._handleWatchedClick);

@@ -22,8 +22,6 @@ export default class SiteMenuPresenter {
   init() {
     this._renderSiteMenu();
     this._renderFilters();
-
-    // document.querySelector('.main-navigation').addEventListener('click', this._handleSiteMenuClick);
   }
 
   _renderFilters() {

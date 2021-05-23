@@ -1,4 +1,3 @@
-// import { generateComments } from '../mock/comments';
 import Observer from '../utils/observer';
 
 export default class CommentsModel extends Observer {

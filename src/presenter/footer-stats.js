@@ -1,4 +1,3 @@
-// import FooterStatsView from '../view/footer-Stats.js';
 import FooterStatsView from '../view/footer-stats.js';
 import { remove, render, replace }  from '../utils/render.js';
 

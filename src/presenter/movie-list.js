@@ -1,15 +1,7 @@
-// import {mainElement} from '../elements.js';
 import {render, remove}  from '../utils/render.js';
 import { SortType, compareRating, compareCommentsNumber, compareFilmDate} from '../utils/render.js';
 import { UpdateType, UserAction} from '../const.js';
 import {filter} from '../utils/common.js';
-
-// import FilmsContainerView from '../view/films-container.js';
-// import FilmsListView from '../view/films-list.js';
-// import showMoreBtnView from '../view/show-more-button.js';
-// import ExtraFilmsListView from '../view/extra-films-list.js';
-// import NoMovieView from '../view/no-movie.js';
-// import SortingView from '../view/sorting.js';
 
 import MoviePresenter from './movie.js';
 import EmptyFilmSection from '../view/empty-film-list.js';
