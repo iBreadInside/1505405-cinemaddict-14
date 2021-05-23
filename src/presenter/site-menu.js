@@ -23,7 +23,7 @@ export default class SiteMenuPresenter {
     this._renderSiteMenu();
     this._renderFilters();
 
-    document.querySelector('.main-navigation').addEventListener('click', this._handleSiteMenuClick);
+    // document.querySelector('.main-navigation').addEventListener('click', this._handleSiteMenuClick);
   }
 
   _renderFilters() {
@@ -74,10 +74,7 @@ export default class SiteMenuPresenter {
           .querySelector('.main-navigation__additional')
           .classList.add('main-navigation__additional--active');
         break;
-      case MenuItem.ALL_MOVIES:
-      case MenuItem.HISTORY:
-      case MenuItem.FAVORITES:
-      case MenuItem.WATCHLIST:
+      default:
         this._siteMenuComponent
           .getElement()
           .querySelector('.main-navigation__additional')

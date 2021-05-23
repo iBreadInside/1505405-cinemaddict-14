@@ -2,7 +2,6 @@ import { MenuItem, UpdateType } from './const.js';
 
 import { generateFilmCard } from './mock/film-info.js';
 import { generateComments } from './mock/comments.js';
-// import {getRandomNumber} from './utils/common.js';
 
 import StatsView from './view/stats.js';
 
@@ -17,20 +16,14 @@ import FilterModel from './model/filter.js';
 import { remove, render } from './utils/render.js';
 
 const FILMS_NUMBER = 12;
-// const COMMENTS_NUMBER = 5;
 
 const headerElement = document.querySelector('.header');
 const mainElement = document.querySelector('.main');
 const footerStatsElement = document.querySelector('.footer__statistics');
 
-// const TOTAL_MOVIE_COUNT = 24;
-// const MIN_FILM_NUMBER = 100000;
-// const MAX_FILM_NUMBER = 150000;
-
 const idArray = Array.from(Array(FILMS_NUMBER).keys());
 const comments = idArray.map((id) => generateComments(id));
 const movies = idArray.map((id) => generateFilmCard(id));
-// const totalMovieCount = getRandomNumber(MIN_FILM_NUMBER, MAX_FILM_NUMBER);
 
 const moviesModel = new MoviesModel();
 moviesModel.set(movies);
@@ -57,6 +50,7 @@ const handleMenuItemClick = (menuItem) => {
     case MenuItem.STATS:
       filterModel.set(UpdateType.MAJOR, MenuItem.STATS);
       siteMenuPresenter.toggleMenuItem(menuItem);
+      remove(statsComponent);
       statsComponent = new StatsView(moviesModel.get());
       render(mainElement, statsComponent);
       movieListPresenter.hide();
@@ -70,10 +64,12 @@ const handleMenuItemClick = (menuItem) => {
   }
 };
 
-const mainNavigation = document.querySelector('.main-navigation');
+const mainNav = document.querySelector('.main-navigation');
 
-mainNavigation.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  const menuItemType = evt.target.dataset.type;
-  handleMenuItemClick(menuItemType);
+mainNav.addEventListener('click', (evt) => {
+  if (evt.target.closest('a')) {
+    evt.preventDefault();
+    const menuItemType = evt.target.dataset.type;
+    handleMenuItemClick(menuItemType);
+  }
 });

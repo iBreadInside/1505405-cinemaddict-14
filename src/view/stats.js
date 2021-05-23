@@ -2,7 +2,6 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import dayjs from 'dayjs';
 import SmartView from './smart.js';
-// import {filterWatchedMoviesInRange, countMoviesByGenre, makeItemsUniq} from '../utils/statistics.js';
 import { getRankName } from '../utils/common.js';
 import { TimeRange } from '../const.js';
 
@@ -38,7 +37,7 @@ const createCountMoviesByGenre = (movies) => {
     };
   });
   const sortedMovieByGenreCounts = movieByGenreCounts.sort((a, b) => b.count - a.count);
-  return sortedMovieByGenreCounts;
+  return sortedMovieByGenreCounts ? sortedMovieByGenreCounts : [];
 };
 
 const getTopGenre = (movies) => {
@@ -46,7 +45,8 @@ const getTopGenre = (movies) => {
     return '';
   }
 
-  return createCountMoviesByGenre(movies)[0].currentGenre;
+  const countMoviesByGenreArray = createCountMoviesByGenre(movies);
+  return countMoviesByGenreArray.length ? countMoviesByGenreArray[0].currentGenre : '';
 };
 
 const renderChart = (statisticCtx, movies) => {

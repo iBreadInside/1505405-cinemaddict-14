@@ -317,16 +317,7 @@ export default class MoviePresenter {
 
     this._changeData(UserAction.UPDATE_MOVIE, UpdateType.MINOR, newMovie);
     this._changeData(UserAction.ADD_COMMENT, UpdateType.MINOR, comment);
-
-    const scrollPosition = document.querySelector('.film-details').scrollTop;
-
-    this._closePopup();
-    this._renderPopup(this._getMovie(), this._getMovieComments());
-
-    if (scrollPosition !== 0) {
-      const newCommentScroll = document.querySelector('.film-details__new-comment').scrollHeight;
-      document.querySelector('.film-details').scrollTo(0, scrollPosition + newCommentScroll);
-    }
+    this._resetPopup();
   }
 
   _handleDeleteCommentClick(comment) {
@@ -343,8 +334,19 @@ export default class MoviePresenter {
 
     this._changeData(UserAction.UPDATE_MOVIE, UpdateType.MINOR, newMovie);
     this._changeData(UserAction.DELETE_COMMENT, UpdateType.MINOR, comment);
+    this._resetPopup();
+  }
+
+  _resetPopup() {
+    const scrollPosition = document.querySelector('.film-details').scrollTop;
+
     this._closePopup();
     this._renderPopup(this._getMovie(), this._getMovieComments());
+
+    if (scrollPosition !== 0) {
+      const newCommentScroll = document.querySelector('.film-details__new-comment').scrollHeight;
+      document.querySelector('.film-details').scrollTo(0, scrollPosition + newCommentScroll);
+    }
   }
 
   destroy() {

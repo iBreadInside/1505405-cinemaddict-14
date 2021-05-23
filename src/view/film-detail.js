@@ -270,19 +270,19 @@ export default class FilmDetailsView extends Smart {
     this._callback.closeBtnClick();
   }
 
-  _favoriteClickHandler(evt) {
-    evt.preventDefault();
-    this._callback.favoriteClick();
-  }
-
-  _watchlistClickHandler(evt) {
-    evt.preventDefault();
+  _watchlistClickHandler() {
+    // evt.preventDefault();
     this._callback.watchlistClick();
   }
 
-  _watchedClickHandler(evt) {
-    evt.preventDefault();
+  _watchedClickHandler() {
+    // evt.preventDefault();
     this._callback.watchedClick();
+  }
+
+  _favoriteClickHandler() {
+    // evt.preventDefault();
+    this._callback.favoriteClick();
   }
 
   _formSubmitHandler() {
