@@ -25,7 +25,7 @@ export const render = (container, child, place) => {
     case RenderPosition.AFTERBEGIN:
       container.prepend(child);
       break;
-    case RenderPosition.BEFOREEND:
+    default:
       container.append(child);
       break;
   }
@@ -57,6 +57,10 @@ export const replace = (newChild, oldChild) => {
 };
 
 export const remove = (component) => {
+  if (component === null) {
+    return;
+  }
+
   if (!(component instanceof AbstractView)) {
     throw new Error('Can remove only components');
   }

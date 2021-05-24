@@ -1,3 +1,5 @@
+import { MenuItem, UserRank } from '../const';
+
 export const getRandomNumber = (min = 0, max = 1, fractionDigits = 0) => {
   const fractionMultiplier = Math.pow(10, fractionDigits);
   min = Math.abs(min);
@@ -57,16 +59,26 @@ export const checkPlural = (noun, enumeration) => {
   return (enumeration.length > 1) ? `${noun}s` : noun;
 };
 
-export const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
+export const filter = {
+  [MenuItem.ALL_MOVIES]: (films) => films,
+  [MenuItem.WATCHLIST]: (films) => films.filter((movie) => movie.user_details.watchlist),
+  [MenuItem.HISTORY]: (films) => films.filter((movie) => movie.user_details.already_watched),
+  [MenuItem.FAVORITES]: (films) => films.filter((movie) => movie.user_details.favorite),
+  [MenuItem.STATS]: (films) => films,
+};
 
-  if (index === -1) {
-    return items;
-  }
+export const rank = {
+  [UserRank.NOVICE]: (count) => count <= 10,
+  [UserRank.FAN]: (count) => count <= 20 && count > 10,
+  [UserRank.MOVIE_BUFF]: (count) => count > 20,
+};
 
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
+export const getRankName = (movies) => {
+  const alreadyWatchedMovies = movies.filter((movie) => movie.user_details.already_watched);
+  const watchedMoviesAmount = alreadyWatchedMovies.length;
+  const [rankName] = Object.entries(rank)
+    .filter(([, rankCount]) => rankCount(watchedMoviesAmount))
+    .flat();
+
+  return rankName;
 };
