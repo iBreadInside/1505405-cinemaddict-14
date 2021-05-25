@@ -70,8 +70,8 @@ export const remove = (component) => {
 };
 
 export const compareRating = (firstCard, secondCard) => {
-  const firstRating = firstCard.film_info.total_rating;
-  const secondRating = secondCard.film_info.total_rating;
+  const firstRating = firstCard.filmInfo.totalRating;
+  const secondRating = secondCard.filmInfo.totalRating;
 
   return secondRating - firstRating;
 };
@@ -84,5 +84,5 @@ export const compareCommentsNumber = (firstCard, secondCard) => {
 };
 
 export const compareFilmDate = (firstCard, secondCard) => {
-  return dayjs(secondCard.film_info.release.date).diff(dayjs(firstCard.film_info.release.date));
+  return dayjs(secondCard.filmInfo.release.date).diff(dayjs(firstCard.filmInfo.release.date));
 };

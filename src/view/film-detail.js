@@ -55,14 +55,14 @@ const createCommentTemplate = (filmComment) => {
 };
 
 const createFilmDetails = (state, commentsArray) => {
-  const { comments, film_info, user_details, isDisabled, newComment } = state;
+  const { comments, filmInfo, userDetails, isDisabled, newComment } = state;
 
-  const releaseDate = dayjs(film_info.release.date).format('DD MMMM YYYY');
-  const runtime = [formatingRuntime(film_info.runtime,'h','m').hours, formatingRuntime(film_info.runtime,'h','m').minutes].join(' ');
+  const releaseDate = dayjs(filmInfo.release.date).format('DD MMMM YYYY');
+  const runtime = [formatingRuntime(filmInfo.runtime,'h','m').hours, formatingRuntime(filmInfo.runtime,'h','m').minutes].join(' ');
 
-  const movieGenres = film_info.genre.length > 2
-    ? `${film_info.genre.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')}`
-    : `<span class="film-details__genre">${film_info.genre[0]}</span>`;
+  const movieGenres = filmInfo.genre.length > 2
+    ? `${filmInfo.genre.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')}`
+    : `<span class="film-details__genre">${filmInfo.genre[0]}</span>`;
 
   const commentsList = commentsArray
     .sort((a, b) => {
@@ -86,35 +86,35 @@ const createFilmDetails = (state, commentsArray) => {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${film_info.poster}" alt="${film_info.title} poster">
+            <img class="film-details__poster-img" src="./images/posters/${filmInfo.poster}" alt="${filmInfo.title} poster">
 
-            <p class="film-details__age">${film_info.age_rating}</p>
+            <p class="film-details__age">${filmInfo.ageRating}</p>
           </div>
 
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
-                <h3 class="film-details__title">${film_info.title}</h3>
-                <p class="film-details__title-original">Original: ${film_info.title}</p>
+                <h3 class="film-details__title">${filmInfo.title}</h3>
+                <p class="film-details__title-original">Original: ${filmInfo.title}</p>
               </div>
 
               <div class="film-details__rating">
-                <p class="film-details__total-rating">${film_info.total_rating}</p>
+                <p class="film-details__total-rating">${filmInfo.totalRating}</p>
               </div>
             </div>
 
             <table class="film-details__table">
               <tr class="film-details__row">
                 <td class="film-details__term">Director</td>
-                <td class="film-details__cell">${film_info.director}</td>
+                <td class="film-details__cell">${filmInfo.director}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
-                <td class="film-details__cell">${film_info.writers.join(', ')}</td>
+                <td class="film-details__cell">${filmInfo.writers.join(', ')}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Actors</td>
-                <td class="film-details__cell">${film_info.actors.join(', ')}</td>
+                <td class="film-details__cell">${filmInfo.actors.join(', ')}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
@@ -126,26 +126,26 @@ const createFilmDetails = (state, commentsArray) => {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>
-                <td class="film-details__cell">${film_info.release.release_country}</td>
+                <td class="film-details__cell">${filmInfo.release.releaseCountry}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">${checkPlural('Genre', film_info.genre)}</td>
+                <td class="film-details__term">${checkPlural('Genre', filmInfo.genre)}</td>
                 <td class="film-details__cell">${movieGenres}</td>
               </tr>
             </table>
 
-            <p class="film-details__film-description">${film_info.description}</p>
+            <p class="film-details__film-description">${filmInfo.description}</p>
           </div>
         </div>
 
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${user_details.watchlist ? 'checked' : ''}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${userDetails.watchlist ? 'checked' : ''}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${user_details.already_watched ? 'checked' : ''}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${userDetails.alreadyWatched ? 'checked' : ''}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${user_details.favorite ? 'checked' : ''}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${userDetails.favorite ? 'checked' : ''}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>

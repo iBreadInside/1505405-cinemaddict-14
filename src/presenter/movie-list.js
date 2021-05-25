@@ -176,8 +176,8 @@ export default class MovieListPresenter {
     this._topRatedListContainer = this._extraFilmsListComponent.getElement().querySelector('.films-list--extra .films-list__container');
 
     movies
-      .filter((movie) => movie.film_info.total_rating)
-      .sort((a, b) => b.film_info.total_rating - a.film_info.total_rating)
+      .filter((movie) => movie.filmInfo.totalRating)
+      .sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating)
       .slice(0, FILMS_IN_EXTRAS)
       .forEach((movie) => {
         const presenter = this._renderMovie(movie, this._topRatedListContainer, movie.id);

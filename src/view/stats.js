@@ -14,20 +14,20 @@ const filterWatchedMoviesInRange = ({movies, range}) => {
 
   return movies.filter((movie) => {
     const currentDate = dayjs();
-    return dayjs(movie.user_details.watching_date).isSame(currentDate, range);
+    return dayjs(movie.userDetails.watchingDate).isSame(currentDate, range);
   });
 };
 
 const makeItemsUniq = (items) => [...new Set(items)];
 
 const countMoviesByGenre = (movies, currentGenre) => {
-  return movies.filter((movie) => movie.film_info.genre.includes(currentGenre)).length;
+  return movies.filter((movie) => movie.filmInfo.genre.includes(currentGenre)).length;
 };
 
 const createCountMoviesByGenre = (movies) => {
-  const watchedMovies = movies.filter((movie) => movie.user_details.already_watched);
+  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
   const moviesGenresArray = watchedMovies
-    .map((movie) => movie.film_info.genre)
+    .map((movie) => movie.filmInfo.genre)
     .flat(1);
   const uniqGenres = makeItemsUniq(moviesGenresArray);
   const movieByGenreCounts = uniqGenres.map((currentGenre) => {
@@ -119,7 +119,7 @@ const getTotalWatchedTime = (movies) => {
   }
 
   return movies.reduce((counter, movie) => {
-    return counter + movie.film_info.runtime;
+    return counter + movie.filmInfo.runtime;
   }, 0);
 };
 
@@ -147,7 +147,7 @@ const parseWatchedTime = (timeInMin) => {
 };
 
 const renderStatistic = (movies) => {
-  const watchedMovies = movies.filter((movie) => movie.user_details.already_watched);
+  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
   const watchedMoviesCount = watchedMovies.length;
   const totalWatchedTimeInMin = getTotalWatchedTime(watchedMovies);
   const h = parseWatchedTime(totalWatchedTimeInMin).h;

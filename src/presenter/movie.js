@@ -147,11 +147,11 @@ export default class MoviePresenter {
         {},
         movie,
         {
-          user_details: {
-            watchlist: !movie.user_details.watchlist,
-            already_watched: movie.user_details.already_watched,
-            watching_date: movie.user_details.watching_date,
-            favorite: movie.user_details.favorite,
+          userDetails: {
+            watchlist: !movie.userDetails.watchlist,
+            alreadyWatched: movie.userDetails.alreadyWatched,
+            watchingDate: movie.userDetails.watchingDate,
+            favorite: movie.userDetails.favorite,
           },
         },
       ),
@@ -168,11 +168,11 @@ export default class MoviePresenter {
         {},
         movie,
         {
-          user_details: {
-            watchlist: movie.user_details.watchlist,
-            already_watched: !movie.user_details.already_watched,
-            watching_date: !movie.user_details.already_watched ? dayjs() : '',
-            favorite: movie.user_details.favorite,
+          userDetails: {
+            watchlist: movie.userDetails.watchlist,
+            alreadyWatched: !movie.userDetails.alreadyWatched,
+            watchingDate: !movie.userDetails.alreadyWatched ? dayjs() : '',
+            favorite: movie.userDetails.favorite,
           },
         },
       ),
@@ -189,112 +189,16 @@ export default class MoviePresenter {
         {},
         movie,
         {
-          user_details: {
-            watchlist: movie.user_details.watchlist,
-            already_watched: movie.user_details.already_watched,
-            watching_date: movie.user_details.watching_date,
-            favorite: !movie.user_details.favorite,
+          userDetails: {
+            watchlist: movie.userDetails.watchlist,
+            alreadyWatched: movie.userDetails.alreadyWatched,
+            watchingDate: movie.userDetails.watchingDate,
+            favorite: !movie.userDetails.favorite,
           },
         },
       ),
     );
   }
-
-  // _handleAddToWatchlistInPopupClick() {
-  //   const movie = this._getMovie();
-
-  //   const newUserDetails = Object.assign(
-  //     {},
-  //     movie.userDetails,
-  //     {
-  //       isWatchlist: !movie.userDetails.isWatchlist,
-  //     },
-  //   );
-
-  //   const newMovie = Object.assign(
-  //     {},
-  //     movie,
-  //     {
-  //       userDetails: newUserDetails,
-  //     },
-  //   );
-
-  //   this._changeData(UserAction.UPDATE_MOVIE, UpdateType.MINOR, newMovie);
-
-  //   const scrollPosition = document.querySelector('.film-details').scrollTop;
-
-  //   this.closeDetailedFilmCard();
-  //   this._renderDetailedFilmCard(this._getMovie(), this._getMovieComments());
-
-  //   if (scrollPosition !== 0) {
-  //     const newCommentScroll = document.querySelector('.film-details__new-comment').scrollHeight;
-  //     document.querySelector('.film-details').scrollTo(0, scrollPosition + newCommentScroll);
-  //   }
-  // }
-
-  // _handleFavoriteInPopupClick() {
-  //   const movie = this._getMovie();
-
-  //   const newUserDetails = Object.assign(
-  //     {},
-  //     movie.userDetails,
-  //     {
-  //       isFavorite: !movie.userDetails.isFavorite,
-  //     },
-  //   );
-
-  //   const newMovie = Object.assign(
-  //     {},
-  //     movie,
-  //     {
-  //       userDetails: newUserDetails,
-  //     },
-  //   );
-
-  //   this._changeData(UserAction.UPDATE_MOVIE, UpdateType.MINOR, newMovie);
-
-  //   const scrollPosition = document.querySelector('.film-details').scrollTop;
-
-  //   this.closeDetailedFilmCard();
-  //   this._renderDetailedFilmCard(this._getMovie(), this._getMovieComments());
-
-  //   if (scrollPosition !== 0) {
-  //     const newCommentScroll = document.querySelector('.film-details__new-comment').scrollHeight;
-  //     document.querySelector('.film-details').scrollTo(0, scrollPosition + newCommentScroll);
-  //   }
-  // }
-
-  // _handleWatchedInPopupClick() {
-  //   const movie = this._getMovie();
-
-  //   const newUserDetails = Object.assign(
-  //     {},
-  //     movie.userDetails,
-  //     {
-  //       isAlreadyWatched: !movie.userDetails.isAlreadyWatched,
-  //     },
-  //   );
-
-  //   const newMovie = Object.assign(
-  //     {},
-  //     movie,
-  //     {
-  //       userDetails: newUserDetails,
-  //     },
-  //   );
-
-  //   this._changeData(UserAction.UPDATE_MOVIE, UpdateType.MINOR, newMovie);
-
-  //   const scrollPosition = document.querySelector('.film-details').scrollTop;
-
-  //   this.closeDetailedFilmCard();
-  //   this._renderDetailedFilmCard(this._getMovie(), this._getMovieComments());
-
-  //   if (scrollPosition !== 0) {
-  //     const newCommentScroll = document.querySelector('.film-details__new-comment').scrollHeight;
-  //     document.querySelector('.film-details').scrollTo(0, scrollPosition + newCommentScroll);
-  //   }
-  // }
 
   _handleFormSubmit(comment) {
     const movieComments = this._getMovie().comments;

@@ -61,9 +61,9 @@ export const checkPlural = (noun, enumeration) => {
 
 export const filter = {
   [MenuItem.ALL_MOVIES]: (films) => films,
-  [MenuItem.WATCHLIST]: (films) => films.filter((movie) => movie.user_details.watchlist),
-  [MenuItem.HISTORY]: (films) => films.filter((movie) => movie.user_details.already_watched),
-  [MenuItem.FAVORITES]: (films) => films.filter((movie) => movie.user_details.favorite),
+  [MenuItem.WATCHLIST]: (films) => films.filter((movie) => movie.userDetails.watchlist),
+  [MenuItem.HISTORY]: (films) => films.filter((movie) => movie.userDetails.alreadyWatched),
+  [MenuItem.FAVORITES]: (films) => films.filter((movie) => movie.userDetails.favorite),
   [MenuItem.STATS]: (films) => films,
 };
 
@@ -74,7 +74,7 @@ export const rank = {
 };
 
 export const getRankName = (movies) => {
-  const alreadyWatchedMovies = movies.filter((movie) => movie.user_details.already_watched);
+  const alreadyWatchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
   const watchedMoviesAmount = alreadyWatchedMovies.length;
   const [rankName] = Object.entries(rank)
     .filter(([, rankCount]) => rankCount(watchedMoviesAmount))

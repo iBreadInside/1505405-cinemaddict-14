@@ -83,27 +83,27 @@ export const generateFilmCard = (id) => {
   return {
     id,
     comments: modificateArray(ID_COMMENTS),
-    film_info: {
+    filmInfo: {
       title: getRandomFromArray(TITLES),
-      alternative_title: ALTERNATIVE_TITLE,
-      total_rating: getRandomNumber(0, 10, 1),
+      alternativeTitle: ALTERNATIVE_TITLE,
+      totalRating: getRandomNumber(0, 10, 1),
       poster: getRandomFromArray(POSTERS),
-      age_rating: getRandomFromArray(AGE_RATINGS),
+      ageRating: getRandomFromArray(AGE_RATINGS),
       director: DIRECTOR,
       writers: modificateArray(WRITERS),
       actors: modificateArray(ACTORS),
       release: {
         date: getRandomFromArray(DATES),
-        release_country: getRandomFromArray(RELEASE_COUNTRIES),
+        releaseCountry: getRandomFromArray(RELEASE_COUNTRIES),
       },
       runtime: getRandomFromArray(RUNTIMES),
       genre: modificateArray(GENRES),
       description: modificateArray(DESCRIPTION_SENTENCES, 4).join(' '),
     },
-    user_details: {
+    userDetails: {
       watchlist: generateRandomBoolean(),
-      already_watched: generateRandomBoolean(),
-      watching_date: getRandomFromArray(DATES),
+      alreadyWatched: generateRandomBoolean(),
+      watchingDate: getRandomFromArray(DATES),
       favorite: generateRandomBoolean(),
     },
   };
