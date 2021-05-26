@@ -13,7 +13,7 @@ const DEFAULT_NEW_COMMENT = {
   emotion: null,
 };
 
-const createCommentTemplate = (filmComment) => {
+const createCommentTemplate = (filmComment, isDeleting, isDisabled) => {
   const {id, author, comment, date, emotion} = filmComment;
 
   const today = dayjs();
@@ -46,8 +46,8 @@ const createCommentTemplate = (filmComment) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">${humanizeTime(unitvalue, biggestUnit)}</span>
-          <button type='button' class="film-details__comment-delete" data-id="${id}">
-            Delete
+          <button type='button' class="film-details__comment-delete" data-id="${id}"${isDisabled ? ' disabled' : ''}>
+            ${isDeleting ? 'Deleting...' : 'Delete'}
           </button>
         </p>
       </div>
@@ -55,7 +55,7 @@ const createCommentTemplate = (filmComment) => {
 };
 
 const createFilmDetails = (state, commentsArray) => {
-  const { comments, filmInfo, userDetails, isDisabled, newComment } = state;
+  const { comments, filmInfo, userDetails, isDisabled, deletingId, newComment } = state;
 
   const releaseDate = dayjs(filmInfo.release.date).format('DD MMMM YYYY');
   const runtime = [formatingRuntime(filmInfo.runtime,'h','m').hours, formatingRuntime(filmInfo.runtime,'h','m').minutes].join(' ');
@@ -73,7 +73,7 @@ const createFilmDetails = (state, commentsArray) => {
     });
 
   const commentBlock = comments.length
-    ? commentsList.map((comment) => createCommentTemplate(comment)).join('')
+    ? commentsList.map((comment) => createCommentTemplate(comment, comment.id === String(deletingId), isDisabled)).join('')
     : '';
 
   const {emotion, comment} = newComment;
@@ -86,9 +86,9 @@ const createFilmDetails = (state, commentsArray) => {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${filmInfo.poster}" alt="${filmInfo.title} poster">
+            <img class="film-details__poster-img" src="${filmInfo.poster}" alt="${filmInfo.title} poster">
 
-            <p class="film-details__age">${filmInfo.ageRating}</p>
+            <p class="film-details__age">${filmInfo.ageRating}+</p>
           </div>
 
           <div class="film-details__info">
@@ -139,13 +139,13 @@ const createFilmDetails = (state, commentsArray) => {
         </div>
 
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${userDetails.watchlist ? 'checked' : ''}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${userDetails.watchlist ? 'checked' : ''}${isDisabled ? ' disabled' : ''}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${userDetails.alreadyWatched ? 'checked' : ''}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${userDetails.alreadyWatched ? 'checked' : ''}${isDisabled ? ' disabled' : ''}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${userDetails.favorite ? 'checked' : ''}>
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${userDetails.favorite ? 'checked' : ''}${isDisabled ? ' disabled' : ''}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
@@ -207,7 +207,7 @@ export default class FilmDetailsView extends Smart {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._documentKeyDownHandler = this._documentKeyDownHandler.bind(this);
+    this._documentEnterKeyDownHandler = this._documentEnterKeyDownHandler.bind(this);
     this._changeCommentEmojiHandler = this._changeCommentEmojiHandler.bind(this);
     this._inputNewCommentHandler = this._inputNewCommentHandler.bind(this);
     this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
@@ -219,15 +219,19 @@ export default class FilmDetailsView extends Smart {
     return Object.assign({}, film, {
       newComment: DEFAULT_NEW_COMMENT,
       isDisabled: false,
+      deletingId: null,
     });
   }
 
   static parseStateToComment(state) {
+    state = Object.assign({}, state);
+    delete state.isDisabled;
+    delete state.deletingId;
+
     return {
       comment: state.newComment.comment,
       emotion: state.newComment.emotion,
-      date: dayjs().toDate(),
-      id: Date.now(),
+      filmId: state.id,
     };
   }
 
@@ -235,35 +239,35 @@ export default class FilmDetailsView extends Smart {
     return createFilmDetails(this._state, this._comments);
   }
 
-  updateState(update, justStateUpdating) {
-    if (!update) {
-      return;
-    }
+  // updateState(update, justStateUpdating) {
+  //   if (!update) {
+  //     return;
+  //   }
 
-    this._state = Object.assign(
-      {},
-      this._state,
-      update,
-    );
+  //   this._state = Object.assign(
+  //     {},
+  //     this._state,
+  //     update,
+  //   );
 
-    if (justStateUpdating) {
-      return;
-    }
+  //   if (justStateUpdating) {
+  //     return;
+  //   }
 
-    this.updateElement();
-  }
+  //   this.updateElement();
+  // }
 
-  updateElement() {
-    const prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
+  // updateElement() {
+  //   const prevElement = this.getElement();
+  //   const parent = prevElement.parentElement;
+  //   this.removeElement();
 
-    const newElement = this.getElement();
+  //   const newElement = this.getElement();
 
-    parent.replaceChild(newElement, prevElement);
+  //   parent.replaceChild(newElement, prevElement);
 
-    this.restoreHandlers();
-  }
+  //   this.restoreHandlers();
+  // }
 
   _closeBtnClickHandler(evt) {
     evt.preventDefault();
@@ -304,7 +308,7 @@ export default class FilmDetailsView extends Smart {
     this._callback.formSubmit(update);
   }
 
-  _documentKeyDownHandler(evt) {
+  _documentEnterKeyDownHandler(evt) {
     if (evt.key === 'Enter' && (evt.metaKey || evt.ctrlKey)) {
       evt.preventDefault();
       this._formSubmitHandler();
@@ -344,8 +348,7 @@ export default class FilmDetailsView extends Smart {
   _deleteCommentHandler(evt) {
     evt.preventDefault();
     const deletedCommentId = +evt.target.dataset.id;
-    const [deletedComment] = this._comments.filter(({id}) => id === deletedCommentId);
-    this._callback.deleteComment(deletedComment);
+    this._callback.deleteComment(deletedCommentId);
   }
 
   setCommentDeleteHandler(callback) {
@@ -357,7 +360,7 @@ export default class FilmDetailsView extends Smart {
 
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
-    document.addEventListener('keydown', this._documentKeyDownHandler);
+    document.addEventListener('keydown', this._documentEnterKeyDownHandler);
   }
 
   setCloseBtnClickHandler(callback) {
@@ -399,5 +402,9 @@ export default class FilmDetailsView extends Smart {
     this.getElement()
       .querySelector('.film-details__comment-input')
       .addEventListener('input', this._inputNewCommentHandler);
+  }
+
+  removeHandlers() {
+    document.removeEventListener('keydown', this._documentEnterKeyDownHandler);
   }
 }

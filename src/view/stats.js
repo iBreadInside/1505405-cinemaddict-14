@@ -2,7 +2,7 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import dayjs from 'dayjs';
 import SmartView from './smart.js';
-import { getRankName } from '../utils/common.js';
+import { formatingRuntime, getRankName } from '../utils/common.js';
 import { TimeRange } from '../const.js';
 
 const BAR_HEIGHT = 50;
@@ -123,35 +123,12 @@ const getTotalWatchedTime = (movies) => {
   }, 0);
 };
 
-const parseWatchedTime = (timeInMin) => {
-  if (!timeInMin) {
-    return {
-      h: 0,
-      m: 0,
-    };
-  }
-
-  if (timeInMin < 60) {
-    return {
-      h: 0,
-      m: timeInMin,
-    };
-  }
-
-  const h = parseInt(timeInMin / 60);
-
-  return {
-    h,
-    m: timeInMin - (h * 60),
-  };
-};
-
 const renderStatistic = (movies) => {
   const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
   const watchedMoviesCount = watchedMovies.length;
   const totalWatchedTimeInMin = getTotalWatchedTime(watchedMovies);
-  const h = parseWatchedTime(totalWatchedTimeInMin).h;
-  const m = parseWatchedTime(totalWatchedTimeInMin).m;
+  const hours = formatingRuntime(totalWatchedTimeInMin).hours;
+  const minutes = formatingRuntime(totalWatchedTimeInMin).minutes;
   const topGenre = getTopGenre(movies);
 
   return `<ul class="statistic__text-list">
@@ -161,7 +138,7 @@ const renderStatistic = (movies) => {
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Total duration</h4>
-      <p class="statistic__item-text">${h} <span class="statistic__item-description">h</span> ${m} <span class="statistic__item-description">m</span></p>
+      <p class="statistic__item-text">${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Top genre</h4>

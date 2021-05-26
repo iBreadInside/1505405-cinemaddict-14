@@ -33,6 +33,7 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export const UserRank = {
@@ -47,4 +48,10 @@ export const TimeRange = {
   WEEK: 'week',
   MONTH: 'month',
   YEAR: 'year',
+};
+
+export const State = {
+  SAVING: 'Saving',
+  DELETING: 'Deleting',
+  ABORTING: 'Aborting',
 };

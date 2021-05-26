@@ -12,11 +12,13 @@ export default class Smart extends AbstractView {
 
   updateElement() {
     const prevElement = this.getElement();
+    const scrollPosition = prevElement.scrollTop;
     const parent = prevElement.parentElement;
     this.removeElement(); // Удаляет старый DOM
 
     const newElement = this.getElement(); // Создает новый DOM
     parent.replaceChild(newElement, prevElement); // Замена старого новым
+    newElement.scrollTo(0, scrollPosition);
     this.restoreHandlers(); // Добавляет обработчики
   }
 

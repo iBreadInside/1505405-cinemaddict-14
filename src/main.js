@@ -1,8 +1,5 @@
 import { MenuItem, UpdateType } from './const.js';
 
-import { generateFilmCard } from './mock/film-info.js';
-import { generateComments } from './mock/comments.js';
-
 import StatsView from './view/stats.js';
 
 import ProfilePresenter from './presenter/profile-info.js';
@@ -11,37 +8,30 @@ import MovieListPresenter from './presenter/movie-list.js';
 import FooterStatsPresenter from './presenter/footer-stats.js';
 
 import MoviesModel from './model/movies.js';
-import CommentsModel from './model/comments.js';
 import FilterModel from './model/filter.js';
 import { remove, render } from './utils/render.js';
 
-const FILMS_NUMBER = 12;
+import Api from './api.js';
+
+const AUTHORIZATION = 'Basic Nekro991';
+const END_POINT = 'https://14.ecmascript.pages.academy/cinemaddict';
 
 const headerElement = document.querySelector('.header');
 const mainElement = document.querySelector('.main');
 const footerStatsElement = document.querySelector('.footer__statistics');
 
-const idArray = Array.from(Array(FILMS_NUMBER).keys());
-const comments = idArray.map((id) => generateComments(id));
-const movies = idArray.map((id) => generateFilmCard(id));
+const api = new Api(END_POINT, AUTHORIZATION);
 
 const moviesModel = new MoviesModel();
-moviesModel.set(movies);
-
-const commentsModel = new CommentsModel();
-commentsModel.set(comments);
-
 const filterModel = new FilterModel();
 
 const profilePresenter = new ProfilePresenter(headerElement, moviesModel);
 const siteMenuPresenter = new SiteMenuPresenter(mainElement, filterModel, moviesModel);
-const movieListPresenter = new MovieListPresenter(mainElement, moviesModel, commentsModel, filterModel);
-const footerStatsPresenter = new FooterStatsPresenter(footerStatsElement, moviesModel, movies.length);
+const movieListPresenter = new MovieListPresenter(mainElement, moviesModel, filterModel, api);
+const footerStatsPresenter = new FooterStatsPresenter(footerStatsElement, moviesModel, '30');
 
-profilePresenter.init();
 siteMenuPresenter.init();
 movieListPresenter.init();
-footerStatsPresenter.init();
 
 let statsComponent = null;
 
@@ -64,12 +54,32 @@ const handleMenuItemClick = (menuItem) => {
   }
 };
 
-const mainNav = document.querySelector('.main-navigation');
+api.getMovies()
+  .then((movies) => {
+    moviesModel.set(UpdateType.INIT, movies);
+    profilePresenter.init();
+    footerStatsPresenter.init();
 
-mainNav.addEventListener('click', (evt) => {
-  if (evt.target.closest('a')) {
-    evt.preventDefault();
-    const menuItemType = evt.target.dataset.type;
-    handleMenuItemClick(menuItemType);
-  }
-});
+    const mainNav = document.querySelector('.main-navigation');
+    mainNav.addEventListener('click', (evt) => {
+      if (evt.target.closest('a')) {
+        evt.preventDefault();
+        const menuItemType = evt.target.dataset.type;
+        handleMenuItemClick(menuItemType);
+      }
+    });
+  })
+  .catch(() => {
+    moviesModel.set(UpdateType.INIT, []);
+    profilePresenter.init();
+    footerStatsPresenter.init();
+
+    const mainNav = document.querySelector('.main-navigation');
+    mainNav.addEventListener('click', (evt) => {
+      if (evt.target.closest('a')) {
+        evt.preventDefault();
+        const menuItemType = evt.target.dataset.type;
+        handleMenuItemClick(menuItemType);
+      }
+    });
+  });
