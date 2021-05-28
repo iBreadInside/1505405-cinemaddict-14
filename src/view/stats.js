@@ -26,10 +26,10 @@ const countMoviesByGenre = (movies, currentGenre) => {
 
 const createCountMoviesByGenre = (movies) => {
   const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
-  const moviesGenresArray = watchedMovies
+  const moviesGenres = watchedMovies
     .map((movie) => movie.filmInfo.genre)
     .flat(1);
-  const uniqGenres = makeItemsUniq(moviesGenresArray);
+  const uniqGenres = makeItemsUniq(moviesGenres);
   const movieByGenreCounts = uniqGenres.map((currentGenre) => {
     return {
       currentGenre,

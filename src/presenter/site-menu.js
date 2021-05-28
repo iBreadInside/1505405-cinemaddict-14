@@ -32,6 +32,7 @@ export default class SiteMenuPresenter {
 
     if (prevFilterComponent === null) {
       render(this._siteMenuComponent, this._filterComponent, RenderPosition.AFTERBEGIN);
+
       return;
     }
 
@@ -45,23 +46,12 @@ export default class SiteMenuPresenter {
 
     if (prevSiteMenuComponent === null) {
       render(this._container, this._siteMenuComponent);
+
       return;
     }
 
     replace(this._siteMenuComponent, prevSiteMenuComponent);
     remove(prevSiteMenuComponent);
-  }
-
-  _handleModelEvent() {
-    this._renderFilters();
-  }
-
-  _handleMenuItemClick(menuItem) {
-    if (this._filterModel.get() === menuItem) {
-      return;
-    }
-
-    this._filterModel.set(UpdateType.MAJOR, menuItem);
   }
 
   toggleMenuItem(menuItem) {
@@ -83,6 +73,7 @@ export default class SiteMenuPresenter {
 
   _getFilters() {
     const movies = this._moviesModel.get();
+
     return [
       {
         type: MenuItem.ALL_MOVIES,
@@ -105,5 +96,23 @@ export default class SiteMenuPresenter {
         count: filter[MenuItem.FAVORITES](movies).length,
       },
     ];
+  }
+
+  getMainNavContainer() {
+    return this._siteMenuComponent.getElement();
+  }
+
+  // === Handlers ===
+
+  _handleModelEvent() {
+    this._renderFilters();
+  }
+
+  _handleMenuItemClick(menuItem) {
+    if (this._filterModel.get() === menuItem) {
+      return;
+    }
+
+    this._filterModel.set(UpdateType.MAJOR, menuItem);
   }
 }

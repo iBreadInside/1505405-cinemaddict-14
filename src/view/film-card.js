@@ -42,18 +42,19 @@ const createFilmCardTemplate = (movie) => {
 };
 
 export default class FilmCardView extends AbstractView {
-  constructor(movie) {
+  constructor(movie, comments) {
     super();
     this._movie = movie;
+    this._comments = comments;
     this._filmCardClickHandler = this._filmCardClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
-    this._popupOpenHandler = this._popupOpenHandler.bind(this);
+    // this._popupOpenHandler = this._popupOpenHandler.bind(this);
   }
 
   getTemplate() {
-    return createFilmCardTemplate(this._movie);
+    return createFilmCardTemplate(this._movie, this._comments);
   }
 
   _filmCardClickHandler(evt) {
@@ -76,9 +77,9 @@ export default class FilmCardView extends AbstractView {
     this._callback.favoriteClick();
   }
 
-  _popupOpenHandler() {
-    this._callback.click();
-  }
+  // _popupOpenHandler() {
+  //   this._callback.click();
+  // }
 
   setFilmCardClickHandler(callback, element) {
     this._callback.filmCardClick = callback;
@@ -100,10 +101,10 @@ export default class FilmCardView extends AbstractView {
     this.getElement().querySelector('.film-card__controls-item--favorite').addEventListener('click', this._favoriteClickHandler);
   }
 
-  setPopupOpenHandler(callback) {
-    this._callback.click = callback;
-    this.getElement().querySelector('.film-card__poster').addEventListener('click', this._popupOpenHandler);
-    this.getElement().querySelector('.film-card__title').addEventListener('click', this._popupOpenHandler);
-    this.getElement().querySelector('.film-card__comments').addEventListener('click', this._popupOpenHandler);
-  }
+  // setPopupOpenHandler(callback) {
+  //   this._callback.click = callback;
+  //   this.getElement().querySelector('.film-card__poster').addEventListener('click', this._popupOpenHandler);
+  //   this.getElement().querySelector('.film-card__title').addEventListener('click', this._popupOpenHandler);
+  //   this.getElement().querySelector('.film-card__comments').addEventListener('click', this._popupOpenHandler);
+  // }
 }

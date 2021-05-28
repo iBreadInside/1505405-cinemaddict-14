@@ -2,10 +2,10 @@ import FooterStatsView from '../view/footer-stats.js';
 import { remove, render, replace }  from '../utils/render.js';
 
 export default class FooterStatsPresenter {
-  constructor(container, moviesModel, generalCount) {
+  constructor(container, moviesModel) {
     this._container = container;
     this._moviesModel = moviesModel;
-    this._generalCount = generalCount;
+    this._totalMoviesCount = null;
 
     this._footerStatsComponent = null;
 
@@ -17,21 +17,19 @@ export default class FooterStatsPresenter {
     this._renderFooterStats();
   }
 
-  _handleModelEvent() {
-    this.init();
-  }
-
   _getMovies() {
     return this._moviesModel.get().slice();
   }
 
   _renderFooterStats() {
-    if (this._getMovies().length === 0) {
-      this._generalCount = 0;
+    this._totalMoviesCount = this._moviesModel.get().length;
+
+    if (!this._totalMoviesCount) {
+      this._totalMoviesCount = 0;
     }
 
     const prevFooterStatsComponent = this._footerStatsComponent;
-    this._footerStatsComponent = new FooterStatsView(this._generalCount);
+    this._footerStatsComponent = new FooterStatsView(this._totalMoviesCount);
 
     if (prevFooterStatsComponent === null) {
       return render(this._container, this._footerStatsComponent);
@@ -41,7 +39,7 @@ export default class FooterStatsPresenter {
     remove(prevFooterStatsComponent);
   }
 
-  destroy() {
-    remove(this._footerStatsComponent);
+  _handleModelEvent() {
+    this.init();
   }
 }

@@ -17,10 +17,6 @@ export default class ProfilePresenter {
     this._renderProfile();
   }
 
-  _handleModelEvent() {
-    this.init();
-  }
-
   _getMovies() {
     return this._moviesModel.get().slice();
   }
@@ -45,7 +41,7 @@ export default class ProfilePresenter {
     remove(prevProfileComponent);
   }
 
-  destroy() {
-    remove(this._profileComponent);
+  _handleModelEvent() {
+    this.init();
   }
 }

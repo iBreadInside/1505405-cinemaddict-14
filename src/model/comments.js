@@ -30,13 +30,13 @@ export default class CommentsModel extends Observer {
     this._notify(update);
   }
 
-  addComment(updateType, update) {
+  addComment(update) {
     this._comments = [
       update,
       ...this._comments,
     ];
 
-    this._notify(updateType, update);
+    this._notify(update);
   }
 
   deleteComment(updateType, update) {
@@ -51,7 +51,7 @@ export default class CommentsModel extends Observer {
       ...this._comments.slice(index + 1),
     ];
 
-    this._notify(updateType);
+    this._notify(updateType, update);
   }
 
   static adaptToClient(comment) {

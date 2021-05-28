@@ -6,13 +6,14 @@ export default class MoviesModel extends Observer {
     this._movies = [];
   }
 
-  set(updateType, movie) {
-    this._movies = movie.slice();
+  set(updateType, movies) {
+    this._movies = movies.slice();
 
     this._notify(updateType);
   }
 
   get() {
+    // console.log(this._movies);
     return this._movies;
   }
 
@@ -68,7 +69,7 @@ export default class MoviesModel extends Observer {
       {
         ageRating: movie.film_info.age_rating,
         alternativeTitle: movie.film_info.alternative_title,
-        genre: movie.film_info.genre,
+        // genre: movie.film_info.genre,
         totalRating: movie.film_info.total_rating,
         release: newRelease,
       },
@@ -91,7 +92,7 @@ export default class MoviesModel extends Observer {
     // delete adaptedMovie.userDetails.watchlist;
     delete adaptedMovie.filmInfo.age_rating;
     delete adaptedMovie.filmInfo.alternative_title;
-    delete adaptedMovie.filmInfo.genre;
+    // delete adaptedMovie.filmInfo.genre;
     delete adaptedMovie.filmInfo.total_rating;
     delete adaptedMovie.filmInfo.release.release_country;
 
@@ -103,8 +104,8 @@ export default class MoviesModel extends Observer {
       {},
       movie,
       {
-        film_info: movie.filmInfo,
-        user_details: movie.userDetails,
+        'film_info': movie.filmInfo,
+        'user_details': movie.userDetails,
       },
     );
 
@@ -112,10 +113,10 @@ export default class MoviesModel extends Observer {
       {},
       adaptedMoviePart.user_details,
       {
-        already_watched: movie.userDetails.alreadyWatched,
+        'already_watched': movie.userDetails.alreadyWatched,
         // favorite: movie.userDetails.favorite,
         // watchlist: movie.userDetails.watchlist,
-        watching_date: movie.userDetails.watchingDate ? movie.userDetails.watchingDate.toISOString() : null,
+        'watching_date': movie.userDetails.watchingDate ? movie.userDetails.watchingDate.toISOString() : null,
       },
     );
 
@@ -123,8 +124,8 @@ export default class MoviesModel extends Observer {
       {},
       adaptedMoviePart.film_info.release,
       {
-        release_country: movie.filmInfo.release.releaseCountry,
-        date: movie.filmInfo.release.date ? movie.filmInfo.release.date.toISOString() : null,
+        'release_country': movie.filmInfo.release.releaseCountry,
+        'date': movie.filmInfo.release.date ? movie.filmInfo.release.date.toISOString() : null,
       },
     );
 
@@ -132,11 +133,11 @@ export default class MoviesModel extends Observer {
       {},
       adaptedMoviePart.film_info,
       {
-        age_rating: movie.filmInfo.ageRating,
-        alternative_title: movie.filmInfo.alternativeTitle,
+        'age_rating': movie.filmInfo.ageRating,
+        'alternative_title': movie.filmInfo.alternativeTitle,
         // genre: movie.filmInfo.genre,
-        total_rating: movie.filmInfo.totalRating,
-        release: newRelease,
+        'total_rating': movie.filmInfo.totalRating,
+        'release': newRelease,
       },
     );
 
@@ -144,8 +145,8 @@ export default class MoviesModel extends Observer {
       {},
       adaptedMoviePart,
       {
-        user_details: newUserDetails,
-        film_info: newFilmInfo,
+        'user_details': newUserDetails,
+        'film_info': newFilmInfo,
       },
     );
 

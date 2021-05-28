@@ -60,11 +60,11 @@ export const checkPlural = (noun, enumeration) => {
 };
 
 export const filter = {
-  [MenuItem.ALL_MOVIES]: (films) => films,
-  [MenuItem.WATCHLIST]: (films) => films.filter((movie) => movie.userDetails.watchlist),
-  [MenuItem.HISTORY]: (films) => films.filter((movie) => movie.userDetails.alreadyWatched),
-  [MenuItem.FAVORITES]: (films) => films.filter((movie) => movie.userDetails.favorite),
-  [MenuItem.STATS]: (films) => films,
+  [MenuItem.ALL_MOVIES]: (movies) => movies,
+  [MenuItem.WATCHLIST]: (movies) => movies.filter((movie) => movie.userDetails.watchlist),
+  [MenuItem.HISTORY]: (movies) => movies.filter((movie) => movie.userDetails.alreadyWatched),
+  [MenuItem.FAVORITES]: (movies) => movies.filter((movie) => movie.userDetails.favorite),
+  [MenuItem.STATS]: (movies) => movies,
 };
 
 export const rank = {

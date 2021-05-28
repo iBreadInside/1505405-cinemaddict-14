@@ -28,7 +28,7 @@ const filterModel = new FilterModel();
 const profilePresenter = new ProfilePresenter(headerElement, moviesModel);
 const siteMenuPresenter = new SiteMenuPresenter(mainElement, filterModel, moviesModel);
 const movieListPresenter = new MovieListPresenter(mainElement, moviesModel, filterModel, api);
-const footerStatsPresenter = new FooterStatsPresenter(footerStatsElement, moviesModel, '30');
+const footerStatsPresenter = new FooterStatsPresenter(footerStatsElement, moviesModel);
 
 siteMenuPresenter.init();
 movieListPresenter.init();
@@ -60,26 +60,14 @@ api.getMovies()
     profilePresenter.init();
     footerStatsPresenter.init();
 
-    const mainNav = document.querySelector('.main-navigation');
-    mainNav.addEventListener('click', (evt) => {
-      if (evt.target.closest('a')) {
-        evt.preventDefault();
-        const menuItemType = evt.target.dataset.type;
-        handleMenuItemClick(menuItemType);
-      }
-    });
+    siteMenuPresenter.getMainNavContainer()
+      .addEventListener('click', handleMenuItemClick);
   })
   .catch(() => {
     moviesModel.set(UpdateType.INIT, []);
     profilePresenter.init();
     footerStatsPresenter.init();
 
-    const mainNav = document.querySelector('.main-navigation');
-    mainNav.addEventListener('click', (evt) => {
-      if (evt.target.closest('a')) {
-        evt.preventDefault();
-        const menuItemType = evt.target.dataset.type;
-        handleMenuItemClick(menuItemType);
-      }
-    });
+    siteMenuPresenter.getMainNavContainer()
+      .addEventListener('click', handleMenuItemClick);
   });

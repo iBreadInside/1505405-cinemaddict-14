@@ -11,6 +11,7 @@ dayjs.extend(relativeTime);
 const DEFAULT_NEW_COMMENT = {
   comment: '',
   emotion: null,
+  date: '',
 };
 
 const createCommentTemplate = (filmComment, isDeleting, isDisabled) => {
@@ -201,11 +202,11 @@ export default class FilmDetailsView extends Smart {
     this._state = FilmDetailsView.parseFilmToState(film);
     this._comments = comments;
     this._updatedComments = null;
-    this._scrollPosition = null;
+    // this._scrollPosition = null;
     this._closeBtnClickHandler = this._closeBtnClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
-    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._documentEnterKeyDownHandler = this._documentEnterKeyDownHandler.bind(this);
     this._changeCommentEmojiHandler = this._changeCommentEmojiHandler.bind(this);
@@ -215,59 +216,28 @@ export default class FilmDetailsView extends Smart {
     this._setInnerHandlers();
   }
 
-  static parseFilmToState(film) {
-    return Object.assign({}, film, {
-      newComment: DEFAULT_NEW_COMMENT,
-      isDisabled: false,
-      deletingId: null,
-    });
-  }
-
-  static parseStateToComment(state) {
-    state = Object.assign({}, state);
-    delete state.isDisabled;
-    delete state.deletingId;
-
-    return {
-      comment: state.newComment.comment,
-      emotion: state.newComment.emotion,
-      filmId: state.id,
-    };
-  }
-
   getTemplate() {
     return createFilmDetails(this._state, this._comments);
   }
 
-  // updateState(update, justStateUpdating) {
-  //   if (!update) {
-  //     return;
-  //   }
+  updateNewCommentInput(newComment) {
+    const {comment, emotion} = newComment;
 
-  //   this._state = Object.assign(
-  //     {},
-  //     this._state,
-  //     update,
-  //   );
+    if (!emotion && !comment) {
+      return;
+    }
 
-  //   if (justStateUpdating) {
-  //     return;
-  //   }
-
-  //   this.updateElement();
-  // }
-
-  // updateElement() {
-  //   const prevElement = this.getElement();
-  //   const parent = prevElement.parentElement;
-  //   this.removeElement();
-
-  //   const newElement = this.getElement();
-
-  //   parent.replaceChild(newElement, prevElement);
-
-  //   this.restoreHandlers();
-  // }
+    this.updateState({
+      newComment: Object.assign(
+        {},
+        this._state.newComment,
+        {
+          comment,
+          emotion,
+        },
+      ),
+    });
+  }
 
   _closeBtnClickHandler(evt) {
     evt.preventDefault();
@@ -275,15 +245,22 @@ export default class FilmDetailsView extends Smart {
   }
 
   _watchlistClickHandler() {
-    this._callback.watchlistClick();
+    const { comment, emotion } = this._state.newComment;
+
+    this._callback.watchlistClick(comment, emotion);
+
   }
 
   _watchedClickHandler() {
-    this._callback.watchedClick();
+    const { comment, emotion } = this._state.newComment;
+
+    this._callback.watchedClick(comment, emotion);
   }
 
   _favoriteClickHandler() {
-    this._callback.favoriteClick();
+    const { comment, emotion } = this._state.newComment;
+
+    this._callback.favoriteClick(comment, emotion);
   }
 
   _formSubmitHandler() {
@@ -292,6 +269,7 @@ export default class FilmDetailsView extends Smart {
     }
 
     const {comment, emotion} = this._state.newComment;
+
     if (!comment.trim() || !emotion) {
       return;
     }
@@ -317,7 +295,7 @@ export default class FilmDetailsView extends Smart {
 
   _changeCommentEmojiHandler(evt) {
     evt.preventDefault();
-    const scrollPosition = document.querySelector('.film-details').scrollTop;
+    // const scrollPosition = document.querySelector('.film-details').scrollTop;
 
     this.updateState({
       newComment: Object.assign(
@@ -329,7 +307,7 @@ export default class FilmDetailsView extends Smart {
       ),
     });
 
-    document.querySelector('.film-details').scrollTo(0, scrollPosition);
+    // document.querySelector('.film-details').scrollTo(0, scrollPosition);
   }
 
   _inputNewCommentHandler(evt) {
@@ -347,8 +325,9 @@ export default class FilmDetailsView extends Smart {
 
   _deleteCommentHandler(evt) {
     evt.preventDefault();
+    const { comment, emotion } = this._data.newComment;
     const deletedCommentId = +evt.target.dataset.id;
-    this._callback.deleteComment(deletedCommentId);
+    this._callback.deleteComment(comment, emotion, deletedCommentId);
   }
 
   setCommentDeleteHandler(callback) {
@@ -406,5 +385,27 @@ export default class FilmDetailsView extends Smart {
 
   removeHandlers() {
     document.removeEventListener('keydown', this._documentEnterKeyDownHandler);
+  }
+
+  // === Static ===
+
+  static parseFilmToState(film) {
+    return Object.assign({}, film, {
+      newComment: DEFAULT_NEW_COMMENT,
+      isDisabled: false,
+      deletingId: null,
+    });
+  }
+
+  static parseStateToComment(state) {
+    state = Object.assign({}, state);
+    delete state.isDisabled;
+    delete state.deletingId;
+
+    return {
+      comment: state.newComment.comment,
+      emotion: state.newComment.emotion,
+      filmId: state.id,
+    };
   }
 }
