@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
-import { checkPlural, formatingRuntime } from '../utils/common';
+import { checkPlural, generateFilmRuntime } from '../utils/common';
 
 const CARD_DESCRIPTION_LENGTH = 140;
 
@@ -17,9 +17,7 @@ const createFilmCardTemplate = (movie) => {
     }
   };
 
-  const hours = formatingRuntime(filmInfo.runtime).hours;
-  const minutes = formatingRuntime(filmInfo.runtime).minutes;
-  const movieRuntime = [hours + 'h', minutes + 'm'].join(' ');
+  const movieRuntime = generateFilmRuntime(filmInfo.runtime);
   const watchlistActive = isSelectedFilmControl(userDetails.watchlist);
   const alreadyWatchedtActive = isSelectedFilmControl(userDetails.alreadyWatched);
   const favoriteActive = isSelectedFilmControl(userDetails.favorite);
