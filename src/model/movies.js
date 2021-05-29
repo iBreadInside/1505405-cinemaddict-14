@@ -14,7 +14,6 @@ export default class Movies extends Observer {
   }
 
   get() {
-    // console.log(this._movies);
     return this._movies;
   }
 
@@ -56,10 +55,8 @@ export default class Movies extends Observer {
       {},
       adaptedMoviePart.userDetails,
       {
-        // watchlist: movie.user_details.watchlist,
         alreadyWatched: movie.user_details.already_watched,
         watchingDate: movie.user_details.watching_date ? new Date(movie.user_details.watching_date) : null,
-        // favorite: movie.user_details.favorite,
       },
     );
 
@@ -68,7 +65,6 @@ export default class Movies extends Observer {
       adaptedMoviePart.filmInfo.release,
       {
         releaseCountry: movie.film_info.release.release_country,
-        // date: new Date(movie.film_info.release.date),
       },
     );
 
@@ -95,12 +91,9 @@ export default class Movies extends Observer {
     delete adaptedMovie.film_info;
     delete adaptedMovie.user_details;
     delete adaptedMovie.userDetails.already_watched;
-    // delete adaptedMovie.userDetails.favorite;
     delete adaptedMovie.userDetails.watching_date;
-    // delete adaptedMovie.userDetails.watchlist;
     delete adaptedMovie.filmInfo.age_rating;
     delete adaptedMovie.filmInfo.alternative_title;
-    // delete adaptedMovie.filmInfo.genre;
     delete adaptedMovie.filmInfo.total_rating;
     delete adaptedMovie.filmInfo.release.release_country;
 
@@ -121,10 +114,8 @@ export default class Movies extends Observer {
       {},
       adaptedMoviePart.user_details,
       {
-        // 'watchlist': movie.userDetails.watchlist,
         'already_watched': movie.userDetails.alreadyWatched,
         'watching_date': movie.userDetails.watchingDate ? movie.userDetails.watchingDate.toISOString() : null,
-        // 'favorite': movie.userDetails.favorite,
       },
     );
 
@@ -133,7 +124,6 @@ export default class Movies extends Observer {
       adaptedMoviePart.film_info.release,
       {
         'release_country': movie.filmInfo.release.releaseCountry,
-        // 'date': movie.filmInfo.release.date ? movie.filmInfo.release.date.toISOString() : null,
       },
     );
 
@@ -160,12 +150,9 @@ export default class Movies extends Observer {
     delete adaptedMovie.filmInfo;
     delete adaptedMovie.userDetails;
     delete adaptedMovie.user_details.alreadyWatched;
-    // delete adaptedMovie.user_details.favorite;
     delete adaptedMovie.user_details.watchingDate;
-    // delete adaptedMovie.user_details.watchlist;
     delete adaptedMovie.film_info.ageRating;
     delete adaptedMovie.film_info.alternativeTitle;
-    // delete adaptedMovie.film_info.genre;
     delete adaptedMovie.film_info.totalRating;
     delete adaptedMovie.film_info.release.releaseCountry;
 

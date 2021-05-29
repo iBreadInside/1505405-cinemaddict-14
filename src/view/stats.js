@@ -6,6 +6,18 @@ import { formatingRuntime, getRankName } from '../utils/common.js';
 import { TimeRange } from '../const.js';
 
 const BAR_HEIGHT = 50;
+const BG_COLOR = '#ffe800';
+const HOVER_BG_COLOR = BG_COLOR;
+const COLOR = '#ffffff';
+const TYPE = 'horizontalBar';
+const ANCHOR = 'start';
+const ALIGN = 'start';
+const SIZE =  20;
+const OFFSET = 40;
+const FONT_COLOR = COLOR;
+const PADDING = 100;
+const FONT_SIZE = SIZE;
+const BAR_THICKNESS = 24;
 
 const filterWatchedMoviesInRange = ({movies, range}) => {
   if (range === TimeRange.ALL_TIME) {
@@ -57,40 +69,40 @@ const renderChart = (statisticCtx, movies) => {
 
   return new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
-    type: 'horizontalBar',
+    type: TYPE,
     data: {
       labels: genres,
       datasets: [{
         data: counts,
-        backgroundColor: '#ffe800',
-        hoverBackgroundColor: '#ffe800',
-        anchor: 'start',
+        backgroundColor: BG_COLOR,
+        hoverBackgroundColor: HOVER_BG_COLOR,
+        anchor: ANCHOR,
       }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 20,
+            size: SIZE,
           },
-          color: '#ffffff',
-          anchor: 'start',
-          align: 'start',
-          offset: 40,
+          color: COLOR,
+          anchor: ANCHOR,
+          align: ALIGN,
+          offset: OFFSET,
         },
       },
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: '#ffffff',
-            padding: 100,
-            fontSize: 20,
+            fontColor: FONT_COLOR,
+            padding: PADDING,
+            fontSize: FONT_SIZE,
           },
           gridLines: {
             display: false,
             drawBorder: false,
           },
-          barThickness: 24,
+          barThickness: BAR_THICKNESS,
         }],
         xAxes: [{
           ticks: {

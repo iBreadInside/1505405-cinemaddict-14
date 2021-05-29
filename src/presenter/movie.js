@@ -63,6 +63,59 @@ export default class MoviePresenter {
     return movie;
   }
 
+  _getScrollPosition() {
+    if (this._filmPopup.getElement()) {
+      return this._filmPopup.getElement().scrollTop;
+    }
+  }
+
+  setAborting() {
+    if (this._filmPopup) {
+      this._filmPopup.shake(() => {
+        this._filmPopup.updateState({
+          isDisabled: false,
+          deletingId: null,
+        });
+      });
+
+      return;
+    }
+
+    if (this._filmCardComponent) {
+      this._filmCardComponent.shake();
+    }
+  }
+
+  _setViewState(state, payload) {
+    const resetFormState = () => {
+      this._filmPopup.updateState({
+        isDisabled: false,
+        deletingId: null,
+      });
+    };
+
+    switch (state) {
+      case State.SAVING:
+        this._filmPopup.updateState({
+          isDisabled: true,
+        });
+        break;
+      case State.DELETING:
+        this._filmPopup.updateState({
+          isDisabled: true,
+          deletingId: payload,
+        });
+        break;
+      case State.ABORTING:
+        this._filmPopup.shake(resetFormState);
+        break;
+    }
+  }
+
+  destroy() {
+    remove(this._filmCardComponent);
+  }
+
   _renderPopup(movie, comments) {
     this._popupStatus = PopupStatus.OPEN;
     this._comments = comments;
@@ -119,12 +172,6 @@ export default class MoviePresenter {
     this._changeData(UserAction.UPDATE_MOVIE, actionType, newMovie);
   }
 
-  _getScrollPosition() {
-    if (this._filmPopup.getElement()) {
-      return this._filmPopup.getElement().scrollTop;
-    }
-  }
-
   _updateNewCommentInfo(comment, emotion) {
     this._newComment = {
       comment,
@@ -168,49 +215,6 @@ export default class MoviePresenter {
       this._siteBodyElement.classList.remove('hide-overflow');
       document.removeEventListener('keydown', this._escKeydownHandler);
       this._moviesModel.removeObserver(this._handleModelEvent);
-    }
-  }
-
-  _setViewState(state, payload) {
-    const resetFormState = () => {
-      this._filmPopup.updateState({
-        isDisabled: false,
-        deletingId: null,
-      });
-    };
-
-    switch (state) {
-      case State.SAVING:
-        this._filmPopup.updateState({
-          isDisabled: true,
-        });
-        break;
-      case State.DELETING:
-        this._filmPopup.updateState({
-          isDisabled: true,
-          deletingId: payload,
-        });
-        break;
-      case State.ABORTING:
-        this._filmPopup.shake(resetFormState);
-        break;
-    }
-  }
-
-  setAborting() {
-    if (this._filmPopup) {
-      this._filmPopup.shake(() => {
-        this._filmPopup.updateState({
-          isDisabled: false,
-          deletingId: null,
-        });
-      });
-
-      return;
-    }
-
-    if (this._filmCardComponent) {
-      this._filmCardComponent.shake();
     }
   }
 
@@ -314,10 +318,6 @@ export default class MoviePresenter {
       .catch(() => {
         this._setViewState(State.ABORTING);
       });
-  }
-
-  destroy() {
-    remove(this._filmCardComponent);
   }
 
   _handleModelEvent(... args) {

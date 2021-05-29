@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
-import * as duration from 'dayjs/plugin/duration';
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import he from 'he';
 import { checkPlural, formatingRuntime } from '../utils/common';
 import Smart from './smart.js';
 
-dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 const DEFAULT_NEW_COMMENT = {
@@ -365,8 +363,6 @@ export default class FilmDetailsView extends Smart {
   removeHandlers() {
     document.removeEventListener('keydown', this._documentEnterKeyDownHandler);
   }
-
-  // === Static ===
 
   static parseFilmToState(film) {
     return Object.assign({}, film, {

@@ -24,51 +24,8 @@ export default class SiteMenuPresenter {
     this._renderFilters();
   }
 
-  _renderFilters() {
-    const filters = this._getFilters();
-    const prevFilterComponent = this._filterComponent;
-    this._filterComponent = new FilterView(filters, this._filterModel.get());
-    this._filterComponent.setMenuItemClickHandler(this._handleMenuItemClick);
-
-    if (prevFilterComponent === null) {
-      render(this._siteMenuComponent, this._filterComponent, RenderPosition.AFTERBEGIN);
-
-      return;
-    }
-
-    replace(this._filterComponent, prevFilterComponent);
-    remove(prevFilterComponent);
-  }
-
-  _renderSiteMenu() {
-    const prevSiteMenuComponent = this._siteMenuComponent;
-    this._siteMenuComponent = new SiteMenuView(this._filterModel.get());
-
-    if (prevSiteMenuComponent === null) {
-      render(this._container, this._siteMenuComponent);
-
-      return;
-    }
-
-    replace(this._siteMenuComponent, prevSiteMenuComponent);
-    remove(prevSiteMenuComponent);
-  }
-
-  toggleMenuItem(menuItem) {
-    switch (menuItem) {
-      case MenuItem.STATS:
-        this._siteMenuComponent
-          .getElement()
-          .querySelector('.main-navigation__additional')
-          .classList.add('main-navigation__additional--active');
-        break;
-      default:
-        this._siteMenuComponent
-          .getElement()
-          .querySelector('.main-navigation__additional')
-          .classList.remove('main-navigation__additional--active');
-        break;
-    }
+  getMainNavContainer() {
+    return this._siteMenuComponent.getElement();
   }
 
   _getFilters() {
@@ -98,11 +55,52 @@ export default class SiteMenuPresenter {
     ];
   }
 
-  getMainNavContainer() {
-    return this._siteMenuComponent.getElement();
+  toggleMenuItem(menuItem) {
+    switch (menuItem) {
+      case MenuItem.STATS:
+        this._siteMenuComponent
+          .getElement()
+          .querySelector('.main-navigation__additional')
+          .classList.add('main-navigation__additional--active');
+        break;
+      default:
+        this._siteMenuComponent
+          .getElement()
+          .querySelector('.main-navigation__additional')
+          .classList.remove('main-navigation__additional--active');
+        break;
+    }
   }
 
-  // === Handlers ===
+  _renderFilters() {
+    const filters = this._getFilters();
+    const prevFilterComponent = this._filterComponent;
+    this._filterComponent = new FilterView(filters, this._filterModel.get());
+    this._filterComponent.setMenuItemClickHandler(this._handleMenuItemClick);
+
+    if (prevFilterComponent === null) {
+      render(this._siteMenuComponent, this._filterComponent, RenderPosition.AFTERBEGIN);
+
+      return;
+    }
+
+    replace(this._filterComponent, prevFilterComponent);
+    remove(prevFilterComponent);
+  }
+
+  _renderSiteMenu() {
+    const prevSiteMenuComponent = this._siteMenuComponent;
+    this._siteMenuComponent = new SiteMenuView(this._filterModel.get());
+
+    if (prevSiteMenuComponent === null) {
+      render(this._container, this._siteMenuComponent);
+
+      return;
+    }
+
+    replace(this._siteMenuComponent, prevSiteMenuComponent);
+    remove(prevSiteMenuComponent);
+  }
 
   _handleModelEvent() {
     this._renderFilters();

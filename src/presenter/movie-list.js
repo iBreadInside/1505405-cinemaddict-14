@@ -244,8 +244,6 @@ export default class MovieListPresenter {
     this._filmsContainerComponent.getElement().classList.add('visually-hidden');
   }
 
-  // === HANDLERS ===
-
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
