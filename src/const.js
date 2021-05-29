@@ -1,19 +1,3 @@
-export const DATES = [
-  '2021-04-08T19:58:00.000',
-  '2021-03-30T19:58:00.000',
-  '2021-04-06T19:58:00.000',
-  '2020-12-22T19:58:00.000',
-  '2019-04-08T19:58:00.000',
-  '2021-04-09T19:58:00.000',
-];
-
-export const EMOJI = [
-  'smile',
-  'sleeping',
-  'puke',
-  'angry',
-];
-
 export const MenuItem = {
   ALL_MOVIES: 'All movies',
   WATCHLIST: 'Watchlist',
@@ -30,9 +14,10 @@ export const UserAction = {
 };
 
 export const UpdateType = {
-  PATCH: 'PATCH',
-  MINOR: 'MINOR',
-  MAJOR: 'MAJOR',
+  PATCH: 'Patch',
+  MINOR: 'Minor',
+  MAJOR: 'Major',
+  INIT: 'Init',
 };
 
 export const UserRank = {
@@ -47,4 +32,10 @@ export const TimeRange = {
   WEEK: 'week',
   MONTH: 'month',
   YEAR: 'year',
+};
+
+export const State = {
+  SAVING: 'Saving',
+  DELETING: 'Deleting',
+  ABORTING: 'Aborting',
 };

@@ -2,10 +2,22 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import dayjs from 'dayjs';
 import SmartView from './smart.js';
-import { getRankName } from '../utils/common.js';
+import { formatingRuntime, getRankName } from '../utils/common.js';
 import { TimeRange } from '../const.js';
 
 const BAR_HEIGHT = 50;
+const BG_COLOR = '#ffe800';
+const HOVER_BG_COLOR = BG_COLOR;
+const COLOR = '#ffffff';
+const TYPE = 'horizontalBar';
+const ANCHOR = 'start';
+const ALIGN = 'start';
+const SIZE =  20;
+const OFFSET = 40;
+const FONT_COLOR = COLOR;
+const PADDING = 100;
+const FONT_SIZE = SIZE;
+const BAR_THICKNESS = 24;
 
 const filterWatchedMoviesInRange = ({movies, range}) => {
   if (range === TimeRange.ALL_TIME) {
@@ -14,22 +26,22 @@ const filterWatchedMoviesInRange = ({movies, range}) => {
 
   return movies.filter((movie) => {
     const currentDate = dayjs();
-    return dayjs(movie.user_details.watching_date).isSame(currentDate, range);
+    return dayjs(movie.userDetails.watchingDate).isSame(currentDate, range);
   });
 };
 
 const makeItemsUniq = (items) => [...new Set(items)];
 
 const countMoviesByGenre = (movies, currentGenre) => {
-  return movies.filter((movie) => movie.film_info.genre.includes(currentGenre)).length;
+  return movies.filter((movie) => movie.filmInfo.genre.includes(currentGenre)).length;
 };
 
 const createCountMoviesByGenre = (movies) => {
-  const watchedMovies = movies.filter((movie) => movie.user_details.already_watched);
-  const moviesGenresArray = watchedMovies
-    .map((movie) => movie.film_info.genre)
+  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
+  const moviesGenres = watchedMovies
+    .map((movie) => movie.filmInfo.genre)
     .flat(1);
-  const uniqGenres = makeItemsUniq(moviesGenresArray);
+  const uniqGenres = makeItemsUniq(moviesGenres);
   const movieByGenreCounts = uniqGenres.map((currentGenre) => {
     return {
       currentGenre,
@@ -57,40 +69,40 @@ const renderChart = (statisticCtx, movies) => {
 
   return new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
-    type: 'horizontalBar',
+    type: TYPE,
     data: {
       labels: genres,
       datasets: [{
         data: counts,
-        backgroundColor: '#ffe800',
-        hoverBackgroundColor: '#ffe800',
-        anchor: 'start',
+        backgroundColor: BG_COLOR,
+        hoverBackgroundColor: HOVER_BG_COLOR,
+        anchor: ANCHOR,
       }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 20,
+            size: SIZE,
           },
-          color: '#ffffff',
-          anchor: 'start',
-          align: 'start',
-          offset: 40,
+          color: COLOR,
+          anchor: ANCHOR,
+          align: ALIGN,
+          offset: OFFSET,
         },
       },
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: '#ffffff',
-            padding: 100,
-            fontSize: 20,
+            fontColor: FONT_COLOR,
+            padding: PADDING,
+            fontSize: FONT_SIZE,
           },
           gridLines: {
             display: false,
             drawBorder: false,
           },
-          barThickness: 24,
+          barThickness: BAR_THICKNESS,
         }],
         xAxes: [{
           ticks: {
@@ -119,39 +131,16 @@ const getTotalWatchedTime = (movies) => {
   }
 
   return movies.reduce((counter, movie) => {
-    return counter + movie.film_info.runtime;
+    return counter + movie.filmInfo.runtime;
   }, 0);
 };
 
-const parseWatchedTime = (timeInMin) => {
-  if (!timeInMin) {
-    return {
-      h: 0,
-      m: 0,
-    };
-  }
-
-  if (timeInMin < 60) {
-    return {
-      h: 0,
-      m: timeInMin,
-    };
-  }
-
-  const h = parseInt(timeInMin / 60);
-
-  return {
-    h,
-    m: timeInMin - (h * 60),
-  };
-};
-
 const renderStatistic = (movies) => {
-  const watchedMovies = movies.filter((movie) => movie.user_details.already_watched);
+  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
   const watchedMoviesCount = watchedMovies.length;
   const totalWatchedTimeInMin = getTotalWatchedTime(watchedMovies);
-  const h = parseWatchedTime(totalWatchedTimeInMin).h;
-  const m = parseWatchedTime(totalWatchedTimeInMin).m;
+  const hours = formatingRuntime(totalWatchedTimeInMin).hours;
+  const minutes = formatingRuntime(totalWatchedTimeInMin).minutes;
   const topGenre = getTopGenre(movies);
 
   return `<ul class="statistic__text-list">
@@ -161,7 +150,7 @@ const renderStatistic = (movies) => {
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Total duration</h4>
-      <p class="statistic__item-text">${h} <span class="statistic__item-description">h</span> ${m} <span class="statistic__item-description">m</span></p>
+      <p class="statistic__item-text">${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Top genre</h4>
