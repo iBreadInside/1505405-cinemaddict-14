@@ -40,17 +40,17 @@ export const editAttribute = (addition, controlType) => {
   }
 };
 
-export const formatingRuntime = (element, unitOne, unitTwo) => {
+export const formatingRuntime = (element) => {
   const runtime = {
     hours: '',
     minutes: '',
   };
 
   if (element >= 60) {
-    runtime.hours = `${Math.trunc(element / 60)}${unitOne} `;
-    runtime.minutes = `${element % 60}${unitTwo}`;
+    runtime.hours = `${Math.trunc(element / 60)}`;
+    runtime.minutes = `${element % 60}`;
   } else {
-    runtime.minutes = `${element}${unitTwo}`;
+    runtime.minutes = `${element}`;
   }
   return runtime;
 };

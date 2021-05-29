@@ -35,6 +35,14 @@ movieListPresenter.init();
 
 let statsComponent = null;
 
+const siteMenuClickHandler = (evt) => {
+  if (evt.target.closest('a')) {
+    evt.preventDefault();
+    const menuItemType = evt.target.dataset.type;
+    handleMenuItemClick(menuItemType);
+  }
+};
+
 const handleMenuItemClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.STATS:
@@ -61,7 +69,7 @@ api.getMovies()
     footerStatsPresenter.init();
 
     siteMenuPresenter.getMainNavContainer()
-      .addEventListener('click', handleMenuItemClick);
+      .addEventListener('click', siteMenuClickHandler);
   })
   .catch(() => {
     moviesModel.set(UpdateType.INIT, []);
@@ -69,5 +77,5 @@ api.getMovies()
     footerStatsPresenter.init();
 
     siteMenuPresenter.getMainNavContainer()
-      .addEventListener('click', handleMenuItemClick);
+      .addEventListener('click', siteMenuClickHandler);
   });

@@ -17,7 +17,9 @@ const createFilmCardTemplate = (movie) => {
     }
   };
 
-  const runtime = [formatingRuntime(filmInfo.runtime,'h','m').hours, formatingRuntime(filmInfo.runtime,'h','m').minutes].join(' ');
+  const hours = formatingRuntime(filmInfo.runtime).hours;
+  const minutes = formatingRuntime(filmInfo.runtime).minutes;
+  const movieRuntime = [hours + 'h', minutes + 'm'].join(' ');
   const watchlistActive = isSelectedFilmControl(userDetails.watchlist);
   const alreadyWatchedtActive = isSelectedFilmControl(userDetails.alreadyWatched);
   const favoriteActive = isSelectedFilmControl(userDetails.favorite);
@@ -27,10 +29,10 @@ const createFilmCardTemplate = (movie) => {
     <p class="film-card__rating">${filmInfo.totalRating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${dayjs(filmInfo.release.date).year()}</span>
-      <span class="film-card__duration">${runtime}</span>
+      <span class="film-card__duration">${movieRuntime}</span>
       <span class="film-card__genre">${filmInfo.genre[0]}</span>
     </p>
-    <img src="./images/posters/${filmInfo.poster}" alt="${filmInfo.title} poster" class="film-card__poster">
+    <img src="./${filmInfo.poster}" alt="${filmInfo.title} poster" class="film-card__poster">
     <p class="film-card__description">${descriptionReduction()}</p>
     <a class="film-card__comments">${comments.length} ${checkPlural('comment', comments)}</a>
     <div class="film-card__controls">
@@ -50,7 +52,7 @@ export default class FilmCardView extends AbstractView {
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
-    // this._popupOpenHandler = this._popupOpenHandler.bind(this);
+    this._popupOpenHandler = this._popupOpenHandler.bind(this);
   }
 
   getTemplate() {
@@ -77,9 +79,9 @@ export default class FilmCardView extends AbstractView {
     this._callback.favoriteClick();
   }
 
-  // _popupOpenHandler() {
-  //   this._callback.click();
-  // }
+  _popupOpenHandler() {
+    this._callback.click();
+  }
 
   setFilmCardClickHandler(callback, element) {
     this._callback.filmCardClick = callback;
@@ -101,10 +103,10 @@ export default class FilmCardView extends AbstractView {
     this.getElement().querySelector('.film-card__controls-item--favorite').addEventListener('click', this._favoriteClickHandler);
   }
 
-  // setPopupOpenHandler(callback) {
-  //   this._callback.click = callback;
-  //   this.getElement().querySelector('.film-card__poster').addEventListener('click', this._popupOpenHandler);
-  //   this.getElement().querySelector('.film-card__title').addEventListener('click', this._popupOpenHandler);
-  //   this.getElement().querySelector('.film-card__comments').addEventListener('click', this._popupOpenHandler);
-  // }
+  setPopupOpenHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().querySelector('.film-card__poster').addEventListener('click', this._popupOpenHandler);
+    this.getElement().querySelector('.film-card__title').addEventListener('click', this._popupOpenHandler);
+    this.getElement().querySelector('.film-card__comments').addEventListener('click', this._popupOpenHandler);
+  }
 }

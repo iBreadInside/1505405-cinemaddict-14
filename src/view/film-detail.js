@@ -17,25 +17,8 @@ const DEFAULT_NEW_COMMENT = {
 const createCommentTemplate = (filmComment, isDeleting, isDisabled) => {
   const {id, author, comment, date, emotion} = filmComment;
 
-  const today = dayjs();
-  const commentDate = dayjs(date);
-  const difference = dayjs.duration(today.diff(commentDate));
-
-  const getBiggestUnit = (obj) => {
-    for (const key in obj) {
-      if (obj[key] !== 0) {
-        return {
-          unit: key,
-          value: -obj[key],
-        };
-      }
-    }
-  };
-
-  const unitvalue = getBiggestUnit(difference.$d).value;
-  const biggestUnit = getBiggestUnit(difference.$d).unit;
-  const humanizeTime = (value, unit) => {
-    return dayjs.duration(value, `${unit}`).humanize(true);
+  const getCommentDate = (date) => {
+    return dayjs(date).fromNow();
   };
 
   return `<li class="film-details__comment">
@@ -46,7 +29,7 @@ const createCommentTemplate = (filmComment, isDeleting, isDisabled) => {
         <p class="film-details__comment-text">${he.encode(comment)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${humanizeTime(unitvalue, biggestUnit)}</span>
+          <span class="film-details__comment-day">${getCommentDate(date)}</span>
           <button type='button' class="film-details__comment-delete" data-id="${id}"${isDisabled ? ' disabled' : ''}>
             ${isDeleting ? 'Deleting...' : 'Delete'}
           </button>
@@ -55,7 +38,7 @@ const createCommentTemplate = (filmComment, isDeleting, isDisabled) => {
     </li>`;
 };
 
-const createFilmDetails = (state, commentsArray) => {
+const createFilmDetails = (state, movieComments) => {
   const { comments, filmInfo, userDetails, isDisabled, deletingId, newComment } = state;
 
   const releaseDate = dayjs(filmInfo.release.date).format('DD MMMM YYYY');
@@ -65,7 +48,7 @@ const createFilmDetails = (state, commentsArray) => {
     ? `${filmInfo.genre.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')}`
     : `<span class="film-details__genre">${filmInfo.genre[0]}</span>`;
 
-  const commentsList = commentsArray
+  const commentsList = movieComments
     .sort((a, b) => {
       const date1 = dayjs(a.date);
       const date2 = dayjs(b.date);
@@ -202,7 +185,6 @@ export default class FilmDetailsView extends Smart {
     this._state = FilmDetailsView.parseFilmToState(film);
     this._comments = comments;
     this._updatedComments = null;
-    // this._scrollPosition = null;
     this._closeBtnClickHandler = this._closeBtnClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
@@ -221,7 +203,7 @@ export default class FilmDetailsView extends Smart {
   }
 
   updateNewCommentInput(newComment) {
-    const {comment, emotion} = newComment;
+    const { comment, emotion } = newComment;
 
     if (!emotion && !comment) {
       return;
@@ -268,7 +250,7 @@ export default class FilmDetailsView extends Smart {
       return;
     }
 
-    const {comment, emotion} = this._state.newComment;
+    const { comment, emotion } = this._state.newComment;
 
     if (!comment.trim() || !emotion) {
       return;
@@ -295,7 +277,6 @@ export default class FilmDetailsView extends Smart {
 
   _changeCommentEmojiHandler(evt) {
     evt.preventDefault();
-    // const scrollPosition = document.querySelector('.film-details').scrollTop;
 
     this.updateState({
       newComment: Object.assign(
@@ -306,8 +287,6 @@ export default class FilmDetailsView extends Smart {
         },
       ),
     });
-
-    // document.querySelector('.film-details').scrollTo(0, scrollPosition);
   }
 
   _inputNewCommentHandler(evt) {
@@ -325,7 +304,7 @@ export default class FilmDetailsView extends Smart {
 
   _deleteCommentHandler(evt) {
     evt.preventDefault();
-    const { comment, emotion } = this._data.newComment;
+    const { comment, emotion } = this._state.newComment;
     const deletedCommentId = +evt.target.dataset.id;
     this._callback.deleteComment(comment, emotion, deletedCommentId);
   }

@@ -157,7 +157,7 @@ export default class MovieListPresenter {
       .sort(compareCommentsNumber)
       .slice(0, FILMS_IN_EXTRAS)
       .forEach((movie) => {
-        const presenter = this._renderMovie(movie, this._mostCommentedContainer, movie.id);
+        const presenter = this._renderMovie(this._mostCommentedContainer, movie.id);
         this._mostCommentedPresenter[movie.id] = presenter;
       });
   }

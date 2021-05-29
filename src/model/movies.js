@@ -1,9 +1,10 @@
-import Observer from '../utils/observer';
+import Observer from '../utils/observer.js';
 
-export default class MoviesModel extends Observer {
+export default class Movies extends Observer {
   constructor() {
     super();
     this._movies = [];
+    this._mode = null;
   }
 
   set(updateType, movies) {
@@ -17,11 +18,19 @@ export default class MoviesModel extends Observer {
     return this._movies;
   }
 
+  setMode(mode) {
+    this._mode = mode;
+  }
+
+  getMode() {
+    return this._mode;
+  }
+
   update(updateType, update, isNewcomment) {
     const index = this._movies.findIndex((movie) => movie.id === update.id);
 
     if (index === -1) {
-      throw new Error('Can\'t update unexisting film');
+      throw new Error('Can\'t update unexisting movie');
     }
 
     this._movies = [
@@ -47,10 +56,10 @@ export default class MoviesModel extends Observer {
       {},
       adaptedMoviePart.userDetails,
       {
-        alreadyWatched: movie.user_details.already_watched,
-        // favorite: movie.user_details.favorite,
         // watchlist: movie.user_details.watchlist,
+        alreadyWatched: movie.user_details.already_watched,
         watchingDate: movie.user_details.watching_date ? new Date(movie.user_details.watching_date) : null,
+        // favorite: movie.user_details.favorite,
       },
     );
 
@@ -59,7 +68,7 @@ export default class MoviesModel extends Observer {
       adaptedMoviePart.filmInfo.release,
       {
         releaseCountry: movie.film_info.release.release_country,
-        date: new Date(movie.film_info.release.date),
+        // date: new Date(movie.film_info.release.date),
       },
     );
 
@@ -69,7 +78,6 @@ export default class MoviesModel extends Observer {
       {
         ageRating: movie.film_info.age_rating,
         alternativeTitle: movie.film_info.alternative_title,
-        // genre: movie.film_info.genre,
         totalRating: movie.film_info.total_rating,
         release: newRelease,
       },
@@ -113,10 +121,10 @@ export default class MoviesModel extends Observer {
       {},
       adaptedMoviePart.user_details,
       {
+        // 'watchlist': movie.userDetails.watchlist,
         'already_watched': movie.userDetails.alreadyWatched,
-        // favorite: movie.userDetails.favorite,
-        // watchlist: movie.userDetails.watchlist,
         'watching_date': movie.userDetails.watchingDate ? movie.userDetails.watchingDate.toISOString() : null,
+        // 'favorite': movie.userDetails.favorite,
       },
     );
 
@@ -125,7 +133,7 @@ export default class MoviesModel extends Observer {
       adaptedMoviePart.film_info.release,
       {
         'release_country': movie.filmInfo.release.releaseCountry,
-        'date': movie.filmInfo.release.date ? movie.filmInfo.release.date.toISOString() : null,
+        // 'date': movie.filmInfo.release.date ? movie.filmInfo.release.date.toISOString() : null,
       },
     );
 
@@ -135,7 +143,6 @@ export default class MoviesModel extends Observer {
       {
         'age_rating': movie.filmInfo.ageRating,
         'alternative_title': movie.filmInfo.alternativeTitle,
-        // genre: movie.filmInfo.genre,
         'total_rating': movie.filmInfo.totalRating,
         'release': newRelease,
       },
@@ -153,12 +160,12 @@ export default class MoviesModel extends Observer {
     delete adaptedMovie.filmInfo;
     delete adaptedMovie.userDetails;
     delete adaptedMovie.user_details.alreadyWatched;
-    // delete adaptedMovie.user_details.isFavorite;
+    // delete adaptedMovie.user_details.favorite;
     delete adaptedMovie.user_details.watchingDate;
-    // delete adaptedMovie.user_details.isWatchlist;
+    // delete adaptedMovie.user_details.watchlist;
     delete adaptedMovie.film_info.ageRating;
     delete adaptedMovie.film_info.alternativeTitle;
-    // delete adaptedMovie.film_info.genres;
+    // delete adaptedMovie.film_info.genre;
     delete adaptedMovie.film_info.totalRating;
     delete adaptedMovie.film_info.release.releaseCountry;
 
