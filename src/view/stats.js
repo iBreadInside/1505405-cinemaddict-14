@@ -37,15 +37,17 @@ const reduceGenres = (genres, genre) => {
 };
 
 const getSortedGenres = (genres) => {
-  return Object.entries(genres).map(([ genre, value ]) => ({ genre, count: value })).sort((a, b) => b.count - a.count);
+  return Object.entries(genres).map(([ genreName, value ]) => ({ genreName, count: value })).sort((a, b) => b.count - a.count);
 };
 
 const getWatchedStats = (movies) => movies
-  .reduce((stats, film) => {
-    stats.watched ++;
-    stats.runtime += film.filmInfo.runtime;
-    stats.genres = film.filmInfo.genre.reduce(reduceGenres, stats.genres);
-    stats.topGenre = getSortedGenres(stats.genres)[0].genre;
+  .reduce((stats, movie) => {
+    if (movie.userDetails.alreadyWatched) {
+      stats.watched ++;
+      stats.runtime += movie.filmInfo.runtime;
+      stats.genres = movie.filmInfo.genre.reduce(reduceGenres, stats.genres);
+      stats.topGenre = getSortedGenres(stats.genres)[0].genreName;
+    }
 
     return stats;
   }, { runtime: 0, watched: 0, genres: {}, topGenre: '' });
@@ -58,11 +60,10 @@ const getTopGenre = (movies) => {
   return getWatchedStats(movies).topGenre;
 };
 
-const renderChart = (statisticCtx, movies) => {
-  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
-  const watchedGenres = getWatchedStats(watchedMovies).genres;
+const renderChart = (statisticCtx, stats) => {
+  const watchedGenres = stats.genres;
   const sortedWatchedGenres = getSortedGenres(watchedGenres);
-  const genres = sortedWatchedGenres.map((obj) => obj.genre);
+  const genres = sortedWatchedGenres.map((obj) => obj.genreName);
   const counts = sortedWatchedGenres.map((obj) => obj.count);
 
   statisticCtx.style.height = BAR_HEIGHT * genres.length;
@@ -221,13 +222,17 @@ export default class StatsView extends SmartView {
     return filterWatchedMoviesInRange(this._state);
   }
 
+  _getWatchedStats() {
+    return getWatchedStats(this._getWatchedMovies());
+  }
+
   _setCharts() {
     if(this._chart !== null) {
       this._chart = null;
     }
 
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
-    this._chart = renderChart(statisticCtx, this._getWatchedMovies());
+    this._chart = renderChart(statisticCtx, this._getWatchedStats());
   }
 
   restoreHandlers() {
