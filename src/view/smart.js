@@ -6,10 +6,6 @@ export default class Smart extends AbstractView {
     this._state = {};
   }
 
-  restoreHandlers() {
-    throw new Error('Abstract method not implemented: resetHandlers');
-  }
-
   updateElement() {
     const prevElement = this.getElement();
     const scrollPosition = prevElement.scrollTop;
@@ -38,5 +34,9 @@ export default class Smart extends AbstractView {
     }
 
     this.updateElement();
+  }
+
+  restoreHandlers() {
+    throw new Error('Abstract method not implemented: resetHandlers');
   }
 }

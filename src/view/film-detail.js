@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 import he from 'he';
-import { checkPlural, formatingRuntime } from '../utils/common';
+import { checkPlural, generateFilmRuntime } from '../utils/common';
 import Smart from './smart.js';
 
 dayjs.extend(relativeTime);
@@ -40,7 +40,7 @@ const createFilmDetails = (state, movieComments) => {
   const { comments, filmInfo, userDetails, isDisabled, deletingId, newComment } = state;
 
   const releaseDate = dayjs(filmInfo.release.date).format('DD MMMM YYYY');
-  const runtime = [formatingRuntime(filmInfo.runtime,'h','m').hours, formatingRuntime(filmInfo.runtime,'h','m').minutes].join(' ');
+  const runtime = generateFilmRuntime(filmInfo.runtime);
 
   const movieGenres = filmInfo.genre.length > 2
     ? `${filmInfo.genre.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')}`
