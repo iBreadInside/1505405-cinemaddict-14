@@ -215,15 +215,11 @@ export default class MovieListPresenter {
     remove(this._sortingComponent);
     remove(this._loadingComponent);
 
-    if (resetRenderedMovieCount) {
-      this._renderedFilmCount = FILMS_IN_LINE;
-    } else {
-      this._renderedFilmCount = Math.min(movieCount, this._renderedFilmCount);
-    }
+    resetRenderedMovieCount
+      ? this._renderedFilmCount = FILMS_IN_LINE
+      : this._renderedFilmCount = Math.min(movieCount, this._renderedFilmCount);
 
-    if (resetSortType) {
-      this._currentSortType = SortType.DEFAULT;
-    }
+    if (resetSortType) this._currentSortType = SortType.DEFAULT;
   }
 
   show() {

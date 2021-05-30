@@ -30,41 +30,41 @@ const filterWatchedMoviesInRange = ({movies, range}) => {
   });
 };
 
-const makeItemsUniq = (items) => [...new Set(items)];
-
-const countMoviesByGenre = (movies, currentGenre) => {
-  return movies.filter((movie) => movie.filmInfo.genre.includes(currentGenre)).length;
+const reduceGenres = (genres, genre) => {
+  const count = genres[genre];
+  genres[genre] = count === undefined ? 1 : count + 1;
+  return genres;
 };
 
-const createCountMoviesByGenre = (movies) => {
-  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
-  const moviesGenres = watchedMovies
-    .map((movie) => movie.filmInfo.genre)
-    .flat(1);
-  const uniqGenres = makeItemsUniq(moviesGenres);
-  const movieByGenreCounts = uniqGenres.map((currentGenre) => {
-    return {
-      currentGenre,
-      count: countMoviesByGenre(watchedMovies, currentGenre),
-    };
-  });
-  const sortedMovieByGenreCounters = movieByGenreCounts.sort((a, b) => b.count - a.count);
-  return sortedMovieByGenreCounters ? sortedMovieByGenreCounters : [];
+const getSortedGenres = (genres) => {
+  return Object.entries(genres).map(([ genre, value ]) => ({ genre, count: value })).sort((a, b) => b.count - a.count);
 };
+
+const getWatchedStats = (movies) => movies
+  .reduce((stats, film) => {
+    stats.watched ++;
+    stats.runtime += film.filmInfo.runtime;
+    stats.genres = film.filmInfo.genre.reduce(reduceGenres, stats.genres);
+    stats.topGenre = getSortedGenres(stats.genres)[0].genre;
+
+    return stats;
+  }, { runtime: 0, watched: 0, genres: {}, topGenre: '' });
 
 const getTopGenre = (movies) => {
   if (!movies.length) {
     return '';
   }
 
-  const moviesByGenreCounters = createCountMoviesByGenre(movies);
-  return moviesByGenreCounters.length ? moviesByGenreCounters[0].currentGenre : '';
+  return getWatchedStats(movies).topGenre;
 };
 
 const renderChart = (statisticCtx, movies) => {
-  const sortedMovieByGenreCounts = createCountMoviesByGenre(movies);
-  const genres = sortedMovieByGenreCounts.map((obj) => obj.currentGenre);
-  const counts = sortedMovieByGenreCounts.map((obj) => obj.count);
+  const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
+  const watchedGenres = getWatchedStats(watchedMovies).genres;
+  const sortedWatchedGenres = getSortedGenres(watchedGenres);
+  const genres = sortedWatchedGenres.map((obj) => obj.genre);
+  const counts = sortedWatchedGenres.map((obj) => obj.count);
+
   statisticCtx.style.height = BAR_HEIGHT * genres.length;
 
   return new Chart(statisticCtx, {
@@ -130,18 +130,16 @@ const getTotalWatchedTime = (movies) => {
     return '0';
   }
 
-  return movies.reduce((counter, movie) => {
-    return counter + movie.filmInfo.runtime;
-  }, 0);
+  return getWatchedStats(movies).runtime;
 };
 
 const renderStatistic = (movies) => {
   const watchedMovies = movies.filter((movie) => movie.userDetails.alreadyWatched);
   const watchedMoviesCount = watchedMovies.length;
-  const totalWatchedTimeInMin = getTotalWatchedTime(watchedMovies);
-  const hours = formatingRuntime(totalWatchedTimeInMin).hours;
-  const minutes = formatingRuntime(totalWatchedTimeInMin).minutes;
-  const topGenre = getTopGenre(movies);
+  const totalWatchedTime = getTotalWatchedTime(watchedMovies);
+  const hours = formatingRuntime(totalWatchedTime).hours;
+  const minutes = formatingRuntime(totalWatchedTime).minutes;
+  const topGenre = getTopGenre(watchedMovies);
 
   return `<ul class="statistic__text-list">
     <li class="statistic__text-item">
