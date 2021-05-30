@@ -61,8 +61,7 @@ const getTopGenre = (movies) => {
 };
 
 const renderChart = (statisticCtx, stats) => {
-  const watchedGenres = stats.genres;
-  const sortedWatchedGenres = getSortedGenres(watchedGenres);
+  const sortedWatchedGenres = getSortedGenres(stats.genres);
   const genres = sortedWatchedGenres.map((obj) => obj.genreName);
   const counts = sortedWatchedGenres.map((obj) => obj.count);
 
