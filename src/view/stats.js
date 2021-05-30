@@ -48,8 +48,8 @@ const createCountMoviesByGenre = (movies) => {
       count: countMoviesByGenre(watchedMovies, currentGenre),
     };
   });
-  const sortedMovieByGenreCounts = movieByGenreCounts.sort((a, b) => b.count - a.count);
-  return sortedMovieByGenreCounts ? sortedMovieByGenreCounts : [];
+  const sortedMovieByGenreCounters = movieByGenreCounts.sort((a, b) => b.count - a.count);
+  return sortedMovieByGenreCounters ? sortedMovieByGenreCounters : [];
 };
 
 const getTopGenre = (movies) => {
@@ -57,8 +57,8 @@ const getTopGenre = (movies) => {
     return '';
   }
 
-  const countMoviesByGenreArray = createCountMoviesByGenre(movies);
-  return countMoviesByGenreArray.length ? countMoviesByGenreArray[0].currentGenre : '';
+  const moviesByGenreCounters = createCountMoviesByGenre(movies);
+  return moviesByGenreCounters.length ? moviesByGenreCounters[0].currentGenre : '';
 };
 
 const renderChart = (statisticCtx, movies) => {

@@ -46,7 +46,7 @@ const createFilmDetails = (state, movieComments) => {
     ? `${filmInfo.genre.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('')}`
     : `<span class="film-details__genre">${filmInfo.genre[0]}</span>`;
 
-  const commentsList = movieComments
+  const sortedComments = movieComments
     .sort((a, b) => {
       const date1 = dayjs(a.date);
       const date2 = dayjs(b.date);
@@ -55,7 +55,7 @@ const createFilmDetails = (state, movieComments) => {
     });
 
   const commentBlock = comments.length
-    ? commentsList.map((comment) => createCommentTemplate(comment, comment.id === String(deletingId), isDisabled)).join('')
+    ? sortedComments.map((comment) => createCommentTemplate(comment, comment.id === String(deletingId), isDisabled)).join('')
     : '';
 
   const {emotion, comment} = newComment;
