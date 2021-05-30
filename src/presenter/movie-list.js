@@ -49,6 +49,7 @@ export default class MovieListPresenter {
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handlePopupMode = this._handlePopupMode.bind(this);
 
     this._moviesModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -88,7 +89,7 @@ export default class MovieListPresenter {
   }
 
   _renderMovie(container, id) {
-    const moviePresenter = new MoviePresenter(container, this._handleViewAction, id, this._moviesModel, this._api);
+    const moviePresenter = new MoviePresenter(container, this._handleViewAction, this._handlePopupMode, id, this._moviesModel, this._api);
     moviePresenter.init();
 
     return moviePresenter;
@@ -266,6 +267,12 @@ export default class MovieListPresenter {
     if (this._renderedFilmCount >= movieCount) {
       remove(this._showMoreBtnComponent);
     }
+  }
+
+  _handlePopupMode() {
+    Object
+      .values(this._mainPresenter)
+      .forEach((presenter) => presenter.resetView());
   }
 
   _handleViewAction(actionType, updateType, update) {
