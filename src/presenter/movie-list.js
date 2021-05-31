@@ -225,6 +225,12 @@ export default class MovieListPresenter {
     }
   }
 
+  // _resetPopup(moviePresenter) {
+  //   Object
+  //     .values(moviePresenter)
+  //     .forEach((presenter) => presenter.resetView());
+  // }
+
   show() {
     if (!this._sortingComponent || !this._filmsContainerComponent) {
       return;
@@ -271,10 +277,16 @@ export default class MovieListPresenter {
     }
   }
 
-  _handlePopupMode() {
+  _resetPopup(moviePresenter) {
     Object
-      .values(this._mainPresenter)
+      .values(moviePresenter)
       .forEach((presenter) => presenter.resetView());
+  }
+
+  _handlePopupMode() {
+    this._resetPopup(this._mainPresenter);
+    this._resetPopup(this._topRatedPresenter);
+    this._resetPopup(this._mostCommentedPresenter);
   }
 
   _handleViewAction(actionType, updateType, update) {
