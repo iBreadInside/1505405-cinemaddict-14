@@ -216,11 +216,13 @@ export default class MovieListPresenter {
     remove(this._sortingComponent);
     remove(this._loadingComponent);
 
-    resetRenderedMovieCount
-      ? this._renderedFilmCount = FILMS_IN_LINE
-      : this._renderedFilmCount = Math.min(movieCount, this._renderedFilmCount);
+    this._renderedFilmCount = resetRenderedMovieCount
+      ? FILMS_IN_LINE
+      : Math.min(movieCount, this._renderedFilmCount);
 
-    if (resetSortType) this._currentSortType = SortType.DEFAULT;
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
   }
 
   show() {
