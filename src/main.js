@@ -35,6 +35,14 @@ movieListPresenter.init();
 
 let statsComponent = null;
 
+const renderBoardMenu = () => {
+  profilePresenter.init();
+  footerStatsPresenter.init();
+
+  siteMenuPresenter.getMainNavContainer()
+    .addEventListener('click', siteMenuClickHandler);
+};
+
 const siteMenuClickHandler = (evt) => {
   if (evt.target.closest('a')) {
     evt.preventDefault();
@@ -65,17 +73,9 @@ const handleMenuItemClick = (menuItem) => {
 api.getMovies()
   .then((movies) => {
     moviesModel.set(UpdateType.INIT, movies);
-    profilePresenter.init();
-    footerStatsPresenter.init();
-
-    siteMenuPresenter.getMainNavContainer()
-      .addEventListener('click', siteMenuClickHandler);
+    renderBoardMenu();
   })
   .catch(() => {
     moviesModel.set(UpdateType.INIT, []);
-    profilePresenter.init();
-    footerStatsPresenter.init();
-
-    siteMenuPresenter.getMainNavContainer()
-      .addEventListener('click', siteMenuClickHandler);
+    renderBoardMenu();
   });

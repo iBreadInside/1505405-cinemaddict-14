@@ -10,9 +10,11 @@ const PopupStatus = {
 };
 
 export default class MoviePresenter {
-  constructor(container, changeData, id, moviesModel, api) {
+  constructor(container, changeData, changePopupStatus, id, moviesModel, api) {
     this._container = container;
     this._changeData = changeData;
+    this._changePopupStatus = changePopupStatus;
+
     this._id = id;
     this._moviesModel = moviesModel;
     this._api = api;
@@ -116,11 +118,17 @@ export default class MoviePresenter {
     remove(this._filmCardComponent);
   }
 
+  resetView() {
+    if (this._popupStatus !== PopupStatus.CLOSE) {
+      this._closePopup();
+    }
+  }
+
   _renderPopup(movie, comments) {
+    this._changePopupStatus();
+
     this._popupStatus = PopupStatus.OPEN;
     this._comments = comments;
-
-    const prevFilmPopup = this._filmPopup;
 
     this._filmPopup = new FilmDetailsView(movie, comments);
 
@@ -134,22 +142,9 @@ export default class MoviePresenter {
 
     this._moviesModel.addObserver(this._handleModelEvent);
 
-    if (prevFilmPopup === null) {
-      render(this._siteBodyElement, this._filmPopup);
-      this._siteBodyElement.classList.add('hide-overflow');
-      document.addEventListener('keydown', this._escKeydownHandler);
-
-      return;
-    }
-
-    if (this._popupStatus === PopupStatus.OPEN) {
-      replace(this._filmPopup, prevFilmPopup);
-
-      this._siteBodyElement.classList.add('hide-overflow');
-      document.addEventListener('keydown', this._escKeydownHandler);
-    }
-
-    remove(prevFilmPopup);
+    render(this._siteBodyElement, this._filmPopup);
+    this._siteBodyElement.classList.add('hide-overflow');
+    document.addEventListener('keydown', this._escKeydownHandler);
   }
 
   _updateUserDetailsData(data, actionType = UpdateType.MINOR) {

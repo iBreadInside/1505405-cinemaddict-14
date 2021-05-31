@@ -1,5 +1,8 @@
 import { MenuItem, UserRank } from '../const';
 
+const NOVICE_TO_FAN = 10;
+const FAN_TO_MOVIE_BUFF = 20;
+
 export const filter = {
   [MenuItem.ALL_MOVIES]: (movies) => movies,
   [MenuItem.WATCHLIST]: (movies) => movies.filter((movie) => movie.userDetails.watchlist),
@@ -9,9 +12,9 @@ export const filter = {
 };
 
 export const rank = {
-  [UserRank.NOVICE]: (count) => count <= 10,
-  [UserRank.FAN]: (count) => count <= 20 && count > 10,
-  [UserRank.MOVIE_BUFF]: (count) => count > 20,
+  [UserRank.NOVICE]: (count) => count <= NOVICE_TO_FAN,
+  [UserRank.FAN]: (count) => count <= FAN_TO_MOVIE_BUFF && count > NOVICE_TO_FAN,
+  [UserRank.MOVIE_BUFF]: (count) => count > FAN_TO_MOVIE_BUFF,
 };
 
 export const formatingRuntime = (element) => {
